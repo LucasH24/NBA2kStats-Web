@@ -1,0 +1,109 @@
+@model IEnumerable<HallOfFame>
+
+<div class="pb-2">
+  <h1>Hall of Fame</h1>
+</div>
+
+@if (Model.Count() == 0)
+{
+  <p>There is no data</p>
+}
+else
+{
+  <table class="table table-bordered table-sm">
+    <tr>
+      <th scope="col"> NBA2k </th>
+      <th scope="col"> Name </th>
+      <th scope="col"> MIN </th>
+      <th scope="col"> PTS </th>
+      <th scope="col"> REB </th>
+      <th scope="col"> AST </th>
+      <th scope="col"> STL </th>
+      <th scope="col"> BLK </th>
+      <th scope="col"> FG </th>
+      <th scope="col"> 3P </th>
+      <th scope="col"> FG% </th>
+      <th scope="col"> 3P% </th>
+      <th scope="col"> FTM </th>
+      <th scope="col"> Stat </th>
+      <th scope="col"> Eff </th>
+      <th scope="col"> Score </th>
+    </tr>
+    @foreach (HallOfFame hallOfFame in Model)
+    {
+      int FT = hallOfFame.PTS - ((@hallOfFame.TPM * 3) + ((hallOfFame.FGM - hallOfFame.TPM) * 2));
+
+      double FGP = 0;
+      @if (hallOfFame.FGA > 0)
+      {
+        FGP = (hallOfFame.FGM * 100) / hallOfFame.FGA;
+      }
+
+      double TPP = 0;
+      @if (hallOfFame.TPA > 0)
+      {
+        TPP = (hallOfFame.TPM * 100) / hallOfFame.TPA;
+      }
+
+
+      double temp = hallOfFame.PTS + (2 * (hallOfFame.REB + hallOfFame.AST + hallOfFame.STLS + hallOfFame.BLK));
+      double score1 = (temp / hallOfFame.MIN) * 9;
+
+      double score2 = (hallOfFame.PTS - ((hallOfFame.FGA + (FT * 0.3)) * 1.5)) / 2;
+
+      double scoreFinal = score1 + score2;
+
+      score1 = Math.Round(score1, 1);
+      score2 = Math.Round(score2, 1);
+      scoreFinal = scoreFinal - 9;
+      scoreFinal = Math.Round(scoreFinal, 1);
+
+      string colorChange = "ff0000";
+
+      @if (scoreFinal > 7)
+      {
+        colorChange = "bf7404";
+      }
+
+      @if (scoreFinal > 17)
+      {
+        colorChange = "b3a314";
+      }
+
+      @if (scoreFinal > 24)
+      {
+        colorChange = "008000";
+      }
+
+      @if (scoreFinal > 31)
+      {
+        colorChange = "0000ff";
+      }
+
+      @if (scoreFinal > 36)
+      {
+        colorChange = "622a8c";
+      }
+
+
+      <tr>
+        <td> @hallOfFame.NBA2k </td>
+        <td> @hallOfFame.Name </td>
+        <td> @hallOfFame.MIN</td>
+        <td> @hallOfFame.PTS </td>
+        <td> @hallOfFame.REB </td>
+        <td> @hallOfFame.AST </td>
+        <td> @hallOfFame.STLS </td>
+        <td> @hallOfFame.BLK </td>
+        <td> @hallOfFame.FGM - @hallOfFame.FGA </td>
+        <td> @hallOfFame.TPM - @hallOfFame.TPA </td>
+        <td> @FGP% </td>
+        <td> @TPP% </td>
+        <td> @FT </td>
+        <td> @score1 </td>
+        <td> @score2 </td>
+        <td class=@colorChange> <strong>@scoreFinal </strong> </td>
+      </tr>
+    }
+  </table>
+}

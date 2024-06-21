@@ -1,0 +1,1169 @@
+<div class="pb-3 ">
+  <h1>Data View</h1>
+</div>
+
+<div style="padding-bottom: 10px;">
+
+  <button class="btn btn btn-outline-primary" id="showBoxScores" onclick="showBoxScores()"
+    title="View all player box scores">
+    Box Scores </button>
+
+  <button class="btn btn btn-outline-primary" id="showSeriesStats" onclick="showSeriesStats()"
+    title="View all player series averages"> Series Stats
+  </button>
+
+  <button class="btn btn btn-outline-primary" id="showGameStats" onclick="showGameStats()" title="View all game stats">
+    Game Stats </button>
+
+  <button class="btn btn btn-outline-dark" id="showTeamStats" onclick="showTeamStats()" style="margin-right: 15px"
+    disabled title="View all team series averages">
+    Team Stats </button>
+
+  <input type="checkbox" id="showFilters" onclick="showFilters()" name="showFilters">
+  <label style="padding-right: 10px;" for="showFilters"> Show Filters </label>
+
+</div>
+
+<div id="filters" hidden>
+
+  <div>
+    <label for="minuteFilter"> Minimum Minutes </input>
+      <input type="number" id="minuteFilter" style="width: 30px;" onchange="displayData()" value="16"> </input>
+  </div>
+
+  <div>
+    <label for="maxLength"> Max Length </input>
+      <input type="number" id="maxLength" style="width: 150px;" onchange="displayData()" value="500"> </input>
+  </div>
+
+  <div>
+    <label for="nba2kFilter"> NBA2k </input>
+      <select onchange="displayData()" name="nba2kFilter" id="nba2kFilter">
+        <option selected value="All">All</option>
+        <option value="NBA2k13">NBA2k13</option>
+        <option value="NBA2k14">NBA2k14</option>
+        <option value="NBA2k15">NBA2k15</option>
+        <option value="NBA2k16">NBA2k16</option>
+        <option value="NBA2k17">NBA2k17</option>
+        <option value="NBA2k18">NBA2k18</option>
+        <option value="NBA2k19">NBA2k19</option>
+        <option value="NBA2k20">NBA2k20</option>
+        <option value="NBA2k21">NBA2k21</option>
+        <option value="NBA2k22">NBA2k22</option>
+        <option value="NBA2k23">NBA2k23</option>
+        <option value="NBA2k24">NBA2k24</option>
+        <option value="NBA2k25">NBA2k25</option>
+      </select>
+  </div>
+
+  <input type="checkbox" id="scalePer36" onclick="displayData()" name="scalePer36">
+  <label style="padding-right: 10px;" for="scalePer36"> Scale per 36</label>
+
+  <input type="checkbox" id="filterMyPlayers" onclick="displayData()" name="filterMyPlayers">
+  <label for="filterMyPlayers"> Hide my players </label>
+
+  <div>
+    <label for="teamFilter"> Team Name </input>
+      <input type="text" id="teamFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
+
+      <label for="playerFilter"> Player Name </input>
+        <input type="text" id="playerFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
+  </div>
+
+
+
+</div>
+
+<div class="fixTableHead" id="tableHeightStyle" style="overflow-x: hidden; height: 728px;">
+  <table id="playerStatsTable" class="table table-sm w-100 table-bordered table-striped" style="display: none;">
+    <thead>
+      <tr>
+        <th scope="col"> # </th>
+        <th scope="col"> Name </th>
+        <th scope="col" onclick="sortData('min')"> MIN </th>
+        <th scope="col" onclick="sortData('pts')"> PTS </th>
+        <th scope="col" onclick="sortData('reb')"> REB </th>
+        <th scope="col" onclick="sortData('ast')"> AST </th>
+        <th scope="col" onclick="sortData('stls')"> STLS </th>
+        <th scope="col" onclick="sortData('blk')"> BLK </th>
+        <th scope="col" onclick="sortData('tor')"> TO </th>
+        <th scope="col" onclick="sortData('fgm')"> FGM </th>
+        <th scope="col" onclick="sortData('fga')"> FGA </th>
+        <th scope="col" onclick="sortData('tpm')"> 3PM </th>
+        <th scope="col" onclick="sortData('tpa')"> 3PA </th>
+        <th scope="col" onclick="sortData('ftm')"> FTM </th>
+        <th scope="col" onclick="sortData('fgp')"> FG% </th>
+        <th scope="col" onclick="sortData('tpp')"> 3P% </th>
+        <th scope="col" onclick="sortData('tsp')"> TS% </th>
+        <th scope="col" onclick="sortData('brt')"> BRT </th>
+        <th scope="col" onclick="sortData('nba2k')"> Version </th>
+        <th scope="col" onclick="sortData('team')"> Team </th>
+        <th scope="col" onclick="sortData('opponent')"> Opponent </th>
+      </tr>
+    </thead>
+
+    <tbody id="playerOutput">
+
+    </tbody>
+
+  </table>
+
+
+  <table id="teamStatsTable" class="table table-sm table-bordered table-striped">
+    <thead style="position: sticky;">
+      <tr>
+        <th scope="col"> # </th>
+        <th scope="col" onclick="sortData('team')"> Team </th>
+        <th scope="col" onclick="sortData('opponent')"> Opponent </th>
+        <th scope="col" onclick="sortData('min')"> MIN </th>
+        <th scope="col" onclick="sortData('pts')"> PTS </th>
+        <th scope="col" onclick="sortData('reb')"> REB </th>
+        <th scope="col" onclick="sortData('ast')"> AST </th>
+        <th scope="col" onclick="sortData('stls')"> STLS </th>
+        <th scope="col" onclick="sortData('blk')"> BLK </th>
+        <th scope="col" onclick="sortData('tor')"> TO </th>
+        <th scope="col" onclick="sortData('orb')"> ORB </th>
+        <th scope="col" onclick="sortData('fgm')"> FGM </th>
+        <th scope="col" onclick="sortData('fga')"> FGA </th>
+        <th scope="col" onclick="sortData('tpm')"> 3PM </th>
+        <th scope="col" onclick="sortData('tpa')"> 3PA </th>
+        <th scope="col" onclick="sortData('ftm')"> FTM </th>
+        <th scope="col" onclick="sortData('fta')"> FTA </th>
+        <th scope="col" onclick="sortData('fgp')"> FG% </th>
+        <th scope="col" onclick="sortData('tpp')"> 3P% </th>
+        <th scope="col" onclick="sortData('ftp')"> FT% </th>
+        <th scope="col" onclick="sortData('tsp')"> TS% </th>
+        <th scope="col" onclick="sortData('ort')"> ORT </th>
+        <th scope="col" onclick="sortData('pace')"> Pace </th>
+        <th scope="col" onclick="sortData('nba2k')"> Version </th>
+      </tr>
+    </thead>
+
+    <tbody id="teamOutput">
+
+    </tbody>
+
+  </table>
+
+</div>
+
+<script>
+
+  let playerBoxes = [];
+  let seasonBoxes = [];
+
+  let games = [];
+  let seasonGames = [];
+
+  let series = [];
+  let seasons = [];
+
+  let dataList = [];
+
+
+  function getDataObject() {
+    var dataObject = {
+      name: "",
+      min: 0.00,
+      pts: 0.00,
+      reb: 0.00,
+      ast: 0.00,
+      stls: 0.00,
+      blk: 0.00,
+      tor: 0.00,
+      orb: 0.00,
+      fgm: 0.00,
+      fga: 0.00,
+      tpm: 0.00,
+      tpa: 0.00,
+      ftm: 0.00,
+      fta: 0.00,
+      fgp: 0.00,
+      tpp: 0.00,
+      ftp: 0.00,
+      tsp: 0.00,
+      ort: 0.00,
+      pace: 0.00,
+      brt: 0.00,
+      team: "",
+      opponent: "",
+      teamColor: "",
+      opponentColor: "",
+      nba2k: "",
+    }
+
+    return dataObject;
+  }
+
+  function showBoxScores() {
+    dataList = [];
+    handleButtons(0);
+
+    handleSeasonBoxes();
+    handlePlayerBoxes();
+
+    displayBoxData();
+  }
+
+  function showSeriesStats() {
+    dataList = [];
+    handleButtons(1);
+
+    handleSeriesStats();
+
+    displayBoxData();
+  }
+
+  function showGameStats() {
+    dataList = [];
+    handleButtons(2);
+
+    handleGames();
+    handleSeasonGames();
+
+    displayTeamData();
+  }
+
+  function showTeamStats() {
+    dataList = [];
+    handleButtons(3);
+
+    handleTeamStats();
+
+    displayTeamData();
+  }
+
+  function showFilters() {
+
+    const showFilters = document.getElementById("showFilters").checked;
+    const filters = document.getElementById("filters");
+    const tableHeightStyle = document.getElementById("tableHeightStyle");
+
+    if (showFilters == true) {
+      filters.hidden = false;
+      tableHeightStyle.style = "overflow-x: hidden; height: 625px;"
+    }
+    else {
+      filters.hidden = true;
+      tableHeightStyle.style = "overflow-x: hidden; height: 728px;"
+    }
+
+  }
+
+  function handleButtons(buttonToDisable) {
+    const buttonsArray = ['showBoxScores', 'showSeriesStats', 'showGameStats', 'showTeamStats'];
+    for (var i = 0; i < buttonsArray.length; i++) {
+      const button = document.getElementById(buttonsArray[i]);
+      $(button).removeClass('btn-outline-dark');
+      $(button).addClass('btn-outline-primary');
+      button.disabled = false;
+    }
+
+    const button = document.getElementById(buttonsArray[buttonToDisable]);
+    //button.style.backgroundColor = "primary";
+    $(button).addClass('btn-outline-dark');
+    $(button).removeClass('btn-outline-primary');
+    button.disabled = true;
+  }
+
+  function sortData(test) {
+    const per36Filter = document.getElementById("scalePer36").checked;
+    if (per36Filter == true && test != "brt" && test != "fgp" && test != "tpp" && test != "tsp" && test != "ort" && test != "pace") {
+      dataList.sort(function (a, b) {
+        bScale = 36 / b.min;
+        aScale = 36 / a.min;
+        return (b[test] * bScale) - (a[test] * aScale);
+      })
+    }
+
+    else {
+      dataList.sort(function (a, b) {
+        return b[test] - a[test];
+      })
+    }
+    displayData();
+  }
+
+  function handleGames() {
+    for (var i = 0; i < games.length; i++) {
+      var dataObject1 = null;
+      var dataObject2 = null;
+      var nullCheck = false;
+      for (var x = 1; x < 3; x++) {
+
+        var dataObject = getDataObject();
+        dataObject.nba2k = games[i].series.nbA2k;
+
+        //determining teams
+        if (x == 1) {
+          dataObject.name = games[i].series.team1;
+          dataObject.team = games[i].series.team1;
+          dataObject.opponent = games[i].series.team2;
+          dataObject.teamColor = games[i].series.team1Color;
+          dataObject.opponentColor = games[i].series.team2Color;
+        }
+        else {
+          dataObject.name = games[i].series.team2;
+          dataObject.team = games[i].series.team2;
+          dataObject.opponent = games[i].series.team1;
+          dataObject.teamColor = games[i].series.team2Color;
+          dataObject.opponentColor = games[i].series.team1Color;
+        }
+
+        //find every player box for the selected team
+        for (var y = 0; y < playerBoxes.length; y++) {
+          if (playerBoxes[y].gameID == games[i].gameID && playerBoxes[y].team == x) {
+            dataObject.min = dataObject.min + playerBoxes[y].min;
+            dataObject.pts = dataObject.pts + playerBoxes[y].pts;
+            dataObject.reb = dataObject.reb + playerBoxes[y].reb;
+            dataObject.ast = dataObject.ast + playerBoxes[y].ast;
+            dataObject.stls = dataObject.stls + playerBoxes[y].stls;
+            dataObject.blk = dataObject.blk + playerBoxes[y].blk;
+            dataObject.tor = dataObject.tor + playerBoxes[y].tor;
+            dataObject.fgm = dataObject.fgm + playerBoxes[y].fgm;
+            dataObject.fga = dataObject.fga + playerBoxes[y].fga;
+            dataObject.tpm = dataObject.tpm + playerBoxes[y].tpm;
+            dataObject.tpa = dataObject.tpa + playerBoxes[y].tpa;
+          }
+        }
+
+        dataObject.min = (dataObject.min / 5);
+
+        dataObject.ftm = (dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2)));
+
+
+        // Dealing with Field Goal Percent
+        dataObject.fgp = ((dataObject.fgm / dataObject.fga) * 100);
+        dataObject.tpp = ((dataObject.tpm / dataObject.tpa) * 100);
+        dataObject.tsp = (0.5 * (dataObject.pts / ((dataObject.fga) + 0.44 * (dataObject.ftm))) * 100);
+
+        if (isNaN(dataObject.fgp)) {
+          dataObject.fgp = 0;
+        }
+        if (isNaN(dataObject.tpp)) {
+          dataObject.tpp = 0;
+        }
+        if (isNaN(dataObject.tsp)) {
+          dataObject.tsp = 0;
+        }
+
+        // Dealing with Possessions and Offensive Rating
+
+        if (x == 1) {
+          if (games[i].team1FTA != null && games[i].team1ORB != null) {
+            dataObject.orb = games[i].team1ORB;
+            dataObject.fta = games[i].team1FTA;
+          }
+          else {
+            nullCheck = true;
+          }
+        }
+        else {
+          if (games[i].team2FTA != null && games[i].team2ORB != null) {
+            dataObject.orb = games[i].team2ORB;
+            dataObject.fta = games[i].team2FTA;
+          }
+          else {
+            nullCheck = true;
+          }
+        }
+
+
+        if (nullCheck == false) {
+          dataObject.pos = 0.96 * dataObject.fga + dataObject.tor + 0.44 * dataObject.fta - dataObject.orb;
+          dataObject.ort = (dataObject.pts / dataObject.pos) * 100;
+          dataObject.ftp = ((dataObject.ftm / dataObject.fta) * 100);
+        }
+
+        dataObject = roundDataObject(dataObject);
+
+        if (x == 1) {
+          dataObject1 = dataObject
+        }
+        else {
+          dataObject2 = dataObject
+        }
+      }
+
+      //calculate pace
+      if (nullCheck == false) {
+        dataObject1.pace = (48 * ((dataObject1.pos + dataObject2.pos) / (dataObject1.min + dataObject2.min))).toFixed(1);
+        dataObject2.pace = (48 * ((dataObject2.pos + dataObject1.pos) / (dataObject1.min + dataObject2.min))).toFixed(1);
+      }
+
+      dataList.push(dataObject1);
+      dataList.push(dataObject2);
+
+    }
+  }
+  function handleSeasonGames() {
+    for (var i = 0; i < seasonGames.length; i++) {
+      var dataObject1 = null;
+      var dataObject2 = null;
+      var nullCheck = false;
+      for (var x = 1; x < 3; x++) {
+
+        var dataObject = getDataObject();
+        dataObject.nba2k = seasonGames[i].season.nbA2k;
+
+        //determining teams
+        if (x == 1) {
+          dataObject.team = seasonGames[i].team1Name;
+          dataObject.name = seasonGames[i].team1Name;
+          dataObject.opponent = seasonGames[i].team2Name;
+          dataObject.teamColor = seasonGames[i].team1Color;
+          dataObject.opponentColor = seasonGames[i].team2Color;
+        }
+        else {
+          dataObject.team = seasonGames[i].team2Name;
+          dataObject.name = seasonGames[i].team2Name;
+          dataObject.opponent = seasonGames[i].team1Name;
+          dataObject.teamColor = seasonGames[i].team2Color;
+          dataObject.opponentColor = seasonGames[i].team1Color;
+        }
+
+        //find every player box for the selected team
+        for (var y = 0; y < seasonBoxes.length; y++) {
+          if (seasonBoxes[y].seasonGameID == seasonGames[i].seasonGameID && seasonBoxes[y].team == x) {
+            dataObject.min = dataObject.min + seasonBoxes[y].min;
+            dataObject.pts = dataObject.pts + seasonBoxes[y].pts;
+            dataObject.reb = dataObject.reb + seasonBoxes[y].reb;
+            dataObject.ast = dataObject.ast + seasonBoxes[y].ast;
+            dataObject.stls = dataObject.stls + seasonBoxes[y].stls;
+            dataObject.blk = dataObject.blk + seasonBoxes[y].blk;
+            dataObject.tor = dataObject.tor + seasonBoxes[y].tor;
+            dataObject.fgm = dataObject.fgm + seasonBoxes[y].fgm;
+            dataObject.fga = dataObject.fga + seasonBoxes[y].fga;
+            dataObject.tpm = dataObject.tpm + seasonBoxes[y].tpm;
+            dataObject.tpa = dataObject.tpa + seasonBoxes[y].tpa;
+          }
+        }
+
+        dataObject.min = (dataObject.min / 5);
+
+        dataObject.ftm = (dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2)));
+
+
+        // Dealing with Field Goal Percent
+        dataObject.fgp = ((dataObject.fgm / dataObject.fga) * 100);
+        dataObject.tpp = ((dataObject.tpm / dataObject.tpa) * 100);
+        dataObject.tsp = (0.5 * (dataObject.pts / ((dataObject.fga) + 0.44 * (dataObject.ftm))) * 100);
+
+        if (isNaN(dataObject.fgp)) {
+          dataObject.fgp = 0;
+        }
+        if (isNaN(dataObject.tpp)) {
+          dataObject.tpp = 0;
+        }
+        if (isNaN(dataObject.tsp)) {
+          dataObject.tsp = 0;
+        }
+
+        // Dealing with Possessions and Offensive Rating
+
+        if (x == 1) {
+          if (seasonGames[i].team1FTA != null && seasonGames[i].team1ORB != null) {
+            dataObject.orb = seasonGames[i].team1ORB;
+            dataObject.fta = seasonGames[i].team1FTA;
+          }
+          else {
+            nullCheck = true;
+          }
+        }
+        else {
+          if (seasonGames[i].team2FTA != null && seasonGames[i].team2ORB != null) {
+            dataObject.orb = seasonGames[i].team2ORB;
+            dataObject.fta = seasonGames[i].team2FTA;
+          }
+          else {
+            nullCheck = true;
+          }
+        }
+
+
+        if (nullCheck == false) {
+          dataObject.pos = 0.96 * dataObject.fga + dataObject.tor + 0.44 * dataObject.fta - dataObject.orb;
+          dataObject.ort = (dataObject.pts / dataObject.pos) * 100;
+          dataObject.ftp = ((dataObject.ftm / dataObject.fta) * 100);
+        }
+
+        dataObject = roundDataObject(dataObject);
+
+        if (x == 1) {
+          dataObject1 = dataObject
+        }
+        else {
+          dataObject2 = dataObject
+        }
+
+      }
+      //calculate pace
+      if (nullCheck == false) {
+        dataObject1.pace = (48 * ((dataObject1.pos + dataObject2.pos) / (dataObject1.min + dataObject2.min))).toFixed(1);
+        dataObject2.pace = (48 * ((dataObject2.pos + dataObject1.pos) / (dataObject1.min + dataObject2.min))).toFixed(1);
+      }
+
+      dataList.push(dataObject1);
+      dataList.push(dataObject2);
+    }
+  }
+
+
+  function handleTeamStats() {
+    for (var i = 0; i < series.length; i++) {
+
+      // variables to help determine pace
+      var team1Object = null;
+      var team2Object = null;
+      var nullCheck = false;
+
+      for (var x = 1; x < 3; x++) {
+
+        var dataObject = getDataObject();
+        dataObject.nba2k = series[i].nbA2k;
+
+        //determining teams
+        if (x == 1) {
+          dataObject.name = series[i].team1;
+          dataObject.team = series[i].team1;
+          dataObject.opponent = series[i].team2;
+          dataObject.teamColor = series[i].team1Color;
+          dataObject.opponentColor = series[i].team2Color;
+        }
+        else {
+          dataObject.name = series[i].team2;
+          dataObject.team = series[i].team2;
+          dataObject.opponent = series[i].team1;
+          dataObject.teamColor = series[i].team2Color;
+          dataObject.opponentColor = series[i].team1Color;
+        }
+        //find every player box for the selected team
+        for (var y = 0; y < playerBoxes.length; y++) {
+          if (playerBoxes[y].seriesID == series[i].seriesID && playerBoxes[y].team == x) {
+            dataObject.min = dataObject.min + playerBoxes[y].min;
+            dataObject.pts = dataObject.pts + playerBoxes[y].pts;
+            dataObject.reb = dataObject.reb + playerBoxes[y].reb;
+            dataObject.ast = dataObject.ast + playerBoxes[y].ast;
+            dataObject.stls = dataObject.stls + playerBoxes[y].stls;
+            dataObject.blk = dataObject.blk + playerBoxes[y].blk;
+            dataObject.tor = dataObject.tor + playerBoxes[y].tor;
+            dataObject.fgm = dataObject.fgm + playerBoxes[y].fgm;
+            dataObject.fga = dataObject.fga + playerBoxes[y].fga;
+            dataObject.tpm = dataObject.tpm + playerBoxes[y].tpm;
+            dataObject.tpa = dataObject.tpa + playerBoxes[y].tpa;
+          }
+        }
+
+        //reducing data to 1 game size
+        dataObject.min = ((dataObject.min / 5) / series[i].playedGames);
+        dataObject.pts = (dataObject.pts / series[i].playedGames);
+        dataObject.reb = (dataObject.reb / series[i].playedGames);
+        dataObject.ast = (dataObject.ast / series[i].playedGames);
+        dataObject.stls = (dataObject.stls / series[i].playedGames);
+        dataObject.blk = (dataObject.blk / series[i].playedGames);
+        dataObject.tor = (dataObject.tor / series[i].playedGames);
+        dataObject.fgm = (dataObject.fgm / series[i].playedGames);
+        dataObject.fga = (dataObject.fga / series[i].playedGames);
+        dataObject.tpm = (dataObject.tpm / series[i].playedGames);
+        dataObject.tpa = (dataObject.tpa / series[i].playedGames);
+
+        dataObject.ftm = (dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2)));
+
+
+        // Dealing with Field Goal Percent
+        dataObject.fgp = ((dataObject.fgm / dataObject.fga) * 100);
+        dataObject.tpp = ((dataObject.tpm / dataObject.tpa) * 100);
+        dataObject.tsp = (0.5 * (dataObject.pts / ((dataObject.fga) + 0.44 * (dataObject.ftm))) * 100);
+
+        if (isNaN(dataObject.fgp)) {
+          dataObject.fgp = 0;
+        }
+        if (isNaN(dataObject.tpp)) {
+          dataObject.tpp = 0;
+        }
+        if (isNaN(dataObject.tsp)) {
+          dataObject.tsp = 0;
+        }
+
+        // Calculating Possessions and Offensive Rating
+        var fta = 0;
+        var orb = 0;
+        var countGames = 0;
+
+        for (var f = 0; f < games.length; f++) {
+          if (games[f].seriesID == series[i].seriesID && x == 1) {
+            if (games[f].team1FTA > 0 || games[f].team1ORB > 0) {
+              fta = fta + games[f].team1FTA;
+              orb = orb + games[f].team1ORB;
+              countGames++
+            }
+            else {
+              nullCheck = true;
+            }
+          }
+          else if (games[f].seriesID == series[i].seriesID) {
+            if (games[f].team2FTA > 0 || games[f].team2ORB > 0) {
+              fta = fta + games[f].team2FTA;
+              orb = orb + games[f].team2ORB;
+              countGames++
+            }
+            else {
+              nullCheck = true;
+            }
+          }
+        }
+
+        //make sure fta and orb data is valid
+        if (nullCheck == false) {
+          dataObject.fta = fta / countGames;
+          dataObject.orb = orb = orb / countGames;
+          dataObject.pos = 0.96 * dataObject.fga + dataObject.tor + 0.44 * dataObject.fta - dataObject.orb;
+          dataObject.ort = (dataObject.pts / dataObject.pos) * 100;
+          dataObject.ftp = (dataObject.ftm / dataObject.fta) * 100;
+        }
+
+        dataObject = roundDataObject(dataObject);
+
+        if (x == 1) {
+          team1Object = dataObject;
+        }
+        else {
+          team2Object = dataObject
+        }
+      }
+
+      //calculating pace
+      if (nullCheck == false) {
+        team1Object.pace = (48 * ((team1Object.pos + team2Object.pos) / (team1Object.min + team2Object.min))).toFixed(1);
+        team2Object.pace = (48 * ((team2Object.pos + team1Object.pos) / (team1Object.min + team2Object.min))).toFixed(1);
+      }
+
+      dataList.push(team1Object);
+      dataList.push(team2Object);
+    }
+  }
+
+
+  function handleSeriesStats() {
+    for (var i = 0; i < series.length; i++) {
+      for (var x = 1; x < 3; x++) {
+        for (var n = 1; n < 13; n++) {
+
+          var dataObject = getDataObject();
+          dataObject.nba2k = series[i].nbA2k;
+
+          for (var y = 0; y < playerBoxes.length; y++) {
+            if (playerBoxes[y].pos == n && playerBoxes[y].team == x && playerBoxes[y].series.seriesID == series[i].seriesID) {
+              dataObject.name = playerBoxes[y].playerName;
+              dataObject.min = dataObject.min + playerBoxes[y].min;
+              dataObject.pts = dataObject.pts + playerBoxes[y].pts;
+              dataObject.reb = dataObject.reb + playerBoxes[y].reb;
+              dataObject.ast = dataObject.ast + playerBoxes[y].ast;
+              dataObject.stls = dataObject.stls + playerBoxes[y].stls;
+              dataObject.blk = dataObject.blk + playerBoxes[y].blk;
+              dataObject.tor = dataObject.tor + playerBoxes[y].tor;
+              dataObject.fgm = dataObject.fgm + playerBoxes[y].fgm;
+              dataObject.fga = dataObject.fga + playerBoxes[y].fga;
+              dataObject.tpm = dataObject.tpm + playerBoxes[y].tpm;
+              dataObject.tpa = dataObject.tpa + playerBoxes[y].tpa;
+            }
+          }
+
+          if (x == 1) {
+            dataObject.team = series[i].team1;
+            dataObject.opponent = series[i].team2;
+            dataObject.teamColor = series[i].team1Color;
+            dataObject.opponentColor = series[i].team2Color;
+          }
+          else {
+            dataObject.team = series[i].team2;
+            dataObject.opponent = series[i].team1;
+            dataObject.teamColor = series[i].team2Color;
+            dataObject.opponentColor = series[i].team1Color;
+          }
+
+          dataObject.min = (dataObject.min / series[i].playedGames);
+          dataObject.pts = (dataObject.pts / series[i].playedGames);
+          dataObject.reb = (dataObject.reb / series[i].playedGames);
+          dataObject.ast = (dataObject.ast / series[i].playedGames);
+          dataObject.stls = (dataObject.stls / series[i].playedGames);
+          dataObject.blk = (dataObject.blk / series[i].playedGames);
+          dataObject.tor = (dataObject.tor / series[i].playedGames);
+          dataObject.fgm = (dataObject.fgm / series[i].playedGames);
+          dataObject.fga = (dataObject.fga / series[i].playedGames);
+          dataObject.tpm = (dataObject.tpm / series[i].playedGames);
+          dataObject.tpa = (dataObject.tpa / series[i].playedGames);
+
+          dataObject.ftm = (dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2)));
+
+          scoreFinal = (((dataObject.pts + (0.4 * dataObject.fgm) - (0.8 * dataObject.fga) - (0.4 * dataObject.ftm) + (0.5 * dataObject.reb) + dataObject.stls + (0.7 * dataObject.ast) + (0.7 * dataObject.blk) - dataObject.tor) / (dataObject.min)) * 20);
+
+          scoreFinal = scoreFinal - 7;
+
+          dataObject.brt = scoreFinal;
+
+          // Dealing with Field Goal Percent
+          dataObject.fgp = ((dataObject.fgm / dataObject.fga) * 100);
+          dataObject.tpp = ((dataObject.tpm / dataObject.tpa) * 100);
+          dataObject.tsp = (0.5 * (dataObject.pts / ((dataObject.fga) + 0.44 * (dataObject.ftm))) * 100);
+
+          if (isNaN(dataObject.fgp)) {
+            dataObject.fgp = 0;
+          }
+          if (isNaN(dataObject.tpp)) {
+            dataObject.tpp = 0;
+          }
+          if (isNaN(dataObject.tsp)) {
+            dataObject.tsp = 0;
+          }
+
+          dataObject = roundDataObject(dataObject);
+
+          if (dataObject.min > 0) {
+            dataList.push(dataObject);
+          }
+        }
+      }
+    }
+  }
+
+
+  function handleSeasonBoxes() {
+    for (var i = 0; i < seasonBoxes.length; i++) {
+
+      var dataObject = getDataObject();
+
+      dataObject.name = seasonBoxes[i].playerName;
+      dataObject.min = seasonBoxes[i].min;
+      dataObject.pts = seasonBoxes[i].pts;
+      dataObject.reb = seasonBoxes[i].reb;
+      dataObject.ast = seasonBoxes[i].ast;
+      dataObject.stls = seasonBoxes[i].stls;
+      dataObject.blk = seasonBoxes[i].blk;
+      dataObject.tor = seasonBoxes[i].tor;
+      dataObject.fgm = seasonBoxes[i].fgm;
+      dataObject.fga = seasonBoxes[i].fga;
+      dataObject.tpm = seasonBoxes[i].tpm;
+      dataObject.tpa = seasonBoxes[i].tpa;
+      dataObject.nba2k = seasonBoxes[i].season.nbA2k;
+
+      //determining teams
+      if (seasonBoxes[i].team == 1) {
+        dataObject.team = seasonBoxes[i].seasonGame.team1Name;
+        dataObject.opponent = seasonBoxes[i].seasonGame.team2Name;
+        dataObject.teamColor = seasonBoxes[i].seasonGame.team1Color;
+        dataObject.opponentColor = seasonBoxes[i].seasonGame.team2Color;
+      }
+      else {
+        dataObject.team = seasonBoxes[i].seasonGame.team2Name;
+        dataObject.opponent = seasonBoxes[i].seasonGame.team1Name;
+        dataObject.teamColor = seasonBoxes[i].seasonGame.team2Color;
+        dataObject.opponentColor = seasonBoxes[i].seasonGame.team1Color;
+      }
+
+      // calculating ftm and brt
+      dataObject.ftm = dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2));
+      scoreFinal = (((dataObject.pts + (0.4 * dataObject.fgm) - (0.8 * dataObject.fga) - (0.4 * dataObject.ftm) + (0.5 * dataObject.reb) + dataObject.stls + (0.7 * dataObject.ast) + (0.7 * dataObject.blk) - dataObject.tor) / (dataObject.min)) * 20);
+      scoreFinal = scoreFinal - 7;
+      scoreFinal = scoreFinal;
+
+      dataObject.brt = scoreFinal;
+
+      // Dealing with Field Goal Percent
+      dataObject.fgp = ((seasonBoxes[i].fgm / seasonBoxes[i].fga) * 100);
+      dataObject.tpp = ((seasonBoxes[i].tpm / seasonBoxes[i].tpa) * 100);
+      dataObject.tsp = (0.5 * (seasonBoxes[i].pts / ((seasonBoxes[i].fga) + 0.44 * (dataObject.ftm))) * 100);
+
+      if (isNaN(dataObject.fgp)) {
+        dataObject.fgp = 0;
+      }
+      if (isNaN(dataObject.tpp)) {
+        dataObject.tpp = 0;
+      }
+      if (isNaN(dataObject.tsp)) {
+        dataObject.tsp = 0;
+      }
+
+      dataObject = roundDataObject(dataObject);
+
+      dataList.push(dataObject);
+    }
+  }
+  function handlePlayerBoxes() {
+    for (var i = 0; i < playerBoxes.length; i++) {
+
+      var dataObject = getDataObject();
+
+      dataObject.name = playerBoxes[i].playerName;
+      dataObject.min = playerBoxes[i].min;
+      dataObject.pts = playerBoxes[i].pts;
+      dataObject.reb = playerBoxes[i].reb;
+      dataObject.ast = playerBoxes[i].ast;
+      dataObject.stls = playerBoxes[i].stls;
+      dataObject.blk = playerBoxes[i].blk;
+      dataObject.tor = playerBoxes[i].tor;
+      dataObject.fgm = playerBoxes[i].fgm;
+      dataObject.fga = playerBoxes[i].fga;
+      dataObject.tpm = playerBoxes[i].tpm;
+      dataObject.tpa = playerBoxes[i].tpa;
+
+      //determining teams
+      if (playerBoxes[i].team == 1) {
+        dataObject.team = playerBoxes[i].series.team1;
+        dataObject.opponent = playerBoxes[i].series.team2;
+        dataObject.teamColor = playerBoxes[i].series.team1Color;
+        dataObject.opponentColor = playerBoxes[i].series.team2Color;
+      }
+      else {
+        dataObject.team = playerBoxes[i].series.team2;
+        dataObject.opponent = playerBoxes[i].series.team1;
+        dataObject.teamColor = playerBoxes[i].series.team2Color;
+        dataObject.opponentColor = playerBoxes[i].series.team1Color;
+      }
+
+      dataObject.nba2k = playerBoxes[i].series.nbA2k;
+
+
+      // calculating ftm and brt
+      dataObject.ftm = dataObject.pts - (dataObject.tpm * 3 + ((dataObject.fgm - dataObject.tpm) * 2));
+      scoreFinal = (((dataObject.pts + (0.4 * dataObject.fgm) - (0.8 * dataObject.fga) - (0.4 * dataObject.ftm) + (0.5 * dataObject.reb) + dataObject.stls + (0.7 * dataObject.ast) + (0.7 * dataObject.blk) - dataObject.tor) / (dataObject.min)) * 20);
+      scoreFinal = scoreFinal - 7;
+
+      dataObject.brt = scoreFinal;
+
+      // Dealing with Field Goal Percent
+      dataObject.fgp = ((playerBoxes[i].fgm / playerBoxes[i].fga) * 100);
+      dataObject.tpp = ((playerBoxes[i].tpm / playerBoxes[i].tpa) * 100);
+      dataObject.tsp = (0.5 * (playerBoxes[i].pts / ((playerBoxes[i].fga) + 0.44 * (dataObject.ftm))) * 100);
+
+      if (isNaN(dataObject.fgp)) {
+        dataObject.fgp = 0;
+      }
+      if (isNaN(dataObject.tpp)) {
+        dataObject.tpp = 0;
+      }
+      if (isNaN(dataObject.tsp)) {
+        dataObject.tsp = 0;
+      }
+
+      dataObject = roundDataObject(dataObject);
+
+      dataList.push(dataObject);
+    }
+  }
+
+
+
+  function displayData() {
+    const displayValue = document.getElementById("teamStatsTable").style.display;
+    if (displayValue == "none") {
+      displayBoxData();
+    }
+    else {
+      displayTeamData();
+    }
+
+  }
+
+  function filterData() {
+    const minuteFilter = Number(document.getElementById("minuteFilter").value);
+    const nba2kFilter = document.getElementById("nba2kFilter").value;
+    const myPlayerFilter = document.getElementById("filterMyPlayers").checked;
+    const teamFilter = document.getElementById("teamFilter").value;
+    const playerFilter = document.getElementById("playerFilter").value;
+    let returnList = [];
+    for (var i = 0; i < dataList.length; i++) {
+
+      var testPass = true;
+
+      if (dataList[i].min < minuteFilter) {
+        testPass = false;
+      }
+
+      else if (dataList[i].nba2k != nba2kFilter && nba2kFilter != "All") {
+        testPass = false;
+      }
+
+      else if (teamFilter != "" && dataList[i].team.toUpperCase().includes(teamFilter.toUpperCase()) == false) {
+        testPass = false;
+      }
+
+      else if (playerFilter != "" && dataList[i].name.toUpperCase().includes(playerFilter.toUpperCase()) == false) {
+        testPass = false;
+      }
+
+      if (myPlayerFilter == true) {
+        const objectFieldsArray = ['Buffoons', 'Gilroy Pacers', 'Digby-Gilroy'];
+        for (var x = 0; x < objectFieldsArray.length; x++) {
+          var fieldValue = objectFieldsArray[x];
+          if (dataList[i].team == objectFieldsArray[x]) {
+            testPass = false;
+          }
+          if (dataList[i].opponent == objectFieldsArray[x]) {
+            testPass = false;
+          }
+        }
+      }
+
+      if (testPass == true) {
+        returnList.push(dataList[i]);
+      }
+
+    }
+    return returnList;
+  }
+
+  function toProperDecimal(dataValue, filterValue) {
+    dataValue = (dataValue * filterValue).toFixed(1);
+    dataValue = Math.round(dataValue * 10) / 10;
+    return dataValue;
+  }
+
+
+  function displayBoxData() {
+    document.getElementById("playerOutput").innerHTML = "";
+    document.getElementById("playerStatsTable").style.display = '';
+    document.getElementById("teamStatsTable").style.display = 'none';
+    const per36Filter = document.getElementById("scalePer36").checked;
+    const maxLength = document.getElementById("maxLength").value;
+    let filterDataList = filterData();
+    var displayNumber = 1;
+
+    for (var i = 0; i < filterDataList.length && i < maxLength; i++) {
+      //scale filter
+      var filterScale = 1;
+      if (per36Filter == true) {
+        filterScale = 36 / filterDataList[i].min;
+      }
+
+      var brtColor = getBRTColor(filterDataList[i].brt);
+
+      $("#playerOutput").append(`
+          <tr> 
+            <td> ${displayNumber} </td>
+            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].name} </th>
+            <td> ${toProperDecimal(filterDataList[i].min, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].pts, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].reb, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].ast, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].stls, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].blk, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tor, filterScale)} </td>
+            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
+            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
+            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
+            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].ftm, filterScale)} </td>
+            <td> ${filterDataList[i].fgp}% </td>
+            <td> ${filterDataList[i].tpp}% </td>
+            <td> ${filterDataList[i].tsp}% </td>
+            <th style="color: ${brtColor}"> ${filterDataList[i].brt} </th>
+            <td> ${filterDataList[i].nba2k} </td>
+            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
+            <th class="t-${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
+          </tr>
+          `);
+      displayNumber = displayNumber + 1;
+    }
+  }
+
+  function getBRTColor(brt) {
+    var colorChange = ""
+    if (brt >= 15) {
+      colorChange = "#ac00f0"
+    }
+    else if (brt >= 10) {
+      colorChange = "#1c24ff"
+    }
+    else if (brt >= 6) {
+      colorChange = "#1c95ff"
+    }
+    else if (brt >= 3) {
+      colorChange = "#187037"
+    }
+    else if (brt >= 0) {
+      colorChange = "#9e9224"
+    }
+    else if (brt >= -5) {
+      colorChange = "#ed2d2d"
+    }
+    else {
+      colorChange = "#7a0b0b"
+    }
+
+    return colorChange;
+
+  }
+
+  function displayTeamData() {
+    document.getElementById("teamOutput").innerHTML = "";
+    document.getElementById("teamStatsTable").style.display = '';
+    document.getElementById("playerStatsTable").style.display = 'none';
+    const per36Filter = document.getElementById("scalePer36").checked;
+    const maxLength = document.getElementById("maxLength").value;
+
+    let filterDataList = filterData();
+    var displayNumber = 1;
+
+    for (var i = 0; i < filterDataList.length && i < maxLength; i++) {
+      //scale filter
+      var filterScale = 1;
+      if (per36Filter == true) {
+        filterScale = 36 / filterDataList[i].min;
+      }
+
+      $("#teamOutput").append(`
+          <tr> 
+            <td> ${displayNumber} </td>
+            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
+            <th class="t-${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
+            <td> ${toProperDecimal(filterDataList[i].min, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].pts, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].reb, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].ast, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].stls, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].blk, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tor, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].orb, filterScale)} </td>
+            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
+            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
+            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
+            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
+            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].ftm, filterScale)} </td>
+            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fta, filterScale)} </td>
+            <td> ${filterDataList[i].fgp}% </td>
+            <td> ${filterDataList[i].tpp}% </td>
+            <td> ${filterDataList[i].ftp}% </td>
+            <td> ${filterDataList[i].tsp}% </td>
+            <td> ${filterDataList[i].ort} </td>
+            <td> ${filterDataList[i].pace} </td>
+            <td> ${filterDataList[i].nba2k} </td>
+          </tr>
+          `);
+      displayNumber = displayNumber + 1;
+
+    }
+  }
+
+  function isNumber(value) {
+    return typeof value === 'number';
+  }
+
+  function roundDataObject(dataObject) {
+    const objectFieldsArray = ['pts', 'reb', 'ast', 'stls', 'blk', 'tor', 'orb', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'fgp', 'tpp', 'ftp', 'tsp', 'brt', 'ort', 'pace'];
+    for (var i = 0; i < objectFieldsArray.length; i++) {
+      var fieldValue = objectFieldsArray[i];
+      if (isNumber(dataObject[fieldValue]) == true && dataObject[fieldValue] % 1 != 0) {
+        dataObject[fieldValue] = (dataObject[fieldValue]).toFixed(1);
+      }
+    }
+    return dataObject;
+  }
+
+  function connectPlayerBoxes() {
+    for (var i = 0; i < playerBoxes.length; i++) {
+      //connect game
+      for (var y = 0; y < games.length; y++) {
+        if (games[y].gameID == playerBoxes[i].gameID) {
+          playerBoxes[i].game = games[y];
+        }
+      }
+      //connect series
+      for (var y = 0; y < series.length; y++) {
+        if (series[y].seriesID == playerBoxes[i].game.seriesID) {
+          playerBoxes[i].series = series[y];
+        }
+      }
+    }
+  }
+
+  function connectSeasonBoxes() {
+    for (var i = 0; i < seasonBoxes.length; i++) {
+      //connect game
+      for (var y = 0; y < seasonGames.length; y++) {
+        if (seasonGames[y].seasonGameID == seasonBoxes[i].seasonGameID) {
+          seasonBoxes[i].seasonGame = seasonGames[y];
+        }
+      }
+      //connect series
+      for (var y = 0; y < seasons.length; y++) {
+        if (seasons[y].seasonID == seasonBoxes[i].seasonGame.seasonID) {
+          seasonBoxes[i].season = seasons[y];
+        }
+      }
+    }
+  }
+
+  function connectGames() {
+    for (var i = 0; i < games.length; i++) {
+      //connect series
+      for (var y = 0; y < series.length; y++) {
+        if (series[y].seriesID == games[i].seriesID) {
+          games[i].series = series[y];
+        }
+      }
+    }
+  }
+
+  function connectSeasonGames() {
+    for (var i = 0; i < seasonGames.length; i++) {
+      //connect season
+      for (var y = 0; y < seasons.length; y++) {
+        if (seasons[y].seasonID == seasonGames[i].seasonID) {
+          seasonGames[i].season = seasons[y];
+        }
+      }
+    }
+  }
+
+  async function fetchSeasonBoxes() {
+    const response = await fetch('/Data/GetSeasonBoxes');
+    seasonBoxes = await response.json();
+  }
+
+  async function fetchSeasonGames() {
+    const response = await fetch('/Data/GetSeasonGames');
+    seasonGames = await response.json();
+  }
+
+  async function fetchSeasons() {
+    const response = await fetch('/Data/GetSeasons');
+    seasons = await response.json();
+  }
+
+  async function fetchPlayerBoxes() {
+    const response = await fetch('/Data/GetPlayerBoxes');
+    playerBoxes = await response.json();
+  }
+
+  async function fetchGames() {
+    const response = await fetch('/Data/GetGames');
+    games = await response.json();
+  }
+
+  async function fetchSeries() {
+    const response = await fetch('/Data/GetSeries');
+    series = await response.json();
+  }
+
+  async function callData() {
+    await fetchSeasonBoxes();
+    await fetchSeasonGames();
+    await fetchSeasons();
+    await fetchPlayerBoxes();
+    await fetchGames();
+    await fetchSeries();
+
+    connectPlayerBoxes();
+    connectSeasonBoxes();
+    connectGames();
+    connectSeasonGames();
+
+    handleTeamStats();
+
+    displayTeamData();
+  }
+
+  callData();
+
+</script>

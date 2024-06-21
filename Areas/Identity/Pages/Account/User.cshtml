@@ -1,0 +1,20 @@
+@page
+@model UserModel
+@{
+}
+
+<h2 class="text-center"> Welcome to your account</h2>
+
+<div>
+    Email: @Model.appUser?.Email
+</div>
+
+@if (User.IsInRole("admin"))
+{
+    <div> Hello Admin </div>
+}
+
+@if (User.IsInRole("viewer"))
+{
+    <div> Hello Viewer </div>
+}

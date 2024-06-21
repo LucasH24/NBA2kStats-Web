@@ -1,0 +1,27 @@
+@model Game
+
+<h2 class="mt-3"> Add Game</h2>
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label asp-for="@Model.GameNumber">Game Number</label>
+            <input asp-for="@Model.GameNumber" class="form-control" placeholder="" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label asp-for="@Model.Team1Score">Team 1 Score</label>
+            <input asp-for="@Model.Team1Score" class="form-control" placeholder="" />
+        </div>
+        <div class="form-group col-md-3">
+            <label asp-for="@Model.Team2Score">Team 2 Score</label>
+            <input asp-for="@Model.Team2Score" class="form-control" placeholder="" />
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-outline-primary">Add Game</button>
+
+</form>
+

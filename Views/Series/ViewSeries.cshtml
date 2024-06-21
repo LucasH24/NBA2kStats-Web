@@ -1,0 +1,56 @@
+@model SeriesViewModel
+
+<div class="pb-2">
+  <h1>Series</h1>
+</div>
+
+@if (Model.series.Count() == 0)
+{
+  <p>There are no series</p>
+}
+else
+{
+  <table class="table table-sm w-75">
+    <tr>
+      <th scope="col"> Team 1 </th>
+      <th scope="col"> Team 2 </th>
+      <th scope="col"> Result </th>
+      <th scope="col"> Version </th>
+      <th scope="col"> </th>
+    </tr>
+
+    @{
+
+      if (User.IsInRole("viewer"))
+      {
+        foreach (Series series in Model.series)
+        {
+          <tr>
+            <th class="t-@series.Team1Color"> @series.Team1 </th>
+            <th class="t-@series.Team2Color"> @series.Team2 </th>
+            <td> @series.Team1W-@series.Team2W </td>
+            <td> @series.NBA2k </td>
+            <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
+          </tr>
+        }
+      }
+
+      else
+      {
+        @foreach (Series series in Model.series.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
+        {
+          <tr>
+            <th class="t-@series.Team1Color"> @series.Team1 </th>
+            <th class="t-@series.Team2Color"> @series.Team2 </th>
+            <td> @series.Team1W-@series.Team2W </td>
+            <td> @series.NBA2k </td>
+            <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
+          </tr>
+        }
+      }
+
+
+    }
+
+  </table>
+}

@@ -1,0 +1,244 @@
+@model SeasonBoxViewModel
+
+<div class="pb-3 ">
+    <h1>Game @Model.SeasonGame.GameNumber</h1>
+</div>
+
+@if (User.IsInRole("admin"))
+{
+    <a asp-action="AddSeasonBox" asp-controller="Add" asp-route-id="@Model.SeasonGame.SeasonGameID">Add Player Stats</a>
+}
+
+@if (User.IsInRole("viewer") == false && Model.season.IsAppropriate == false)
+{
+    <p> No data available </p>
+}
+
+else if (Model.SeasonBoxes.Count() == 0)
+{
+    <p>There are no player boxes recorded</p>
+}
+else
+{
+    <div class="row">
+
+        <div class="col">
+
+            <h3> @Model.season.Team1 Stats </h3>
+
+            <table class="table table-sm smallText table-bordered">
+
+                <thead>
+                    <tr class="text-white c-@Model.SeasonGame.Team1Color">
+                        <th class="w-auto" scope="col"> Player Name </th>
+                        <th class="w-auto" scope="col"> MIN </th>
+                        <th class="w-auto" scope="col"> PTS </th>
+                        <th scope="col"> REB </th>
+                        <th scope="col"> AST </th>
+                        <th scope="col"> STL </th>
+                        <th scope="col"> BLK </th>
+                        <th scope="col"> TO </th>
+                        <th scope="col"> FG </th>
+                        <th scope="col"> 3PT </th>
+                        <th scope="col"> FTM </th>
+                        <th scope="col"> BRT </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int FT = 0;
+                        @foreach (SeasonBox seasonBox in Model.SeasonBoxes.Where(p => p.Team == 1))
+                        {
+                            FT = seasonBox.PTS - (seasonBox.TPM * 3 + ((seasonBox.FGM - seasonBox.TPM) * 2));
+
+                            double scoreFinal =
+                            (((seasonBox.PTS + (0.4 * seasonBox.FGM) - (0.8 * seasonBox.FGA) - (0.4 * FT) + (0.5 * seasonBox.REB) + seasonBox.STLS + (0.7 * seasonBox.AST) + (0.7 * seasonBox.BLK) - seasonBox.TOR) / (seasonBox.MIN)) * 20);
+
+
+                            scoreFinal = scoreFinal - 7;
+                            scoreFinal = Math.Round(scoreFinal, 1);
+
+                            var colorChange = "";
+
+                            if (scoreFinal >= 15) {colorChange = "#ac00f0";}
+                            else if (scoreFinal >= 10) {colorChange = "#1c24ff";}
+                            else if (scoreFinal >= 6) {colorChange = "#1c95ff";}
+                            else if (scoreFinal >= 3) {colorChange = "#187037";}
+                            else if (scoreFinal >= 0) {colorChange = "#9e9224";}
+                            else if (scoreFinal >= -5) {colorChange = "#ed2d2d";}
+                            else {colorChange = "#7a0b0b";}
+
+                            <tr>
+                                <td> @seasonBox.PlayerName </td>
+                                <td> @seasonBox.MIN </td>
+                                <td> @seasonBox.PTS </td>
+                                <td> @seasonBox.REB </td>
+                                <td> @seasonBox.AST </td>
+                                <td> @seasonBox.STLS </td>
+                                <td> @seasonBox.BLK </td>
+                                <td> @seasonBox.TOR </td>
+                                <td> @seasonBox.FGM - @seasonBox.FGA </td>
+                                <td> @seasonBox.TPM - @seasonBox.TPA </td>
+                                <td> @FT </td>
+                                <th style="color: @colorChange"> @scoreFinal </th>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+                <tfoot>
+
+                    @{
+                        int PTS = 0; int REB = 0; int AST = 0; int STLS = 0; int BLK = 0; int TOR = 0; int FGM = 0; int FGA = 0;
+                        int TPM
+                        = 0; int TPA = 0; int FTM = 0;
+                        @foreach (SeasonBox seasonBox2 in Model.SeasonBoxes.Where(p => p.Team == 1 && p.SeasonGameID ==
+                Model.SeasonGame.SeasonGameID))
+                        {
+                            PTS = (@seasonBox2.PTS + @PTS);
+                            REB = (@seasonBox2.REB + @REB);
+                            AST = (@seasonBox2.AST + @AST);
+                            STLS = (@seasonBox2.STLS + @STLS);
+                            BLK = (@seasonBox2.BLK + @BLK);
+                            TOR = (@seasonBox2.TOR + @TOR);
+                            FGM = (@seasonBox2.FGM + @FGM);
+                            FGA = (@seasonBox2.FGA + @FGA);
+                            TPM = (@seasonBox2.TPM + @TPM);
+                            TPA = (@seasonBox2.TPA + @TPA);
+                            FTM = (@seasonBox2.PTS - (@seasonBox2.TPM * 3 + ((@seasonBox2.FGM - @seasonBox2.TPM) * 2)) + @FTM);
+                        }
+                    }
+
+                    <tr class="font-weight-bold">
+                        <td> </td>
+                        <td> </td>
+                        <td> @PTS </td>
+                        <td> @REB </td>
+                        <td> @AST </td>
+                        <td> @STLS </td>
+                        <td> @BLK </td>
+                        <td> @TOR </td>
+                        <td> @FGM - @FGA </td>
+                        <td> @TPM - @TPA </td>
+                        <td> @FTM </td>
+                    </tr>
+
+                </tfoot>
+
+            </table>
+        </div>
+
+        <div class="col">
+
+            <h3> @Model.SeasonGame.Team2Name Stats </h3>
+
+            <table class="table table-sm smallText table-bordered">
+
+                <thead>
+                    <tr class="text-white c-@Model.SeasonGame.Team2Color">
+                        <th class="w-auto" scope="col"> Player Name </th>
+                        <th class="w-auto" scope="col"> MIN </th>
+                        <th class="w-auto" scope="col"> PTS </th>
+                        <th scope="col"> REB </th>
+                        <th scope="col"> AST </th>
+                        <th scope="col"> STL </th>
+                        <th scope="col"> BLK </th>
+                        <th scope="col"> TO </th>
+                        <th scope="col"> FG </th>
+                        <th scope="col"> 3PT </th>
+                        <th scope="col"> FTM </th>
+                        <th scope="col"> BRT </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int FT2 = 0;
+                        @foreach (SeasonBox seasonBox in Model.SeasonBoxes.Where(p => p.Team == 2))
+                        {
+                            FT2 = seasonBox.PTS - (seasonBox.TPM * 3 + ((seasonBox.FGM - seasonBox.TPM) * 2));
+
+                            double scoreFinal =
+                            (((seasonBox.PTS + (0.4 * seasonBox.FGM) - (0.8 * seasonBox.FGA) - (0.4 * FT2) + (0.5 * seasonBox.REB) + seasonBox.STLS + (0.7 * seasonBox.AST) + (0.7 * seasonBox.BLK) - seasonBox.TOR) / (seasonBox.MIN)) * 20);
+
+                            scoreFinal = scoreFinal - 7;
+                            scoreFinal = Math.Round(scoreFinal, 1);
+
+                            var colorChange = "";
+
+                            if (scoreFinal >= 15) {colorChange = "#ac00f0";}
+                            else if (scoreFinal >= 10) {colorChange = "#1c24ff";}
+                            else if (scoreFinal >= 6) {colorChange = "#1c95ff";}
+                            else if (scoreFinal >= 3) {colorChange = "#187037";}
+                            else if (scoreFinal >= 0) {colorChange = "#9e9224";}
+                            else if (scoreFinal >= -5) {colorChange = "#ed2d2d";}
+                            else {colorChange = "#7a0b0b";}
+
+                            <tr>
+                                <td> @seasonBox.PlayerName </td>
+                                <td> @seasonBox.MIN </td>
+                                <td> @seasonBox.PTS </td>
+                                <td> @seasonBox.REB </td>
+                                <td> @seasonBox.AST </td>
+                                <td> @seasonBox.STLS </td>
+                                <td> @seasonBox.BLK </td>
+                                <td> @seasonBox.TOR </td>
+                                <td> @seasonBox.FGM - @seasonBox.FGA </td>
+                                <td> @seasonBox.TPM - @seasonBox.TPA </td>
+                                <td> @FT2 </td>
+                                <th style="color: @colorChange"> @scoreFinal </th>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+                <tfoot>
+
+                    @{
+                        int PTS2 = 0; int REB2 = 0; int AST2 = 0; int STLS2 = 0; int BLK2 = 0; int TOR2 = 0; int FGM2 = 0; int
+                        FGA2 = 0;
+                        int TPM2 = 0; int TPA2 = 0; int FTM2 = 0;
+                        @foreach (SeasonBox seasonBox2 in Model.SeasonBoxes.Where(p => p.Team == 2 && p.SeasonGameID ==
+                @Model.SeasonGame.SeasonGameID))
+                        {
+                            PTS2 = (@seasonBox2.PTS + @PTS2);
+                            REB2 = (@seasonBox2.REB + @REB2);
+                            AST2 = (@seasonBox2.AST + @AST2);
+                            STLS2 = (@seasonBox2.STLS + @STLS2);
+                            BLK2 = (@seasonBox2.BLK + @BLK2);
+                            TOR2 = (@seasonBox2.TOR + @TOR2);
+                            FGM2 = (@seasonBox2.FGM + @FGM2);
+                            FGA2 = (@seasonBox2.FGA + @FGA2);
+                            TPM2 = (@seasonBox2.TPM + @TPM2);
+                            TPA2 = (@seasonBox2.TPA + @TPA2);
+                            FTM2 = (@seasonBox2.PTS - (@seasonBox2.TPM * 3 + ((@seasonBox2.FGM - @seasonBox2.TPM) * 2)) + @FTM2);
+                        }
+                    }
+
+                    <tr class="font-weight-bold">
+                        <td> </td>
+                        <td> </td>
+                        <td> @PTS2 </td>
+                        <td> @REB2 </td>
+                        <td> @AST2 </td>
+                        <td> @STLS2 </td>
+                        <td> @BLK2 </td>
+                        <td> @TOR2 </td>
+                        <td> @FGM2 - @FGA2 </td>
+                        <td> @TPM2 - @TPA2 </td>
+                        <td> @FTM2 </td>
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+}
