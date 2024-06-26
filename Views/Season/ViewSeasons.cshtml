@@ -1,59 +1,66 @@
 @model SeasonViewModel
 
-<div class="pb-2">
-    <h1>Seasons</h1>
+<div class="p-4">
+    <div class="pb-2">
+        <h1>Seasons</h1>
+    </div>
+
+    @if (Model.seasons.Count() == 0)
+    {
+        <p>There are no seasons</p>
+    }
+
+    else
+    {
+        <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
+            <table class="table table-sm m-0">
+                <tr>
+                    <th scope="col"> </th>
+                    <th scope="col"> ID </th>
+                    <th scope="col"> Team 1 </th>
+                    <th scope="col"> Team 2 </th>
+                    <th scope="col"> Record </th>
+                    <th scope="col"> Version </th>
+                    <th scope="col"> </th>
+                </tr>
+
+                @{
+
+                    if (User.IsInRole("viewer"))
+                    {
+                        foreach (Season season in Model.seasons)
+                        {
+                            <tr>
+                                <th scope="col"> </th>
+                                <td> @season.SeasonID </td>
+                                <th class="t-@season.Team1Color"> @season.Team1 </th>
+                                <th class="t-@season.Team2Color"> @season.Team2 </th>
+                                <td> @season.Team1W-@season.Team2W </td>
+                                <td> @season.NBA2k </td>
+                                <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Season Stats </a> </td>
+                            </tr>
+                        }
+                    }
+
+                    else
+                    {
+                        @foreach (Season season in Model.seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
+                        {
+                            <tr>
+                                <th scope="col"> </th>
+                                <td> @season.SeasonID </td>
+                                <th class="t-@season.Team1Color"> @season.Team1 </th>
+                                <th class="t-@season.Team2Color"> @season.Team2 </th>
+                                <td> @season.Team1W-@season.Team2W </td>
+                                <td> @season.NBA2k </td>
+                                <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Season Stats </a> </td>
+                            </tr>
+                        }
+                    }
+
+
+                }
+            </table>
+        </div>
+    }
 </div>
-
-@if (Model.seasons.Count() == 0)
-{
-    <p>There are no seasons</p>
-}
-
-else
-{
-    <table class="table table-sm w-75">
-        <tr>
-            <th scope="col"> ID </th>
-            <th scope="col"> Team 1 </th>
-            <th scope="col"> Team 2 </th>
-            <th scope="col"> Result </th>
-            <th scope="col"> Version </th>
-            <th scope="col"> </th>
-        </tr>
-
-        @{
-
-            if (User.IsInRole("viewer"))
-            {
-                foreach (Season season in Model.seasons)
-                {
-                    <tr>
-                        <td> @season.SeasonID </td>
-                        <th class="t-@season.Team1Color"> @season.Team1 </th>
-                        <th class="t-@season.Team2Color"> @season.Team2 </th>
-                        <td> @season.Team1W-@season.Team2W </td>
-                        <td> @season.NBA2k </td>
-                        <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Season Stats </a> </td>
-                    </tr>
-                }
-            }
-
-            else
-            {
-                @foreach (Season season in Model.seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
-                {
-                    <tr>
-                        <td> @season.SeasonID </td>
-                        <th class="t-@season.Team1Color"> @season.Team1 </th>
-                        <th class="t-@season.Team2Color"> @season.Team2 </th>
-                        <td> @season.Team1W-@season.Team2W </td>
-                        <td> @season.NBA2k </td>
-                        <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Season Stats </a> </td>
-                    </tr>
-                }
-            }
-
-
-        }
-    </table>
-}

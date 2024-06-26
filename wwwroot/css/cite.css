@@ -1,0 +1,119 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.smallText {
+  font-size: 13px;
+}
+
+.c-b00b9f {
+  background-color: #b00b9f;
+}
+
+.c-008000 {
+  background-color: #008000;
+}
+
+.c-ff0000 {
+  background-color: #ff0000;
+}
+
+.c-b3a314 {
+  background-color: #b3a314;
+}
+
+.c-0000ff {
+  background-color: #0000ff;
+}
+
+.c-52514e {
+  background-color: #52514e;
+}
+
+.c-622a8c {
+  background-color: #622a8c;
+}
+
+.c-102444 {
+  background-color: #102444;
+}
+
+.c-bf7404 {
+  background-color: #bf7404;
+}
+
+.c-72253d {
+  background-color: #72253d;
+}
+
+.t-b00b9f {
+  color: #b00b9f;
+}
+
+.t-008000 {
+  color: #008000;
+}
+
+.t-ff0000 {
+  color: #ff0000;
+}
+
+.t-b3a314 {
+  color: #b3a314;
+}
+
+.t-0000ff {
+  color: #0000ff;
+}
+
+.t-52514e {
+  color: #52514e;
+}
+
+.t-622a8c {
+  color: #622a8c;
+}
+
+.t-102444 {
+  color: #102444;
+}
+
+.t-bf7404 {
+  color: #bf7404;
+}
+
+.t-72253d {
+  color: #72253d;
+}
+
+.fixTableHead {
+  width: 100%;
+  font-size: 13px;
+}
+
+.fixTableHead {
+  height: 650px;
+}
+
+.fixTableHead thead th {
+  position: sticky;
+  background-color: black;
+  color: white;
+  top: -1px;
+}
+
+body {
+  height: 100%;
+  background-image: url("/Images/mainBackground.jpg");
+  background-size: 2000px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+hr {
+  border: none;
+  color: black;  
+  background-color: black;  
+}

@@ -1,8 +1,8 @@
-<div class="pb-3 ">
-  <h1>Data View</h1>
+<div class="p-3">
+  <h1>Stat Viewer</h1>
 </div>
 
-<div style="padding-bottom: 10px;">
+<div class="pl-3 pb-3">
 
   <button class="btn btn btn-outline-primary" id="showBoxScores" onclick="showBoxScores()"
     title="View all player box scores">
@@ -24,7 +24,7 @@
 
 </div>
 
-<div id="filters" hidden>
+<div id="filters" class="pl-3" hidden>
 
   <div>
     <label for="minuteFilter"> Minimum Minutes </input>
@@ -75,7 +75,7 @@
 </div>
 
 <div class="fixTableHead" id="tableHeightStyle" style="overflow-x: hidden; height: 728px;">
-  <table id="playerStatsTable" class="table table-sm w-100 table-bordered table-striped" style="display: none;">
+  <table id="playerStatsTable" class="table table-sm table-borderless w-100 table-striped" style="display: none;">
     <thead>
       <tr>
         <th scope="col"> # </th>
@@ -109,7 +109,7 @@
   </table>
 
 
-  <table id="teamStatsTable" class="table table-sm table-bordered table-striped">
+  <table id="teamStatsTable" class="table table-sm table-striped">
     <thead style="position: sticky;">
       <tr>
         <th scope="col"> # </th>
@@ -135,7 +135,7 @@
         <th scope="col" onclick="sortData('tsp')"> TS% </th>
         <th scope="col" onclick="sortData('ort')"> ORT </th>
         <th scope="col" onclick="sortData('pace')"> Pace </th>
-        <th scope="col" onclick="sortData('nba2k')"> Version </th>
+        <th scope="col" onclick="sortData('nba2k')"> 2K Version </th>
       </tr>
     </thead>
 

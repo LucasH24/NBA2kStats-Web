@@ -1,8 +1,11 @@
 @model PlayerBoxViewModel
 
-<div class="pb-3 ">
+<div class="pl-2 pt-2">
   <h1>Game @Model.game.GameNumber</h1>
+  <h3>@Model.series.Team1: @Model.game.Team1Score - @Model.series.Team2: @Model.game.Team2Score</h3>
 </div>
+
+<hr style="height: 3px">
 
 @if (User.IsInRole("admin"))
 {
@@ -20,218 +23,137 @@ else if (Model.PlayerBoxes.Count() == 0)
 }
 else
 {
+
+  int x = 1;
+
   <div class="row">
 
-    <div class="col">
 
-      <h3> @Model.series.Team1 Stats </h3>
+    @while (3 > x)
+    {
 
-      <table class="table table-sm smallText table-bordered">
+      string teamName = "";
+      string teamColor = "";
+      if (x == 1)
+      {
+        teamName = Model.series.Team1;
+        teamColor = Model.series.Team1Color;
+      }
 
-        <thead>
-          <tr class="text-white c-@Model.series.Team1Color">
-            <th class="w-auto" scope="col"> Player Name </th>
-            <th class="w-auto" scope="col"> MIN </th>
-            <th class="w-auto" scope="col"> PTS </th>
-            <th scope="col"> REB </th>
-            <th scope="col"> AST </th>
-            <th scope="col"> STL </th>
-            <th scope="col"> BLK </th>
-            <th scope="col"> TO </th>
-            <th scope="col"> FG </th>
-            <th scope="col"> 3PT </th>
-            <th scope="col"> FTM </th>
-            <th scope="col"> BRT </th>
-          </tr>
-        </thead>
+      if (x == 2)
+      {
+        teamName = Model.series.Team2;
+        teamColor = Model.series.Team2Color;
+      }
 
-        <tbody>
-          @{
-            int FT = 0;
-            @foreach (PlayerBox playerBox in Model.PlayerBoxes.Where(p => p.Team == 1))
-            {
-              FT = playerBox.PTS - (playerBox.TPM * 3 + ((playerBox.FGM - playerBox.TPM) * 2));
-              double scoreFinal =
-              (((playerBox.PTS + (0.4 * playerBox.FGM) - (0.8 * playerBox.FGA) - (0.4 * FT) + (0.5 * playerBox.REB) +
-              playerBox.STLS + (0.7 * playerBox.AST) + (0.7 * playerBox.BLK) - playerBox.TOR) / (playerBox.MIN)) * 20);
-              scoreFinal = scoreFinal - 7;
-              scoreFinal = Math.Round(scoreFinal, 1);
+      <div class="col m-2">
 
-              var colorChange = "";
+        <h3> @teamName Stats </h3>
 
-              if (scoreFinal >= 15) { colorChange = "#ac00f0"; }
-              else if (scoreFinal >= 10) { colorChange = "#1c24ff"; }
-              else if (scoreFinal >= 6) { colorChange = "#1c95ff"; }
-              else if (scoreFinal >= 3) { colorChange = "#187037"; }
-              else if (scoreFinal >= 0) { colorChange = "#9e9224"; }
-              else if (scoreFinal >= -5) { colorChange = "#ed2d2d"; }
-              else { colorChange = "#7a0b0b"; }
+        <div class="rounded" style="border-width: 2px; border-style:solid;">
 
-              <tr>
-                <td> @playerBox.PlayerName </td>
-                <td> @playerBox.MIN </td>
-                <td> @playerBox.PTS </td>
-                <td> @playerBox.REB </td>
-                <td> @playerBox.AST </td>
-                <td> @playerBox.STLS </td>
-                <td> @playerBox.BLK </td>
-                <td> @playerBox.TOR </td>
-                <td> @playerBox.FGM - @playerBox.FGA </td>
-                <td> @playerBox.TPM - @playerBox.TPA </td>
-                <td> @FT </td>
-                <th style="color: @colorChange"> @scoreFinal </th>
-              </tr>
+        <table class="table table-sm smallText table-borderless m-0">
+
+          <thead>
+            <tr class="text-white c-@teamColor">
+              <th class="w-auto" scope="col"> Player Name </th>
+              <th class="w-auto" scope="col"> MIN </th>
+              <th class="w-auto" scope="col"> PTS </th>
+              <th scope="col"> REB </th>
+              <th scope="col"> AST </th>
+              <th scope="col"> STL </th>
+              <th scope="col"> BLK </th>
+              <th scope="col"> TO </th>
+              <th scope="col"> FG </th>
+              <th scope="col"> 3PT </th>
+              <th scope="col"> FTM </th>
+              <th scope="col"> BRT </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @{
+              int FT = 0;
+              @foreach (PlayerBox playerBox in Model.PlayerBoxes.Where(p => p.Team == x))
+              {
+                FT = playerBox.PTS - (playerBox.TPM * 3 + ((playerBox.FGM - playerBox.TPM) * 2));
+                double scoreFinal =
+                (((playerBox.PTS + (0.4 * playerBox.FGM) - (0.8 * playerBox.FGA) - (0.4 * FT) + (0.5 * playerBox.REB) +
+                playerBox.STLS + (0.7 * playerBox.AST) + (0.7 * playerBox.BLK) - playerBox.TOR) / (playerBox.MIN)) * 20);
+                scoreFinal = scoreFinal - 7;
+                scoreFinal = Math.Round(scoreFinal, 1);
+
+                var colorChange = "";
+
+                if (scoreFinal >= 15) { colorChange = "#ac00f0"; }
+                else if (scoreFinal >= 10) { colorChange = "#1c24ff"; }
+                else if (scoreFinal >= 6) { colorChange = "#1c95ff"; }
+                else if (scoreFinal >= 3) { colorChange = "#187037"; }
+                else if (scoreFinal >= 0) { colorChange = "#9e9224"; }
+                else if (scoreFinal >= -5) { colorChange = "#ed2d2d"; }
+                else { colorChange = "#7a0b0b"; }
+
+                <tr>
+                  <td> @playerBox.PlayerName </td>
+                  <td> @playerBox.MIN </td>
+                  <td> @playerBox.PTS </td>
+                  <td> @playerBox.REB </td>
+                  <td> @playerBox.AST </td>
+                  <td> @playerBox.STLS </td>
+                  <td> @playerBox.BLK </td>
+                  <td> @playerBox.TOR </td>
+                  <td> @playerBox.FGM - @playerBox.FGA </td>
+                  <td> @playerBox.TPM - @playerBox.TPA </td>
+                  <td> @FT </td>
+                  <th style="color: @colorChange"> @scoreFinal </th>
+                </tr>
+              }
             }
-          }
 
-        </tbody>
+          </tbody>
 
-        <tfoot>
+          <tfoot>
 
-          @{
-            int PTS = 0; int REB = 0; int AST = 0; int STLS = 0; int BLK = 0; int TOR = 0; int FGM = 0; int FGA = 0; int TPM
-            = 0; int TPA = 0; int FTM = 0;
-            @foreach (PlayerBox playerBox2 in Model.PlayerBoxes.Where(p => p.Team == 1 && p.GameID == @Model.game.GameID))
-            {
-              PTS = (@playerBox2.PTS + @PTS);
-              REB = (@playerBox2.REB + @REB);
-              AST = (@playerBox2.AST + @AST);
-              STLS = (@playerBox2.STLS + @STLS);
-              BLK = (@playerBox2.BLK + @BLK);
-              TOR = (@playerBox2.TOR + @TOR);
-              FGM = (@playerBox2.FGM + @FGM);
-              FGA = (@playerBox2.FGA + @FGA);
-              TPM = (@playerBox2.TPM + @TPM);
-              TPA = (@playerBox2.TPA + @TPA);
-              FTM = (@playerBox2.PTS - (@playerBox2.TPM * 3 + ((@playerBox2.FGM - @playerBox2.TPM) * 2)) + @FTM);
+            @{
+              int PTS = 0; int REB = 0; int AST = 0; int STLS = 0; int BLK = 0; int TOR = 0; int FGM = 0; int FGA = 0; int TPM
+              = 0; int TPA = 0; int FTM = 0;
+              @foreach (PlayerBox playerBox2 in Model.PlayerBoxes.Where(p => p.Team == x && p.GameID == @Model.game.GameID))
+              {
+                PTS = (@playerBox2.PTS + @PTS);
+                REB = (@playerBox2.REB + @REB);
+                AST = (@playerBox2.AST + @AST);
+                STLS = (@playerBox2.STLS + @STLS);
+                BLK = (@playerBox2.BLK + @BLK);
+                TOR = (@playerBox2.TOR + @TOR);
+                FGM = (@playerBox2.FGM + @FGM);
+                FGA = (@playerBox2.FGA + @FGA);
+                TPM = (@playerBox2.TPM + @TPM);
+                TPA = (@playerBox2.TPA + @TPA);
+                FTM = (@playerBox2.PTS - (@playerBox2.TPM * 3 + ((@playerBox2.FGM - @playerBox2.TPM) * 2)) + @FTM);
+              }
             }
-          }
 
-          <tr class="font-weight-bold">
-            <td> </td>
-            <td> </td>
-            <td> @PTS </td>
-            <td> @REB </td>
-            <td> @AST </td>
-            <td> @STLS </td>
-            <td> @BLK </td>
-            <td> @TOR </td>
-            <td> @FGM - @FGA </td>
-            <td> @TPM - @TPA </td>
-            <td> @FTM </td>
-          </tr>
+            <tr class="font-weight-bold">
+              <td> </td>
+              <td> </td>
+              <td> @PTS </td>
+              <td> @REB </td>
+              <td> @AST </td>
+              <td> @STLS </td>
+              <td> @BLK </td>
+              <td> @TOR </td>
+              <td> @FGM - @FGA </td>
+              <td> @TPM - @TPA </td>
+              <td> @FTM </td>
+            </tr>
 
-        </tfoot>
+          </tfoot>
 
-      </table>
-    </div>
-
-    <div class="col">
-
-      <h3> @Model.series.Team2 Stats </h3>
-
-      <table class="table table-sm smallText table-bordered">
-
-        <thead>
-          <tr class="text-white c-@Model.series.Team2Color">
-            <th class="w-auto" scope="col"> Player Name </th>
-            <th class="w-auto" scope="col"> MIN </th>
-            <th class="w-auto" scope="col"> PTS </th>
-            <th scope="col"> REB </th>
-            <th scope="col"> AST </th>
-            <th scope="col"> STL </th>
-            <th scope="col"> BLK </th>
-            <th scope="col"> TO </th>
-            <th scope="col"> FG </th>
-            <th scope="col"> 3PT </th>
-            <th scope="col"> FTM </th>
-            <th scope="col"> BRT </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          @{
-            int FT2 = 0;
-            @foreach (PlayerBox playerBox in Model.PlayerBoxes.Where(p => p.Team == 2))
-            {
-              FT2 = playerBox.PTS - (playerBox.TPM * 3 + ((playerBox.FGM - playerBox.TPM) * 2));
-              double scoreFinal =
-              (((playerBox.PTS + (0.4 * playerBox.FGM) - (0.8 * playerBox.FGA) - (0.4 * FT2) + (0.5 * playerBox.REB) +
-              playerBox.STLS + (0.7 * playerBox.AST) + (0.7 * playerBox.BLK) - playerBox.TOR) / (playerBox.MIN)) * 20);
-              scoreFinal = scoreFinal - 7;
-              scoreFinal = Math.Round(scoreFinal, 1);
-
-              var colorChange = "";
-
-              if (scoreFinal >= 15) { colorChange = "#ac00f0"; }
-              else if (scoreFinal >= 10) { colorChange = "#1c24ff"; }
-              else if (scoreFinal >= 6) { colorChange = "#1c95ff"; }
-              else if (scoreFinal >= 3) { colorChange = "#187037"; }
-              else if (scoreFinal >= 0) { colorChange = "#9e9224"; }
-              else if (scoreFinal >= -5) { colorChange = "#ed2d2d"; }
-              else { colorChange = "#7a0b0b"; }
-
-              <tr>
-                <td> @playerBox.PlayerName </td>
-                <td> @playerBox.MIN </td>
-                <td> @playerBox.PTS </td>
-                <td> @playerBox.REB </td>
-                <td> @playerBox.AST </td>
-                <td> @playerBox.STLS </td>
-                <td> @playerBox.BLK </td>
-                <td> @playerBox.TOR </td>
-                <td> @playerBox.FGM - @playerBox.FGA </td>
-                <td> @playerBox.TPM - @playerBox.TPA </td>
-                <td> @FT2 </td>
-                <th style="color: @colorChange"> @scoreFinal </th>
-              </tr>
-            }
-          }
-
-        </tbody>
-
-        <tfoot>
-
-          @{
-            int PTS2 = 0; int REB2 = 0; int AST2 = 0; int STLS2 = 0; int BLK2 = 0; int TOR2 = 0; int FGM2 = 0; int FGA2 = 0;
-            int TPM2 = 0; int TPA2 = 0; int FTM2 = 0;
-            @foreach (PlayerBox playerBox2 in Model.PlayerBoxes.Where(p => p.Team == 2 && p.GameID == @Model.game.GameID))
-            {
-              PTS2 = (@playerBox2.PTS + @PTS2);
-              REB2 = (@playerBox2.REB + @REB2);
-              AST2 = (@playerBox2.AST + @AST2);
-              STLS2 = (@playerBox2.STLS + @STLS2);
-              BLK2 = (@playerBox2.BLK + @BLK2);
-              TOR2 = (@playerBox2.TOR + @TOR2);
-              FGM2 = (@playerBox2.FGM + @FGM2);
-              FGA2 = (@playerBox2.FGA + @FGA2);
-              TPM2 = (@playerBox2.TPM + @TPM2);
-              TPA2 = (@playerBox2.TPA + @TPA2);
-              FTM2 = (@playerBox2.PTS - (@playerBox2.TPM * 3 + ((@playerBox2.FGM - @playerBox2.TPM) * 2)) + @FTM2);
-            }
-          }
-
-          <tr class="font-weight-bold">
-            <td> </td>
-            <td> </td>
-            <td> @PTS2 </td>
-            <td> @REB2 </td>
-            <td> @AST2 </td>
-            <td> @STLS2 </td>
-            <td> @BLK2 </td>
-            <td> @TOR2 </td>
-            <td> @FGM2 - @FGA2 </td>
-            <td> @TPM2 - @TPA2 </td>
-            <td> @FTM2 </td>
-          </tr>
-
-        </tfoot>
-
-      </table>
-
-    </div>
-
+        </table>
+        </div>
+        }
+      </div>
+      x++;
+    }
   </div>
-
-
 }
