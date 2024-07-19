@@ -8,86 +8,6 @@ input::-webkit-inner-spin-button {
   font-size: 13px;
 }
 
-.c-b00b9f {
-  background-color: #b00b9f;
-}
-
-.c-008000 {
-  background-color: #008000;
-}
-
-.c-ff0000 {
-  background-color: #ff0000;
-}
-
-.c-b3a314 {
-  background-color: #b3a314;
-}
-
-.c-0000ff {
-  background-color: #0000ff;
-}
-
-.c-52514e {
-  background-color: #52514e;
-}
-
-.c-622a8c {
-  background-color: #622a8c;
-}
-
-.c-102444 {
-  background-color: #102444;
-}
-
-.c-bf7404 {
-  background-color: #bf7404;
-}
-
-.c-72253d {
-  background-color: #72253d;
-}
-
-.t-b00b9f {
-  color: #b00b9f;
-}
-
-.t-008000 {
-  color: #008000;
-}
-
-.t-ff0000 {
-  color: #ff0000;
-}
-
-.t-b3a314 {
-  color: #b3a314;
-}
-
-.t-0000ff {
-  color: #0000ff;
-}
-
-.t-52514e {
-  color: #52514e;
-}
-
-.t-622a8c {
-  color: #622a8c;
-}
-
-.t-102444 {
-  color: #102444;
-}
-
-.t-bf7404 {
-  color: #bf7404;
-}
-
-.t-72253d {
-  color: #72253d;
-}
-
 .fixTableHead {
   width: 100%;
   font-size: 13px;
@@ -117,3 +37,89 @@ hr {
   color: black;  
   background-color: black;  
 }
+
+.overallBadge {
+  background-color: white;
+  color: white;
+  background-repeat: repeat;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  border-radius: 5px;
+  min-width: 24px;
+}
+
+.teamBadge {
+  background-color: white;
+  color: white;
+  background-repeat: repeat;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  border-radius: 5px;
+  min-width: 24px;
+}
+
+.bronze {
+  background-image: linear-gradient(#ab570f, #4b2401);
+}
+
+.silver {
+  background-image: linear-gradient(#9c9c9c, #3b3b3b);
+}
+
+.gold {
+  background-image: linear-gradient(#d0b65b, #9e8322);
+}
+
+.emerald {
+  background-image: linear-gradient(#20bb19, #1c8017);
+}
+
+.sapphire {
+  background-image: linear-gradient(#615af5, #202b6a);
+}
+
+.ruby {
+  background-image: linear-gradient(#d22323, #6f0e0e);
+}
+
+.amethyst {
+  background-image: linear-gradient(#8327c4, #470e6f);
+  box-shadow: #a56ecb 0px 0px 8px 0px;
+}
+
+.diamond {
+  background-image: linear-gradient(#6fb3ee, #3b5c79);
+  box-shadow: #83bbd0 0px 0px 8px 0px;
+}
+
+.pink-diamond {
+  background-image: linear-gradient(#ee6fe5, #8c3f87);
+  box-shadow: #ee6fe5 0px 0px 8px 0px;
+}
+
+.galaxy-opal {
+  background-image: linear-gradient(45deg, #3b87a4, #8c3f73 110%);
+  box-shadow: #7b851c 0px 0px 8px 0px;
+}
+
+.dark-matter {
+  background-image: linear-gradient(#470808, #050505);
+  box-shadow: #4a0808 0px 0px 8px 0px;
+}
+
+.unobtainium {
+  background-image: linear-gradient(#500b5e, #050505);
+  box-shadow: #3a084a 0px 0px 8px 0px;
+  padding-left: 0px;
+  padding-right: 2px;
+}
+
+
+
+
+
+

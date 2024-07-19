@@ -4,13 +4,18 @@ public class DataContext : DbContext
 {
   public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
+  //Series
   public DbSet<Series> Series { get; set; }
   public DbSet<Game> Games { get; set; }
   public DbSet<PlayerBox> PlayerBoxes { get; set; }
-  public DbSet<HallOfFame> HallOfFame { get; set; }
+  //Season
   public DbSet<Season> Seasons { get; set; }
   public DbSet<SeasonGame> SeasonGames { get; set; }
   public DbSet<SeasonBox> SeasonBoxes { get; set; }
+  //Roster
+  public DbSet<Team> Teams { get; set; }
+  public DbSet<Player> Players { get; set; }
+  public DbSet<PlayerTeam> PlayerTeams { get; set; }
 
   public void AddSeries(Series series)
   {
@@ -28,11 +33,6 @@ public class DataContext : DbContext
     this.Add(playerBox);
     this.SaveChanges();
   }
-  public void AddHallOfFame(HallOfFame hallOfFame)
-  {
-    this.Add(hallOfFame);
-    this.SaveChanges();
-  }
   public void AddSeason(Season season)
   {
     this.Add(season);
@@ -46,6 +46,16 @@ public class DataContext : DbContext
   public void AddSeasonBox(SeasonBox seasonBox)
   {
     this.Add(seasonBox);
+    this.SaveChanges();
+  }
+  public void AddPlayer(Player player)
+  {
+    this.Add(player);
+    this.SaveChanges();
+  }
+  public void AddTeam(Team team)
+  {
+    this.Add(team);
     this.SaveChanges();
   }
 }

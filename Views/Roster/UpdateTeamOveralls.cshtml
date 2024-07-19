@@ -1,0 +1,57 @@
+@model UpdateTeamOverallsViewModel
+
+<button onclick="updateTeamOveralls()">
+    Update Team Overalls
+</button>
+
+<script>
+    let teams = [];
+    let playerTeams = [];
+
+    let teamId = 0;
+    let teamOverall = 0;
+
+    function updateTeamOveralls() {
+        for (var i = 0; i < teams.length; i++) { 
+            let teamTotal = [];
+            for (var x = 0; x < playerTeams.length; x++) {
+                if (playerTeams[x].teamID == teams[i].teamID) {
+                    teamTotal.push(playerTeams[x].overall);
+                }
+            }
+
+            while (teamTotal.length < 8) {
+                teamTotal.push(75);
+            }
+
+            teamOverall = teamTotal[0] + teamTotal[1] + teamTotal[2] + teamTotal[3] + teamTotal[4] + teamTotal[5]
+            teamOverall = teamOverall + ((teamTotal[6] + teamTotal[7]) / 2);
+            teamOverall = teamOverall / 7;
+            teamId = teams[i].teamID;
+            updateTeamAjaxCall();
+            console.log("Updated " + teams[i].year + " " + teams[i].city + " " + teams[i].teamName + " to " + teamOverall);
+        }
+    }
+
+    function updateTeamAjaxCall() {
+        $.ajax({
+            url: '@Url.Action("UpdateTeamOveralls", "Roster")',
+            data: { team: teamId, overall: teamOverall },
+            type: "POST",
+        }).done(function () {
+        });
+    }
+
+    async function fetchTeams() {
+        const response = await fetch('/Roster/GetTeams');
+        teams = await response.json();
+    }
+
+    async function fetchPlayerTeams() {
+        const response = await fetch('/Roster/GetPlayerTeams');
+        playerTeams = await response.json();
+    }
+
+    fetchPlayerTeams();
+    fetchTeams();
+</script>

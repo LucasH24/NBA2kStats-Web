@@ -6,9 +6,9 @@ public class PlayerBox
     [Key]
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int PlayerID { get; set; }
+    public int PlayerBoxID { get; set; }
     public int POS { get; set; }
-    public string PlayerName { get; set; }
+    public int PlayerID { get; set; }
     public int Team { get; set; }
     public int SeriesID { get; set; }
     public int MIN { get; set; }
@@ -23,7 +23,7 @@ public class PlayerBox
     public int TPM { get; set; }
     public int TPA { get; set; }
     public int GameID { get; set; }
-    public Game? Game { get; set; }
-    public Series? Series { get; set; }
-
+    public Game Game { get; set; }
+    public Series Series { get; set; }
+    public Player Player { get; set; }
 }

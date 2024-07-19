@@ -1,0 +1,138 @@
+<div class="p-4">
+    <div class="pb-2">
+        <h1>Teams</h1>
+    </div>
+
+    @if (User.IsInRole("admin"))
+    {
+        <a asp-action="UpdateTeamOveralls" asp-controller="Roster">Update Team Overalls</a>
+        <br>
+        <a asp-action="AddTeam" asp-controller="Add">Add Team</a>
+    }
+
+    <div>
+    <label for="nba2kFilter" style="font-weight: bold"> Team Type </input>
+      <select onchange="fillTable()" name="teamFilter" id="teamFilter">
+        <option selected value="All">All</option>
+        <option value="2022-23">2022-23</option>
+        <option value="2023-24">2023-24</option>
+        <option value="2024-25">2024-25</option>
+        <option value="Classic">Classic</option>
+        <option value="Custom">Custom</option>
+        <option value="NotCustom">Not Custom</option>
+        
+      </select>
+  </div>
+
+
+    <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
+        <table class="table table-sm m-0">
+            <thead>
+                <tr>
+                    <th scope="col"> </th>
+                    <th scope="col" onclick="sortData('overall')"> Overall </th>
+                    <th scope="col" onclick="sortData('year')"> Year </th>
+                    <th scope="col" onclick="sortData('city')"> Team </th>
+                </tr>
+            </thead>
+            <tbody id="teamsTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    let teams = [];
+    let filteredTeams = [];
+
+    function fillTable() {
+        document.getElementById("teamsTable").innerHTML = "";
+        filterTeams();
+        for (var i = 0; i < filteredTeams.length; i++) 
+        { 
+            let overall = (filteredTeams[i].overall).toFixed(1)
+            var badgeType = "bronze";
+            if (filteredTeams[i].overall > 87.5) { badgeType = "unobtainium"; }
+            else if (filteredTeams[i].overall > 86) { badgeType = "dark-matter"; }
+            else if (filteredTeams[i].overall > 85.5) { badgeType = "galaxy-opal"; }
+            else if (filteredTeams[i].overall > 85) { badgeType = "pink-diamond"; }
+            else if (filteredTeams[i].overall > 84.5) { badgeType = "diamond"; }
+            else if (filteredTeams[i].overall > 84) { badgeType = "amethyst "; }
+            else if (filteredTeams[i].overall > 83.5) { badgeType = "ruby"; }
+            else if (filteredTeams[i].overall > 83) { badgeType = "sapphire"; }
+            else if (filteredTeams[i].overall > 82) { badgeType = "emerald"; }
+            else if (filteredTeams[i].overall > 81) { badgeType = "gold"; }
+            else if (filteredTeams[i].overall > 79) { badgeType = "silver"; }
+            else { badgeType = "bronze"; }
+
+            $("#teamsTable").append(`
+            <tr> 
+                <td>  </td>
+                <th> <span class="teamBadge ${badgeType}"> ${overall} </span> </th>
+                <th> ${filteredTeams[i].year} </th>
+                <th> <a href="/Roster/TeamDetail?id=${filteredTeams[i].teamID}"> <div style="color: #${filteredTeams[i].teamColor1}"> ${filteredTeams[i].fullName} </div> </a> </th>
+            </tr>
+            `);
+        }
+    }
+
+    function filterTeams() {
+        filteredTeams = [];
+        const teamFilter = document.getElementById("teamFilter").value;
+        for (var i = 0; i < teams.length; i++) {
+            if (teamFilter == "All") {
+                filteredTeams.push(teams[i]);
+            }
+            else if (teamFilter =="Classic") {
+                if (teams[i].year != "2022-23" && teams[i].year != "2023-24" && teams[i].year != "Custom" && teams[i].year != "2024-25") {
+                    filteredTeams.push(teams[i]);
+                }
+            }
+            else if (teamFilter =="NotCustom") {
+                if (teams[i].year != "Custom") {
+                    filteredTeams.push(teams[i]);
+                }
+            }
+            else {
+                if (teams[i].year == teamFilter) {
+                    filteredTeams.push(teams[i]);
+                }
+            }
+        }
+    }
+
+
+    function sortData(test) {
+        if (test == "overall") {
+            teams.sort(function (a, b) {
+                return b[test] - a[test];
+            })
+        }
+
+        else {
+            teams.sort((a, b) => {
+                const nameA = a[test].toUpperCase();
+                const nameB = b[test].toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
+
+        fillTable();
+    }
+  
+
+    async function fetchTeams() {
+        const response = await fetch('/Roster/GetTeams');
+        teams = await response.json();
+        fillTable();
+        sortData("year");
+    }
+
+    fetchTeams();
+</script>

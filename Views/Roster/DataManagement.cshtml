@@ -1,0 +1,62 @@
+@model DataManagementModel
+
+<button onclick="fixPlayers()"> Fix Players </button>
+
+
+
+
+
+<script>
+
+    let players = [];
+    let playerBoxes = [];
+    let seasonBoxes = [];
+
+    function checkName(inputName) {
+        let arrayToAvoid = ["C. Anthony", "A. Green", "A. Wiggins", "A. Thompson", "B. Russell", "B. Bogdanovic", "C. Martin", "C. Johnson", "D. Mitchell", "D. Wade", "J. Smith", "J. Walker", "J. McDaniels", "J. Green", "J. Johnson", "J. Williams", "J. Butler", "J. Collins", "J. Holiday", "J. Champagnie", "K. Murray", "K. Johnson", "K. Martin", "L. Ball", "L. Allen", "M. Morris", "M. Williams", "M. Bridges", "S. Curry", "T. Prince", "T. Mann", "T. Young", "T. Jones"]
+        for (var i = 0; i < arrayToAvoid.length; i++) { 
+            if (arrayToAvoid[i] == inputName) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    function fixPlayers() {
+        for (var i = 0; i < seasonBoxes.length; i++) { 
+            let isNameValid = checkName(seasonBoxes[i].playerName);
+            if (isNameValid == 0 && seasonBoxes[i].playerID == 9999999) {
+                updateObject(seasonBoxes[i].seasonBoxID);
+            }
+        }
+    }
+
+    function updateObject(seasonBoxID) {
+        $.ajax({
+            url: '@Url.Action("DataManagement", "Roster")',
+            data: { id: seasonBoxID },
+            type: "POST",
+        }).done(function () {
+        });
+    }
+
+
+
+    async function fetchData() {
+        const response1 = await fetch('/Roster/GetPlayers');
+        players = await response1.json();
+
+        const response2 = await fetch('/Data/GetPlayerBoxes');
+        playerBoxes = await response2.json();
+
+        const response3 = await fetch('/Data/GetSeasonBoxes');
+        seasonBoxes = await response3.json();
+
+        console.log(players);
+        console.log(playerBoxes);
+        console.log(seasonBoxes);
+    }
+
+    fetchData();
+
+</script>

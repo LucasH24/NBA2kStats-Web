@@ -1,7 +1,7 @@
 @model GameViewModel
 
 <div class="pb-1 pl-4 pt-4">
-  <h1>@Model.series.Team1 vs @Model.series.Team2 (@Model.series.Team1W - @Model.series.Team2W)</h1>
+  <h2> @Model.series.Team1.FullName vs @Model.series.Team2.FullName (@Model.series.Team1W - @Model.series.Team2W)</h2>
 </div>
 
 @if (User.IsInRole("admin"))
@@ -21,6 +21,8 @@ else if (Model.Games.Count() == 0)
 
 else
 {
+
+  if (Model.series.Team1.PrimaryColor == Model.series.Team2.PrimaryColor) {Model.series.Team2.TeamColor1 = Model.series.Team2.TeamColor2;}
  
  <div class="row pt-2 ml-2 mr-2" style="max-width: 100%;">
 
@@ -35,11 +37,11 @@ else
         </div>
 
         <div>
-          @Model.series.Team1: @game.Team1Score
+          @Model.series.Team1.TeamName: @game.Team1Score
         </div>
 
         <div>
-          @Model.series.Team2: @game.Team2Score
+          @Model.series.Team2.TeamName: @game.Team2Score
         </div>
       </div>
 
@@ -57,25 +59,25 @@ else
 
     if (x == 1)
     {
-      teamName = Model.series.Team1;
-      teamColor = Model.series.Team1Color;
+      teamName = Model.series.Team1.TeamName;
+      teamColor = Model.series.Team1.TeamColor1;
     }
 
     if (x == 2)
     {
-      teamName = Model.series.Team2;
-      teamColor = Model.series.Team2Color;
+      teamName = Model.series.Team2.TeamName;
+      teamColor = Model.series.Team2.TeamColor1;
     }
 
 
 
     <h3 class="pl-4 pt-3"> @teamName Stats</h3>
-    <div class="rounded w-75 ml-4" style="border-width: 2px; border-style:solid;">
+    <div class="rounded ml-4 w-75" style="border-width: 2px; border-style:solid;">
       <table class="table table-sm table-borderless table-striped m-0">
         <thead>
 
           <thead>
-            <tr class="c-@teamColor text-white">
+            <tr style="background-color: #@teamColor" class="text-white">
               <th class="w-auto" scope="col"> Player Name </th>
               <th class="w-auto" scope="col"> MIN </th>
               <th class="w-auto" scope="col"> PTS </th>
@@ -143,7 +145,7 @@ else
               foreach (PlayerBox playerBox in Model.PlayerBoxes.Where(p => p.Team == x && p.POS == i))
               {
 
-                Name = playerBox.PlayerName;
+                Name = playerBox.Player.PlayerShortName;
                 MIN = playerBox.MIN + MIN;
                 PTS = playerBox.PTS + PTS;
                 REB = playerBox.REB + REB;
@@ -260,13 +262,4 @@ else
     x++;
 
   }
-
-
-
-
-
-
-
-
-
 }

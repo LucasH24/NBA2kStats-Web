@@ -23,14 +23,30 @@
         </tr>
 
         @{
+
           if (User.IsInRole("viewer"))
           {
             foreach (Series series in Model.series)
             {
+              if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
               <tr>
                 <th scope="col"> </th>
-                <th class="t-@series.Team1Color"> @series.Team1 </th>
-                <th class="t-@series.Team2Color"> @series.Team2 </th>
+                <th style="color: #@series.Team1.TeamColor1"> @series.Team1.FullName </th>
+                <th style="color: #@series.Team2.TeamColor1"> @series.Team2.FullName </th>
+                <td> @series.Team1W-@series.Team2W </td>
+                <td> @series.NBA2k </td>
+                <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
+              </tr>
+            }
+          }
+          else {
+            foreach (Series series in Model.series.Where(s => s.Team1.IsAppropriate == true && s.Team2.IsAppropriate == true))
+            {
+              if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
+              <tr>
+                <th scope="col"> </th>
+                <th style="color: #@series.Team1.TeamColor1"> @series.Team1.FullName </th>
+                <th style="color: #@series.Team2.TeamColor1"> @series.Team2.FullName </th>
                 <td> @series.Team1W-@series.Team2W </td>
                 <td> @series.NBA2k </td>
                 <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
@@ -38,20 +54,6 @@
             }
           }
 
-          else
-          {
-            @foreach (Series series in Model.series.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
-            {
-              <tr>
-                <th scope="col"> </th>
-                <th class="t-@series.Team1Color"> @series.Team1 </th>
-                <th class="t-@series.Team2Color"> @series.Team2 </th>
-                <td> @series.Team1W-@series.Team2W </td>
-                <td> @series.NBA2k </td>
-                <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
-              </tr>
-            }
-          }
         }
       </table>
     </div>

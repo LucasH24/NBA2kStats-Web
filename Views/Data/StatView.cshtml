@@ -40,19 +40,19 @@
     <label for="nba2kFilter"> NBA2k </input>
       <select onchange="displayData()" name="nba2kFilter" id="nba2kFilter">
         <option selected value="All">All</option>
-        <option value="NBA2k13">NBA2k13</option>
-        <option value="NBA2k14">NBA2k14</option>
-        <option value="NBA2k15">NBA2k15</option>
-        <option value="NBA2k16">NBA2k16</option>
-        <option value="NBA2k17">NBA2k17</option>
-        <option value="NBA2k18">NBA2k18</option>
-        <option value="NBA2k19">NBA2k19</option>
-        <option value="NBA2k20">NBA2k20</option>
-        <option value="NBA2k21">NBA2k21</option>
-        <option value="NBA2k22">NBA2k22</option>
-        <option value="NBA2k23">NBA2k23</option>
-        <option value="NBA2k24">NBA2k24</option>
-        <option value="NBA2k25">NBA2k25</option>
+        <option value="2k13">NBA2k13</option>
+        <option value="2k14">NBA2k14</option>
+        <option value="2k15">NBA2k15</option>
+        <option value="2k16">NBA2k16</option>
+        <option value="2k17">NBA2k17</option>
+        <option value="2k18">NBA2k18</option>
+        <option value="2k19">NBA2k19</option>
+        <option value="2k20">NBA2k20</option>
+        <option value="2k21">NBA2k21</option>
+        <option value="2k22">NBA2k22</option>
+        <option value="2k23">NBA2k23</option>
+        <option value="2k24">NBA2k24</option>
+        <option value="2k25">NBA2k25</option>
       </select>
   </div>
 
@@ -135,7 +135,7 @@
         <th scope="col" onclick="sortData('tsp')"> TS% </th>
         <th scope="col" onclick="sortData('ort')"> ORT </th>
         <th scope="col" onclick="sortData('pace')"> Pace </th>
-        <th scope="col" onclick="sortData('nba2k')"> 2K Version </th>
+        <th scope="col" onclick="sortData('nba2k')"> Version </th>
       </tr>
     </thead>
 
@@ -296,18 +296,18 @@
 
         //determining teams
         if (x == 1) {
-          dataObject.name = games[i].series.team1;
-          dataObject.team = games[i].series.team1;
-          dataObject.opponent = games[i].series.team2;
-          dataObject.teamColor = games[i].series.team1Color;
-          dataObject.opponentColor = games[i].series.team2Color;
+          dataObject.name = games[i].series.team1.shortName;
+          dataObject.team = games[i].series.team1.shortName;
+          dataObject.opponent = games[i].series.team2.shortName;
+          dataObject.teamColor = games[i].series.team1.teamColor1;
+          dataObject.opponentColor = games[i].series.team2.teamColor1;
         }
         else {
-          dataObject.name = games[i].series.team2;
-          dataObject.team = games[i].series.team2;
-          dataObject.opponent = games[i].series.team1;
-          dataObject.teamColor = games[i].series.team2Color;
-          dataObject.opponentColor = games[i].series.team1Color;
+          dataObject.name = games[i].series.team2.shortName;
+          dataObject.team = games[i].series.team2.shortName;
+          dataObject.opponent = games[i].series.team1.shortName;
+          dataObject.teamColor = games[i].series.team2.teamColor1;
+          dataObject.opponentColor = games[i].series.team1.teamColor1;
         }
 
         //find every player box for the selected team
@@ -408,18 +408,18 @@
 
         //determining teams
         if (x == 1) {
-          dataObject.team = seasonGames[i].team1Name;
-          dataObject.name = seasonGames[i].team1Name;
-          dataObject.opponent = seasonGames[i].team2Name;
-          dataObject.teamColor = seasonGames[i].team1Color;
-          dataObject.opponentColor = seasonGames[i].team2Color;
+          dataObject.team = seasonGames[i].team1.shortName;
+          dataObject.name = seasonGames[i].team1.shortName;
+          dataObject.opponent = seasonGames[i].team2.shortName;
+          dataObject.teamColor = seasonGames[i].team1.teamColor1
+          dataObject.opponentColor = seasonGames[i].team2.teamColor1
         }
         else {
-          dataObject.team = seasonGames[i].team2Name;
-          dataObject.name = seasonGames[i].team2Name;
-          dataObject.opponent = seasonGames[i].team1Name;
-          dataObject.teamColor = seasonGames[i].team2Color;
-          dataObject.opponentColor = seasonGames[i].team1Color;
+          dataObject.team = seasonGames[i].team2.shortName;
+          dataObject.name = seasonGames[i].team2.shortName;
+          dataObject.opponent = seasonGames[i].team1.shortName;
+          dataObject.teamColor = seasonGames[i].team2.teamColor1
+          dataObject.opponentColor = seasonGames[i].team1.teamColor1
         }
 
         //find every player box for the selected team
@@ -524,18 +524,18 @@
 
         //determining teams
         if (x == 1) {
-          dataObject.name = series[i].team1;
-          dataObject.team = series[i].team1;
-          dataObject.opponent = series[i].team2;
-          dataObject.teamColor = series[i].team1Color;
-          dataObject.opponentColor = series[i].team2Color;
+          dataObject.name = series[i].team1.shortName;
+          dataObject.team = series[i].team1.shortName;
+          dataObject.opponent = series[i].team2.shortName;
+          dataObject.teamColor = series[i].team1.teamColor1
+          dataObject.opponentColor = series[i].team2.teamColor1
         }
         else {
-          dataObject.name = series[i].team2;
-          dataObject.team = series[i].team2;
-          dataObject.opponent = series[i].team1;
-          dataObject.teamColor = series[i].team2Color;
-          dataObject.opponentColor = series[i].team1Color;
+          dataObject.name = series[i].team2.shortName;
+          dataObject.team = series[i].team2.shortName;
+          dataObject.opponent = series[i].team1.shortName;
+          dataObject.teamColor = series[i].team2.teamColor1
+          dataObject.opponentColor = series[i].team1.teamColor1
         }
         //find every player box for the selected team
         for (var y = 0; y < playerBoxes.length; y++) {
@@ -654,7 +654,7 @@
 
           for (var y = 0; y < playerBoxes.length; y++) {
             if (playerBoxes[y].pos == n && playerBoxes[y].team == x && playerBoxes[y].series.seriesID == series[i].seriesID) {
-              dataObject.name = playerBoxes[y].playerName;
+              dataObject.name = playerBoxes[y].player.playerShortName;
               dataObject.min = dataObject.min + playerBoxes[y].min;
               dataObject.pts = dataObject.pts + playerBoxes[y].pts;
               dataObject.reb = dataObject.reb + playerBoxes[y].reb;
@@ -670,16 +670,16 @@
           }
 
           if (x == 1) {
-            dataObject.team = series[i].team1;
-            dataObject.opponent = series[i].team2;
-            dataObject.teamColor = series[i].team1Color;
-            dataObject.opponentColor = series[i].team2Color;
+            dataObject.team = series[i].team1.shortName;
+            dataObject.opponent = series[i].team2.shortName;
+            dataObject.teamColor = series[i].team1.teamColor1;
+            dataObject.opponentColor = series[i].team2.teamColor1;
           }
           else {
-            dataObject.team = series[i].team2;
-            dataObject.opponent = series[i].team1;
-            dataObject.teamColor = series[i].team2Color;
-            dataObject.opponentColor = series[i].team1Color;
+            dataObject.team = series[i].team2.shortName;
+            dataObject.opponent = series[i].team1.shortName;
+            dataObject.teamColor = series[i].team2.teamColor1;
+            dataObject.opponentColor = series[i].team1.teamColor1;
           }
 
           dataObject.min = (dataObject.min / series[i].playedGames);
@@ -733,7 +733,7 @@
 
       var dataObject = getDataObject();
 
-      dataObject.name = seasonBoxes[i].playerName;
+      dataObject.name = seasonBoxes[i].player.playerShortName;
       dataObject.min = seasonBoxes[i].min;
       dataObject.pts = seasonBoxes[i].pts;
       dataObject.reb = seasonBoxes[i].reb;
@@ -749,16 +749,16 @@
 
       //determining teams
       if (seasonBoxes[i].team == 1) {
-        dataObject.team = seasonBoxes[i].seasonGame.team1Name;
-        dataObject.opponent = seasonBoxes[i].seasonGame.team2Name;
-        dataObject.teamColor = seasonBoxes[i].seasonGame.team1Color;
-        dataObject.opponentColor = seasonBoxes[i].seasonGame.team2Color;
+        dataObject.team = seasonBoxes[i].seasonGame.team1.shortName;
+        dataObject.opponent = seasonBoxes[i].seasonGame.team2.shortName;
+        dataObject.teamColor = seasonBoxes[i].seasonGame.team1.teamColor1;
+        dataObject.opponentColor = seasonBoxes[i].seasonGame.team2.teamColor1;
       }
       else {
-        dataObject.team = seasonBoxes[i].seasonGame.team2Name;
-        dataObject.opponent = seasonBoxes[i].seasonGame.team1Name;
-        dataObject.teamColor = seasonBoxes[i].seasonGame.team2Color;
-        dataObject.opponentColor = seasonBoxes[i].seasonGame.team1Color;
+        dataObject.team = seasonBoxes[i].seasonGame.team2.shortName;
+        dataObject.opponent = seasonBoxes[i].seasonGame.team1.shortName;
+        dataObject.teamColor = seasonBoxes[i].seasonGame.team2.teamColor1;
+        dataObject.opponentColor = seasonBoxes[i].seasonGame.team1.teamColor1;
       }
 
       // calculating ftm and brt
@@ -794,7 +794,7 @@
 
       var dataObject = getDataObject();
 
-      dataObject.name = playerBoxes[i].playerName;
+      dataObject.name = playerBoxes[i].player.playerShortName;
       dataObject.min = playerBoxes[i].min;
       dataObject.pts = playerBoxes[i].pts;
       dataObject.reb = playerBoxes[i].reb;
@@ -809,16 +809,16 @@
 
       //determining teams
       if (playerBoxes[i].team == 1) {
-        dataObject.team = playerBoxes[i].series.team1;
-        dataObject.opponent = playerBoxes[i].series.team2;
-        dataObject.teamColor = playerBoxes[i].series.team1Color;
-        dataObject.opponentColor = playerBoxes[i].series.team2Color;
+        dataObject.team = playerBoxes[i].series.team1.shortName;
+        dataObject.opponent = playerBoxes[i].series.team2.shortName;
+        dataObject.teamColor = playerBoxes[i].series.team1.teamColor1;
+        dataObject.opponentColor = playerBoxes[i].series.team2.teamColor1;
       }
       else {
-        dataObject.team = playerBoxes[i].series.team2;
-        dataObject.opponent = playerBoxes[i].series.team1;
-        dataObject.teamColor = playerBoxes[i].series.team2Color;
-        dataObject.opponentColor = playerBoxes[i].series.team1Color;
+        dataObject.team = playerBoxes[i].series.team2.shortName;
+        dataObject.opponent = playerBoxes[i].series.team1.shortName;
+        dataObject.teamColor = playerBoxes[i].series.team2.teamColor1;
+        dataObject.opponentColor = playerBoxes[i].series.team1.teamColor1;
       }
 
       dataObject.nba2k = playerBoxes[i].series.nbA2k;
@@ -941,7 +941,7 @@
       $("#playerOutput").append(`
           <tr> 
             <td> ${displayNumber} </td>
-            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].name} </th>
+            <th style="color: #${filterDataList[i].teamColor}"> ${filterDataList[i].name} </th>
             <td> ${toProperDecimal(filterDataList[i].min, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].pts, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].reb, filterScale)} </td>
@@ -959,8 +959,8 @@
             <td> ${filterDataList[i].tsp}% </td>
             <th style="color: ${brtColor}"> ${filterDataList[i].brt} </th>
             <td> ${filterDataList[i].nba2k} </td>
-            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
-            <th class="t-${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
+            <th style="color: #${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
+            <th style="color: #${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
           </tr>
           `);
       displayNumber = displayNumber + 1;
@@ -1015,8 +1015,8 @@
       $("#teamOutput").append(`
           <tr> 
             <td> ${displayNumber} </td>
-            <th class="t-${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
-            <th class="t-${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
+            <th style="color: #${filterDataList[i].teamColor}"> ${filterDataList[i].team} </th>
+            <th style="color: #${filterDataList[i].opponentColor}"> ${filterDataList[i].opponent} </th>
             <td> ${toProperDecimal(filterDataList[i].min, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].pts, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].reb, filterScale)} </td>
@@ -1124,6 +1124,7 @@
   async function fetchSeasonGames() {
     const response = await fetch('/Data/GetSeasonGames');
     seasonGames = await response.json();
+    console.log(seasonGames)
   }
 
   async function fetchSeasons() {

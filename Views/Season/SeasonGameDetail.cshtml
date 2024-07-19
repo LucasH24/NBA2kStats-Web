@@ -2,7 +2,7 @@
 
 <div class="pl-2 pt-2">
     <h1>Game @Model.SeasonGame.GameNumber</h1>
-    <h3>@Model.SeasonGame.Team1Name: @Model.SeasonGame.Team1Score - @Model.SeasonGame.Team2Name: @Model.SeasonGame.Team2Score</h3>
+    <h3>@Model.SeasonGame.Team1.TeamName: @Model.SeasonGame.Team1Score - @Model.SeasonGame.Team2.TeamName: @Model.SeasonGame.Team2Score</h3>
 </div>
 
 <hr style="height: 3px">
@@ -23,6 +23,7 @@ else if (Model.SeasonBoxes.Count() == 0)
 }
 else
 {
+    if (Model.SeasonGame.Team1.PrimaryColor == Model.SeasonGame.Team2.PrimaryColor) {Model.SeasonGame.Team2.TeamColor1 = Model.SeasonGame.Team2.TeamColor2;}
     int x = 1;
 
     <div class="row">
@@ -34,14 +35,14 @@ else
       string teamColor = "";
       if (x == 1)
       {
-        teamName = Model.SeasonGame.Team1Name;
-        teamColor = Model.SeasonGame.Team1Color;
+        teamName = Model.SeasonGame.Team1.TeamName;
+        teamColor = Model.SeasonGame.Team1.TeamColor1;
       }
 
       if (x == 2)
       {
-        teamName = Model.SeasonGame.Team2Name;
-        teamColor = Model.SeasonGame.Team2Color;
+        teamName = Model.SeasonGame.Team2.TeamName;
+        teamColor = Model.SeasonGame.Team2.TeamColor1;
       }
 
         <div class="col m-2">
@@ -53,7 +54,7 @@ else
                 <table class="table table-sm smallText table-borderless m-0">
 
                     <thead>
-                        <tr class="text-white c-@teamColor">
+                        <tr style="background-color: #@teamColor" class="text-white">
                             <th class="w-auto" scope="col"> Player Name </th>
                             <th class="w-auto" scope="col"> MIN </th>
                             <th class="w-auto" scope="col"> PTS </th>
@@ -94,7 +95,7 @@ else
                                 else {colorChange = "#7a0b0b";}
 
                                 <tr>
-                                    <td> @seasonBox.PlayerName </td>
+                                    <td> @seasonBox.Player.PlayerShortName </td>
                                     <td> @seasonBox.MIN </td>
                                     <td> @seasonBox.PTS </td>
                                     <td> @seasonBox.REB </td>

@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 public class DataController : Controller
 {
@@ -10,11 +13,11 @@ public class DataController : Controller
   [HttpGet]
   public IActionResult GetSeasonBoxes()
   {
-    var seasonBoxes = _dataContext.SeasonBoxes.Where(s => s.Season.IsAppropriate == true).ToList();
+    var seasonBoxes = _dataContext.SeasonBoxes.Where(s => s.Season.IsAppropriate == true).Include(p => p.Player).ToList();
 
     if (User.IsInRole("viewer"))
     {
-      seasonBoxes = _dataContext.SeasonBoxes.ToList();
+      seasonBoxes = _dataContext.SeasonBoxes.Include(p => p.Player).ToList();
     }
 
     return Json(seasonBoxes);
@@ -23,24 +26,36 @@ public class DataController : Controller
   [HttpGet]
   public IActionResult GetSeasonGames()
   {
-    var seasonGames = _dataContext.SeasonGames.Where(s => s.Season.IsAppropriate == true).ToList();
+    IEnumerable<SeasonGame> SeasonGames = _dataContext.SeasonGames
+        .Include(s => s.Team1)
+        .Include(s => s.Team2)
+        .Where(s => s.Season.IsAppropriate == true).ToList();
 
     if (User.IsInRole("viewer"))
     {
-      seasonGames = _dataContext.SeasonGames.ToList();
+      SeasonGames = _dataContext.SeasonGames
+        .Include(s => s.Team1)
+        .Include(s => s.Team2)
+        .ToList();
     }
 
-    return Json(seasonGames);
+    return Json(SeasonGames);
   }
 
   [HttpGet]
   public IActionResult GetSeries()
   {
-    var series = _dataContext.Series.Where(s => s.IsAppropriate == true).ToList();
+    var series = _dataContext.Series.Where(s => s.IsAppropriate == true)
+      .Include(s => s.Team1)
+      .Include(s => s.Team2)
+      .ToList();
 
     if (User.IsInRole("viewer"))
     {
-      series = _dataContext.Series.ToList();
+      series = _dataContext.Series
+      .Include(s => s.Team1)
+      .Include(s => s.Team2)
+      .ToList();
     }
 
     return Json(series);
@@ -49,11 +64,11 @@ public class DataController : Controller
   [HttpGet]
   public IActionResult GetPlayerBoxes()
   {
-    var playerBoxes = _dataContext.PlayerBoxes.Where(s => s.Series.IsAppropriate == true).ToList();
+    var playerBoxes = _dataContext.PlayerBoxes.Where(s => s.Series.IsAppropriate == true).Include(p => p.Player).ToList();
 
     if (User.IsInRole("viewer"))
     {
-      playerBoxes = _dataContext.PlayerBoxes.ToList();
+      playerBoxes = _dataContext.PlayerBoxes.Include(p => p.Player).ToList();
     }
 
     return Json(playerBoxes);

@@ -1,0 +1,140 @@
+@model TeamDetailViewModel
+
+@{
+    var teamBadge = "bronze";
+    double overall = Convert.ToDouble(Model.team.Overall);
+    if (overall > 87.5) { teamBadge = "unobtainium"; }
+    else if (overall > 86) { teamBadge = "dark-matter"; }
+    else if (overall > 85.5) { teamBadge = "galaxy-opal"; }
+    else if (overall > 85) { teamBadge = "pink-diamond"; }
+    else if (overall > 84.5) { teamBadge = "diamond"; }
+    else if (overall > 84) { teamBadge = "amethyst "; }
+    else if (overall > 83.5) { teamBadge = "ruby"; }
+    else if (overall > 83) { teamBadge = "sapphire"; }
+    else if (overall > 82) { teamBadge = "emerald"; }
+    else if (overall > 81) { teamBadge = "gold"; }
+    else if (overall > 79) { teamBadge = "silver"; }
+    else { teamBadge = "bronze"; }
+}
+
+<div class="p-4">
+        
+    <div class="pb-1">
+        <h1> @Model.team.Year @Model.team.City @Model.team.TeamName </h1>
+        <h4> Overall: <span class="overallBadge @teamBadge"> @Model.team.Overall </span> </h4>
+    </div>
+    
+
+    @if (User.IsInRole("admin"))
+    {
+        <a asp-action="AddPlayerTeam" asp-controller="Add" asp-route-id="@Model.team.TeamID">Add Player</a>
+    }
+
+    @if (Model.PlayerTeams.Count() == 0)
+    {
+        <p>There are no players listed</p>
+    }
+    else
+    {
+        <div class="rounded w-75" style="border-width: 2px; border-style:solid;"> 
+            <table class="table table-sm m-0">
+                <tr>
+                    <th scope="col"> Overall </th>
+                    <th scope="col"> Player Name </th>
+                </tr>
+
+                @foreach (PlayerTeam playerTeam in Model.PlayerTeams.OrderByDescending(p => p.Overall))
+                {
+                    string badgeType = "bronze";
+                    if (playerTeam.Overall > 99) { badgeType = "unobtainium"; }
+                    else if (playerTeam.Overall > 98) { badgeType = "dark-matter"; }
+                    else if (playerTeam.Overall > 96) { badgeType = "galaxy-opal"; }
+                    else if (playerTeam.Overall > 94) { badgeType = "pink-diamond"; }
+                    else if (playerTeam.Overall > 92) { badgeType = "diamond"; }
+                    else if (playerTeam.Overall > 89) { badgeType = "amethyst "; }
+                    else if (playerTeam.Overall > 86) { badgeType = "ruby"; }
+                    else if (playerTeam.Overall > 83) { badgeType = "sapphire"; }
+                    else if (playerTeam.Overall > 80) { badgeType = "emerald"; }
+                    else if (playerTeam.Overall > 77) { badgeType = "gold"; }
+                    else if (playerTeam.Overall > 75) { badgeType = "silver"; }
+                    else { badgeType = "bronze"; }
+
+                    <tr>
+                        <th> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
+                        <th> <a href="/Roster/PlayerDetail?id=@playerTeam.PlayerID"> <div style="color: black"> @playerTeam.Player.PlayerFullName </div> </a> </th>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <td> <button data-toggle="modal" data-target="#editPlayerModal@(playerTeam.PlayerTeamID)"> Update </button> </td>
+                            <td> <button data-toggle="modal" data-target="#deletePlayerModal@(playerTeam.PlayerTeamID)"> Delete </button> </td>
+                        }
+                    </tr>
+
+                    <div class="modal fade" id="editPlayerModal@(playerTeam.PlayerTeamID)" tabindex="-1" aria-labelledby="editPlayerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editPlayerModalLabel">Update @playerTeam.Player.PlayerFullName</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="UpdatePlayer" method="post">
+                                        <label class="form-label" for="Name">PlayerTeam ID</label>
+                                        <input placeholder="PlayerTeamID" value="@playerTeam.PlayerTeamID" asp-for="PlayerTeamID" class="form-control w-100" id="PlayerTeamID" readonly>
+
+                                        <label class="form-label" for="Name">TeamID</label>
+                                        <input placeholder="PlayerTeamID" value="@playerTeam.TeamID" asp-for="TeamID" class="form-control w-100" id="TeamID" readonly>
+
+                                        <label class="form-label" for="Name">Overall</label>
+                                        <input placeholder="Overall" value="@playerTeam.Overall" asp-for="Overall" class="form-control w-100" id="Overall">
+
+                                        <div class="modal-footer">
+                                            <button  class="btn btn-secondary" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                Cancel
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Update Player</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="deletePlayerModal@(playerTeam.PlayerTeamID)" tabindex="-1" aria-labelledby="deletePlayerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deletePlayerModal">Delete @playerTeam.Player.PlayerFullName</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="DeletePlayer" method="post">
+                                        <label class="form-label" for="Name">PlayerTeam ID</label>
+                                        <input placeholder="PlayerTeamID" value="@playerTeam.PlayerTeamID" asp-for="PlayerTeamID" class="form-control w-100" id="PlayerTeamID" readonly>
+                                        
+                                        <label class="form-label" for="Name">TeamID</label>
+                                        <input placeholder="PlayerTeamID" value="@playerTeam.TeamID" asp-for="TeamID" class="form-control w-100" id="TeamID" readonly>
+                                    
+                                        <div class="modal-footer">
+                                            <button  class="btn btn-secondary" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                Cancel
+                                            </button>
+                                            <button type="submit" class="btn btn-danger">Delete Player</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </table>
+        </div>
+    }
+</div>

@@ -6,9 +6,9 @@ public class SeasonBox
     [Key]
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int PlayerID { get; set; }
+    public int SeasonBoxID { get; set; }
     public int POS { get; set; }
-    public string PlayerName { get; set; }
+    public int PlayerID { get; set; }
     public int Team { get; set; }
     public int SeasonID { get; set; }
     public int MIN { get; set; }
@@ -23,7 +23,7 @@ public class SeasonBox
     public int TPM { get; set; }
     public int TPA { get; set; }
     public int SeasonGameID { get; set; }
-    public SeasonGame? SeasonGame { get; set; }
-    public Season? Season { get; set; }
-
+    public SeasonGame SeasonGame { get; set; }
+    public Season Season { get; set; }
+    public Player Player { get; set; }
 }

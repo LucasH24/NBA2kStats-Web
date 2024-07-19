@@ -35,10 +35,11 @@
 
                 @foreach (SeasonGame game in Model.SeasonGames.OrderBy(g => g.GameNumber))
                 {
+                    if (game.Team1.PrimaryColor == game.Team2.PrimaryColor) {game.Team2.TeamColor1 = game.Team2.TeamColor2;}
                     <tr>
                         <td> @game.GameNumber </td>
-                        <th class="t-@game.Team1Color"> @game.Team1Name </th>
-                        <th class="t-@game.Team2Color"> @game.Team2Name </th>
+                        <th style="color: #@game.Team1.TeamColor1"> @game.Team1.FullName </th>
+                        <th style="color: #@game.Team2.TeamColor1"> @game.Team2.FullName </th>
                         <td> @game.Team1Score - @game.Team2Score </td>
                         <td> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID"
                                 asp-route-seasonID="@Model.season.SeasonID">
@@ -78,7 +79,7 @@
                     <thead>
 
                         <thead>
-                            <tr class="c-@teamColor text-white">
+                            <tr style="background-color: #@teamColor" class="text-white">
                                 <th class="w-auto" scope="col"> Player Name </th>
                                 <th class="w-auto" scope="col"> MIN </th>
                                 <th class="w-auto" scope="col"> PTS </th>
@@ -146,7 +147,7 @@
                                 foreach (SeasonBox seasonBox in Model.SeasonBoxes.Where(p => p.Team == x && p.POS == i))
                                 {
 
-                                    Name = seasonBox.PlayerName;
+                                    Name = seasonBox.Player.PlayerShortName;
                                     MIN = seasonBox.MIN + MIN;
                                     PTS = seasonBox.PTS + PTS;
                                     REB = seasonBox.REB + REB;

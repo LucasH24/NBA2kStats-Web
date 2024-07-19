@@ -1,4 +1,4 @@
-@model PlayerBox
+@model AddingViewModel
 
 
 <h2 class="mt-3"> Add Player Stats</h2>
@@ -8,72 +8,86 @@
     <div asp-validation-summary="All"></div>
 
     <div class="form-row">
-        <div class="form-group col-sm-1">
-            <label asp-for="@Model.SeriesID">Series</label>
-            <input asp-for="@Model.SeriesID" class="form-control" placeholder="" />
+        <div class="form-group col-sm-1" hidden>
+            <label asp-for="@Model.PlayerBox.SeriesID">Series</label>
+            <input asp-for="@Model.PlayerBox.SeriesID" class="form-control" placeholder="" value="@Model.Game.SeriesID"/>
         </div>
-        <div class="form-group col-sm-1">
-            <label asp-for="@Model.Team">Team</label>
-            <input asp-for="@Model.Team" class="form-control" placeholder="" />
+
+        <div class="form-group col-sm-1" hidden>
+            <label asp-for="@Model.PlayerBox.GameID">Game</label>
+            <input asp-for="@Model.PlayerBox.GameID" class="form-control" placeholder="" value="@Model.Game.GameID"/>
         </div>
+
+        <div class="form-group col-sm-1">
+            <label asp-for="@Model.PlayerBox.Team">Team</label>
+            <input asp-for="@Model.PlayerBox.Team" class="form-control" placeholder="" />
+        </div>
+
     </div>
 
     <div class="form-row">
-        <div class="form-group col-md-2">
-            <label asp-for="@Model.PlayerName">Player Name</label>
-            <input asp-for="@Model.PlayerName" class="form-control" placeholder="" />
-        </div>
         <div class="form-group col-sm-1">
-            <label asp-for="@Model.POS">POS</label>
-            <input asp-for="@Model.POS" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.POS">POS</label>
+            <input asp-for="@Model.PlayerBox.POS" class="form-control" placeholder="" />
+        </div>
+
+        <div class="form-group col-sm-2">
+            <label asp-for="@Model.PlayerID">Player</label>
+            <input asp-for="@Model.PlayerID" autoComplete="on" list="teams" class="form-control" placeholder="" />
+            <datalist id="teams">
+                @foreach (PlayerTeam playerTeam in Model.PlayerTeams.Where(p => p.TeamID == Model.Game.Series.Team1ID || p.TeamID == Model.Game.Series.Team2ID))
+                {
+                    <option value="@playerTeam.PlayerID"> @playerTeam.Player.PlayerShortName</option>
+                }
+            </datalist>
         </div>
     </div>
 
 
     <div class="form-row">
         <div class="form-group col">
-            <label asp-for="@Model.MIN" class="fw-bold">MIN</label>
-            <input asp-for="@Model.MIN" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.MIN" class="fw-bold">MIN</label>
+            <input asp-for="@Model.PlayerBox.MIN" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.PTS">PTS</label>
-            <input asp-for="@Model.PTS" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.PTS">PTS</label>
+            <input asp-for="@Model.PlayerBox.PTS" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.REB">REB</label>
-            <input asp-for="@Model.REB" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.REB">REB</label>
+            <input asp-for="@Model.PlayerBox.REB" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.AST">AST</label>
-            <input asp-for="@Model.AST" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.AST">AST</label>
+            <input asp-for="@Model.PlayerBox.AST" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.STLS">STLS</label>
-            <input asp-for="@Model.STLS" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.STLS">STLS</label>
+            <input asp-for="@Model.PlayerBox.STLS" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.BLK">BLK</label>
-            <input asp-for="@Model.BLK" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.BLK">BLK</label>
+            <input asp-for="@Model.PlayerBox.BLK" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.TOR">TOR</label>
-            <input asp-for="@Model.TOR" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.TOR">TOR</label>
+            <input asp-for="@Model.PlayerBox.TOR" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.FGM">FGM</label>
-            <input asp-for="@Model.FGM" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.FGM">FGM</label>
+            <input asp-for="@Model.PlayerBox.FGM" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.FGA">FGA</label>
-            <input asp-for="@Model.FGA" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.FGA">FGA</label>
+            <input asp-for="@Model.PlayerBox.FGA" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.TPM">TPM</label>
-            <input asp-for="@Model.TPM" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.TPM">TPM</label>
+            <input asp-for="@Model.PlayerBox.TPM" class="form-control" placeholder="" />
         </div>
         <div class="form-group col">
-            <label asp-for="@Model.TPA">TPA</label>
-            <input asp-for="@Model.TPA" class="form-control" placeholder="" />
+            <label asp-for="@Model.PlayerBox.TPA">TPA</label>
+            <input asp-for="@Model.PlayerBox.TPA" class="form-control" placeholder="" />
         </div>
 
         <button type="submit" class="btn btn-outline-primary">ADD PLAYER</button>

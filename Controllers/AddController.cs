@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "admin")]
 public class AddController : Controller
@@ -10,17 +11,18 @@ public class AddController : Controller
     public IActionResult AddHub() => View();
 
     //Series
-    public IActionResult AddSeries() => View();
-    [HttpPost]
-
-    public IActionResult AddSeries(Series model)
+    public IActionResult AddSeries() => View(new AddingViewModel
     {
-        if (ModelState.IsValid)
-        {
-            _dataContext.AddSeries(model);
-            return RedirectToAction("ViewSeries", "Series");
-        }
-        return View();
+        Teams = _dataContext.Teams,
+    });
+
+    [HttpPost]
+    public IActionResult AddSeries(AddingViewModel model)
+    {
+        model.Series.Team1ID = int.Parse(model.Team1ID);
+        model.Series.Team2ID = int.Parse(model.Team2ID);
+        _dataContext.AddSeries(model.Series);
+        return RedirectToAction("ViewSeries", "Series");
     }
 
     public IActionResult AddGame() => View();
@@ -37,18 +39,21 @@ public class AddController : Controller
         return View();
     }
 
-    public IActionResult AddPlayerBox() => View();
+    public IActionResult AddPlayerBox(int id) => View(new AddingViewModel
+    {
+        Game = _dataContext.Games.Include(s => s.Series).FirstOrDefault(g => g.GameID == id),
+        PlayerTeams = _dataContext.PlayerTeams
+        .Include(p => p.Player),
+    });
+
     [HttpPost]
     [ValidateAntiForgeryToken]
-
-    public IActionResult AddPlayerBox(int id, PlayerBox model)
+    public IActionResult AddPlayerBox(AddingViewModel model)
     {
-        model.GameID = id;
-        if (ModelState.IsValid)
-        {
-            _dataContext.AddPlayerBox(model);
-        }
-        return View();
+        model.Game = _dataContext.Games.FirstOrDefault(g => g.GameID == model.PlayerBox.GameID);
+        model.PlayerBox.PlayerID = int.Parse(model.PlayerID);
+        _dataContext.AddPlayerBox(model.PlayerBox);
+        return RedirectToAction("AddPlayerBox", "Add", new { id = model.Game.GameID });
     }
 
 
@@ -95,17 +100,63 @@ public class AddController : Controller
         return View();
     }
 
+    //Roster
+    public IActionResult AddTeam() => View();
 
-    //Hall of Fame
-    public IActionResult AddHallOfFame() => View();
     [HttpPost]
-
-    public IActionResult AddHallOfFame(HallOfFame model)
+    public IActionResult AddTeam(Team model)
     {
         if (ModelState.IsValid)
         {
-            _dataContext.AddHallOfFame(model);
+            model.Overall = 0;
+            _dataContext.AddTeam(model);
         }
         return View();
+    }
+
+    public IActionResult AddPlayer() => View(new AddPlayerViewModel
+    {
+        Players = _dataContext.Players,
+    });
+
+    [HttpPost]
+    public IActionResult AddPlayer(AddPlayerViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            _dataContext.AddPlayer(model.Player);
+        }
+        return RedirectToAction("AddPlayer", "Add");
+    }
+
+    public IActionResult AddPlayerTeam(int id) => View(new AddPlayerTeamViewModel
+    {
+        team = _dataContext.Teams.FirstOrDefault(t => t.TeamID == id),
+        Players = _dataContext.Players,
+    });
+
+    [HttpPost]
+    public IActionResult CreatePlayerTeam(AddPlayerTeamViewModel inputModel)
+    {
+        try
+        {
+            PlayerTeam playerTeam = new PlayerTeam()
+            {
+                PlayerID = Convert.ToInt32(inputModel.PlayerID),
+                TeamID = inputModel.TeamID,
+                Overall = inputModel.Overall,
+            };
+            
+            _dataContext.PlayerTeams.Add(playerTeam);
+            _dataContext.SaveChanges();
+            _dataContext.Dispose();
+        }
+        catch (Exception e)
+        {
+            var exceptionText = e.InnerException;
+            Console.WriteLine(exceptionText);
+        }
+
+        return RedirectToAction("AddPlayerTeam", "Add", new { id = inputModel.TeamID });
     }
 }

@@ -2,7 +2,7 @@
 
 <div class="pl-2 pt-2">
   <h1>Game @Model.game.GameNumber</h1>
-  <h3>@Model.series.Team1: @Model.game.Team1Score - @Model.series.Team2: @Model.game.Team2Score</h3>
+  <h3>@Model.series.Team1.TeamName: @Model.game.Team1Score - @Model.series.Team2.TeamName: @Model.game.Team2Score</h3>
 </div>
 
 <hr style="height: 3px">
@@ -23,6 +23,7 @@ else if (Model.PlayerBoxes.Count() == 0)
 }
 else
 {
+  if (Model.series.Team1.PrimaryColor == Model.series.Team2.PrimaryColor) {Model.series.Team2.TeamColor1 = Model.series.Team2.TeamColor2;}
 
   int x = 1;
 
@@ -36,14 +37,14 @@ else
       string teamColor = "";
       if (x == 1)
       {
-        teamName = Model.series.Team1;
-        teamColor = Model.series.Team1Color;
+        teamName = Model.series.Team1.TeamName;
+        teamColor = Model.series.Team1.TeamColor1;
       }
 
       if (x == 2)
       {
-        teamName = Model.series.Team2;
-        teamColor = Model.series.Team2Color;
+        teamName = Model.series.Team2.TeamName;
+        teamColor = Model.series.Team2.TeamColor1;
       }
 
       <div class="col m-2">
@@ -55,7 +56,7 @@ else
         <table class="table table-sm smallText table-borderless m-0">
 
           <thead>
-            <tr class="text-white c-@teamColor">
+            <tr style="background-color: #@teamColor" class="text-white">
               <th class="w-auto" scope="col"> Player Name </th>
               <th class="w-auto" scope="col"> MIN </th>
               <th class="w-auto" scope="col"> PTS </th>
@@ -94,7 +95,7 @@ else
                 else { colorChange = "#7a0b0b"; }
 
                 <tr>
-                  <td> @playerBox.PlayerName </td>
+                  <td> @playerBox.Player.PlayerShortName </td>
                   <td> @playerBox.MIN </td>
                   <td> @playerBox.PTS </td>
                   <td> @playerBox.REB </td>
@@ -151,7 +152,7 @@ else
 
         </table>
         </div>
-        }
+        
       </div>
       x++;
     }
