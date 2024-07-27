@@ -18,18 +18,38 @@
     <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
 </head>
 
-<body>
+<body id="bootstrap-overrides">
 
     <div id="content" class="container">
-        <nav
-            class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow border-bottom-3 border-dark" style="background: #171717;">
+        
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow border-bottom-3 border-dark" style="background: #171717;">
 
             <div class="container text-white">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> 
-                    <img style="width: 200px; height: auto;" src="/Images/logo.png" alt="NBA2KSTATS Logo"> 
-                </a>
+                <div class="hideWhenSmall"> 
+                    <span class="dropdown">
+                        <a class="navbar-brand " type="button" data-toggle="dropdown" aria-expanded="false"> <i class="fas fa-bars"></i> </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="" asp-controller="Series" asp-action="ViewSeries"> View Series</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Season" asp-action="ViewSeasons"> View Seasons</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="StatView"> Stat Viewer</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Roster" asp-action="ViewTeams"> View Teams</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Roster" asp-action="ViewPlayers"> View Players</a>
+                        </div>
+                    </span>
+                    <span> 
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> 
+                        <img style="width: 200px; height: auto;" src="/Images/logo.png" alt="NBA2KSTATS Logo"> 
+                        </a> 
+                    </span>
+                </div>
 
-                <div class="dropdown">
+                <div class="hideWhenLarge"> 
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> 
+                        <img style="width: 200px; height: auto;" src="/Images/logo.png" alt="NBA2KSTATS Logo"> 
+                    </a>
+                </div>
+
+                <div class="dropdown hideWhenLarge">
                     <a class="navbar-brand dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                         Game Stats </a>
                     <div class="dropdown-menu">
@@ -42,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="dropdown">
+                <div class="dropdown hideWhenLarge">
                     <a class="navbar-brand dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                         Rosters </a>
                     <div class="dropdown-menu">
@@ -54,18 +74,25 @@
                 @{
                     if (User.IsInRole("admin"))
                     {
-                        <a class="navbar-brand" asp-area="" asp-controller="Add" asp-action="AddHub"> Add</a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>                        
+                        <div class="hideWhenLarge">
+                            <a class="navbar-brand" asp-area="" asp-controller="Add" asp-action="AddHub"> Add</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
                     }
                 }
-                <partial name="_LoginPartial" />
+
+                <div>
+                    <partial name="_LoginPartial" />
+                </div>
+                
             </div>
         </nav>
 
         <main role="main">
-            <div class="bg-light" style="min-height: 94vh;">
+            <div class="bg-light custom-padding" style="min-height: 94vh;">
                 @RenderBody()
             </div>
         </main>

@@ -1,18 +1,18 @@
 @model PlayerBoxViewModel
 
 <div class="pl-2 pt-2">
-  <h1>Game @Model.game.GameNumber</h1>
-  <h3>@Model.series.Team1.TeamName: @Model.game.Team1Score - @Model.series.Team2.TeamName: @Model.game.Team2Score</h3>
+  <h1>Game @Model.Game.GameNumber</h1>
+  <h3>@Model.Series.Team1.TeamName: @Model.Game.Team1Score - @Model.Series.Team2.TeamName: @Model.Game.Team2Score</h3>
 </div>
 
 <hr style="height: 3px">
 
 @if (User.IsInRole("admin"))
 {
-  <a asp-action="AddPlayerBox" asp-controller="Add" asp-route-id="@Model.game.GameID">Add Player Stats</a>
+  <a asp-action="AddPlayerBox" asp-controller="Add" asp-route-id="@Model.Game.GameID">Add Player Stats</a>
 }
 
-@if (User.IsInRole("viewer") == false && Model.series.IsAppropriate == false)
+@if (User.IsInRole("viewer") == false && Model.Series.IsAppropriate == false)
 {
   <p> No data available </p>
 }
@@ -23,7 +23,7 @@ else if (Model.PlayerBoxes.Count() == 0)
 }
 else
 {
-  if (Model.series.Team1.PrimaryColor == Model.series.Team2.PrimaryColor) {Model.series.Team2.TeamColor1 = Model.series.Team2.TeamColor2;}
+  if (Model.Series.Team1.PrimaryColor == Model.Series.Team2.PrimaryColor) {Model.Series.Team2.TeamColor1 = Model.Series.Team2.TeamColor2;}
 
   int x = 1;
 
@@ -37,14 +37,14 @@ else
       string teamColor = "";
       if (x == 1)
       {
-        teamName = Model.series.Team1.TeamName;
-        teamColor = Model.series.Team1.TeamColor1;
+        teamName = Model.Series.Team1.TeamName;
+        teamColor = Model.Series.Team1.TeamColor1;
       }
 
       if (x == 2)
       {
-        teamName = Model.series.Team2.TeamName;
-        teamColor = Model.series.Team2.TeamColor1;
+        teamName = Model.Series.Team2.TeamName;
+        teamColor = Model.Series.Team2.TeamColor1;
       }
 
       <div class="col m-2">
@@ -57,7 +57,7 @@ else
 
           <thead>
             <tr style="background-color: #@teamColor" class="text-white">
-              <th class="w-auto" scope="col"> Player Name </th>
+              <th class="w-auto" scope="col"> Player </th>
               <th class="w-auto" scope="col"> MIN </th>
               <th class="w-auto" scope="col"> PTS </th>
               <th scope="col"> REB </th>
@@ -118,7 +118,7 @@ else
             @{
               int PTS = 0; int REB = 0; int AST = 0; int STLS = 0; int BLK = 0; int TOR = 0; int FGM = 0; int FGA = 0; int TPM
               = 0; int TPA = 0; int FTM = 0;
-              @foreach (PlayerBox playerBox2 in Model.PlayerBoxes.Where(p => p.Team == x && p.GameID == @Model.game.GameID))
+              @foreach (PlayerBox playerBox2 in Model.PlayerBoxes.Where(p => p.Team == x && p.GameID == @Model.Game.GameID))
               {
                 PTS = (@playerBox2.PTS + @PTS);
                 REB = (@playerBox2.REB + @REB);

@@ -2,8 +2,8 @@
 
 @{
     var teamBadge = "bronze";
-    double overall = Convert.ToDouble(Model.team.Overall);
-    if (overall > 87.5) { teamBadge = "unobtainium"; }
+    double overall = Convert.ToDouble(Model.Team.Overall);
+    if (overall > 87.5) { teamBadge = "unobtainium-2"; }
     else if (overall > 86) { teamBadge = "dark-matter"; }
     else if (overall > 85.5) { teamBadge = "galaxy-opal"; }
     else if (overall > 85) { teamBadge = "pink-diamond"; }
@@ -20,14 +20,14 @@
 <div class="p-4">
         
     <div class="pb-1">
-        <h1> @Model.team.Year @Model.team.City @Model.team.TeamName </h1>
-        <h4> Overall: <span class="overallBadge @teamBadge"> @Model.team.Overall </span> </h4>
+        <h1> @Model.Team.Year @Model.Team.City @Model.Team.TeamName </h1>
+        <h4> Overall: <span class="overallBadge @teamBadge"> @Model.Team.Overall </span> </h4>
     </div>
     
 
     @if (User.IsInRole("admin"))
     {
-        <a asp-action="AddPlayerTeam" asp-controller="Add" asp-route-id="@Model.team.TeamID">Add Player</a>
+        <a asp-action="AddPlayerTeam" asp-controller="Add" asp-route-id="@Model.Team.TeamID">Add Player</a>
     }
 
     @if (Model.PlayerTeams.Count() == 0)
@@ -60,7 +60,7 @@
                     else { badgeType = "bronze"; }
 
                     <tr>
-                        <th> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
+                        <th id="badgeCellFix"> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
                         <th> <a href="/Roster/PlayerDetail?id=@playerTeam.PlayerID"> <div style="color: black"> @playerTeam.Player.PlayerFullName </div> </a> </th>
                         @if (User.IsInRole("admin"))
                         {

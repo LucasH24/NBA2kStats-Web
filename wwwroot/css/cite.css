@@ -38,6 +38,16 @@ hr {
   background-color: black;  
 }
 
+.custom-padding {
+  padding: 20px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+
 .overallBadge {
   background-color: white;
   color: white;
@@ -118,6 +128,52 @@ hr {
   padding-right: 2px;
 }
 
+.unobtainium-2 {
+  background-image: linear-gradient(#500b5e, #050505);
+  box-shadow: #3a084a 0px 0px 8px 0px;
+}
+
+@media only screen and (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+  .custom-padding {
+    padding: 5px;
+  }
+  #bootstrap-overrides #content {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    max-width: 10000px;
+  }
+  #bootstrap-overrides .table-sm td {
+    padding: 2px;
+    font-size: 10px;
+  }
+  #bootstrap-overrides .table-sm th {
+    padding: 1px;
+    font-size: 10px;
+  }
+  .hideWhenLarge {
+    display: none;
+  }
+
+  #bootstrap-overrides .teamBadge {
+    padding-bottom: 3px;
+    padding-top: 3px;
+  }
+ 
+  #bootstrap-overrides #badgeCellFix{
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+@media only screen and (min-width: 801px) {
+  .hideWhenSmall {
+    display: none;
+  }
+}
 
 
 

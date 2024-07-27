@@ -1,18 +1,18 @@
 @model SeasonGameViewModel
 
-<div class="p-4">
+<div>
         
     <div class="pb-1">
-        <h1>@Model.season.Team1 vs @Model.season.Team2 (@Model.season.Team1W - @Model.season.Team2W)</h1>
+        <h1>@Model.Season.Team1 vs @Model.Season.Team2 (@Model.Season.Team1W - @Model.Season.Team2W)</h1>
     </div>
 
 
     @if (User.IsInRole("admin"))
     {
-        <a asp-action="AddSeasonGame" asp-controller="Add" asp-route-id="@Model.season.SeasonID">Add Game</a>
+        <a asp-action="AddSeasonGame" asp-controller="Add" asp-route-id="@Model.Season.SeasonID">Add Game</a>
     }
 
-    @if (User.IsInRole("viewer") == false && Model.season.IsAppropriate == false)
+    @if (User.IsInRole("viewer") == false && Model.Season.IsAppropriate == false)
     {
         <p> No data available </p>
     }
@@ -23,7 +23,7 @@
     }
     else
     {
-        <div class="rounded w-75" style="border-width: 2px; border-style:solid;"> 
+        <div class="rounded" style="border-width: 2px; border-style:solid; width: 85%"> 
             <table class="table table-sm m-0">
                 <tr>
                     <th scope="col"> Game </th>
@@ -42,7 +42,7 @@
                         <th style="color: #@game.Team2.TeamColor1"> @game.Team2.FullName </th>
                         <td> @game.Team1Score - @game.Team2Score </td>
                         <td> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID"
-                                asp-route-seasonID="@Model.season.SeasonID">
+                                asp-route-seasonID="@Model.Season.SeasonID">
                                 Game Stats </a>
                         </td>
                     </tr>
@@ -60,27 +60,27 @@
 
             if (x == 1)
             {
-                teamName = Model.season.Team1;
-                teamColor = Model.season.Team1Color;
+                teamName = Model.Season.Team1;
+                teamColor = Model.Season.Team1Color;
             }
 
             if (x == 2)
             {
-                teamName = Model.season.Team2;
-                teamColor = Model.season.Team2Color;
+                teamName = Model.Season.Team2;
+                teamColor = Model.Season.Team2Color;
             }
 
 
 
             <h3 class="pt-3"> @teamName Stats</h3>
 
-            <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
+            <div class="rounded" style="border-width: 2px; border-style:solid;">
                 <table class="table table-sm table-borderless table-striped m-0">
                     <thead>
 
                         <thead>
                             <tr style="background-color: #@teamColor" class="text-white">
-                                <th class="w-auto" scope="col"> Player Name </th>
+                                <th class="w-auto" scope="col"> Player </th>
                                 <th class="w-auto" scope="col"> MIN </th>
                                 <th class="w-auto" scope="col"> PTS </th>
                                 <th scope="col"> REB </th>
@@ -107,7 +107,7 @@
                                 seasonLength = seasonLength + seasonBox.MIN;
                             }
                             seasonLength = seasonLength / 10;
-                            seasonLength = seasonLength / Model.season.PlayedGames;
+                            seasonLength = seasonLength / Model.Season.PlayedGames;
 
                             double gameScale = 36 / seasonLength;
                             int i = 0;
@@ -162,19 +162,19 @@
                                     TPA = seasonBox.TPA + TPA;
 
                                 }
-                                MIN = Math.Round(((MIN / Model.season.PlayedGames) * gameScale), 1);
-                                PTS = Math.Round(((PTS / Model.season.PlayedGames) * gameScale), 1);
-                                REB = Math.Round(((REB / Model.season.PlayedGames) * gameScale), 1);
-                                AST = Math.Round(((AST / Model.season.PlayedGames) * gameScale), 1);
-                                STLS = Math.Round(((STLS / Model.season.PlayedGames) * gameScale), 1);
-                                BLK = Math.Round(((BLK / Model.season.PlayedGames) * gameScale), 1);
-                                TOR = Math.Round(((TOR / Model.season.PlayedGames) * gameScale), 1);
-                                FTM = Math.Round(((FTM / Model.season.PlayedGames) * gameScale), 1);
+                                MIN = Math.Round(((MIN / Model.Season.PlayedGames) * gameScale), 1);
+                                PTS = Math.Round(((PTS / Model.Season.PlayedGames) * gameScale), 1);
+                                REB = Math.Round(((REB / Model.Season.PlayedGames) * gameScale), 1);
+                                AST = Math.Round(((AST / Model.Season.PlayedGames) * gameScale), 1);
+                                STLS = Math.Round(((STLS / Model.Season.PlayedGames) * gameScale), 1);
+                                BLK = Math.Round(((BLK / Model.Season.PlayedGames) * gameScale), 1);
+                                TOR = Math.Round(((TOR / Model.Season.PlayedGames) * gameScale), 1);
+                                FTM = Math.Round(((FTM / Model.Season.PlayedGames) * gameScale), 1);
 
-                                AFGM = Math.Round((FGM / Model.season.PlayedGames) * gameScale, 1);
-                                AFGA = Math.Round((FGA / Model.season.PlayedGames) * gameScale, 1);
-                                ATPM = Math.Round((TPM / Model.season.PlayedGames) * gameScale, 1);
-                                ATPA = Math.Round((TPA / Model.season.PlayedGames) * gameScale, 1);
+                                AFGM = Math.Round((FGM / Model.Season.PlayedGames) * gameScale, 1);
+                                AFGA = Math.Round((FGA / Model.Season.PlayedGames) * gameScale, 1);
+                                ATPM = Math.Round((TPM / Model.Season.PlayedGames) * gameScale, 1);
+                                ATPA = Math.Round((TPA / Model.Season.PlayedGames) * gameScale, 1);
 
                                 FMIN = FMIN + MIN;
                                 FPTS = FPTS + PTS;
@@ -256,6 +256,7 @@
                                 <td> @FFGP% </td>
                                 <td> @FTPP% </td>
                                 <td> @FFTM </td>
+                                <td> </td>
                             </tr>
                         }
                     </tbody>
@@ -265,5 +266,4 @@
         }
     }
     </div>
-    }
 </div>

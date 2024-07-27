@@ -1,11 +1,11 @@
 @model SeasonViewModel
 
-<div class="p-4">
+<div>
     <div class="pb-2">
         <h1>Seasons</h1>
     </div>
 
-    @if (Model.seasons.Count() == 0)
+    @if (Model.Seasons.Count() == 0)
     {
         <p>There are no seasons</p>
     }
@@ -28,7 +28,7 @@
 
                     if (User.IsInRole("viewer"))
                     {
-                        foreach (Season season in Model.seasons)
+                        foreach (Season season in Model.Seasons)
                         {
                             <tr>
                                 <th scope="col"> </th>
@@ -44,7 +44,7 @@
 
                     else
                     {
-                        @foreach (Season season in Model.seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
+                        @foreach (Season season in Model.Seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
                         {
                             <tr>
                                 <th scope="col"> </th>

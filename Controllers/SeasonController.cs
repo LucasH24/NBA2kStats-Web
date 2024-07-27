@@ -11,13 +11,13 @@ public class SeasonController : Controller
 
     public IActionResult ViewSeasons() => View(new SeasonViewModel
     {
-        seasons = _dataContext.Seasons,
+        Seasons = _dataContext.Seasons,
         //seasons = _dataContext.Seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"),
     });
 
     public IActionResult SeasonDetail(int id) => View(new SeasonGameViewModel
     {
-        season = _dataContext.Seasons.FirstOrDefault(s => s.SeasonID == id),
+        Season = _dataContext.Seasons.FirstOrDefault(s => s.SeasonID == id),
         SeasonGames = _dataContext.SeasonGames
         .Include(t => t.Team1)
         .Include(t => t.Team2)
@@ -27,7 +27,7 @@ public class SeasonController : Controller
 
     public IActionResult SeasonGameDetail(int id, int seasonID) => View(new SeasonBoxViewModel
     {
-        season = _dataContext.Seasons.FirstOrDefault(s => s.SeasonID == seasonID),
+        Season = _dataContext.Seasons.FirstOrDefault(s => s.SeasonID == seasonID),
         SeasonGame = _dataContext.SeasonGames
         .Include(t => t.Team1)
         .Include(t => t.Team2)

@@ -1,4 +1,4 @@
-<div class="p-3">
+<div>
   <h1>Stat Viewer</h1>
 </div>
 
@@ -19,9 +19,11 @@
     disabled title="View all team series averages">
     Team Stats </button>
 
+</div>
+
+<div class="pl-3"> 
   <input type="checkbox" id="showFilters" onclick="showFilters()" name="showFilters">
   <label style="padding-right: 10px;" for="showFilters"> Show Filters </label>
-
 </div>
 
 <div id="filters" class="pl-3" hidden>
@@ -74,7 +76,7 @@
 
 </div>
 
-<div class="fixTableHead" id="tableHeightStyle" style="overflow-x: hidden; height: 728px;">
+<div class="fixTableHead" style="overflow-y: auto; height: 75vh;">
   <table id="playerStatsTable" class="table table-sm table-borderless w-100 table-striped" style="display: none;">
     <thead>
       <tr>
@@ -1116,44 +1118,23 @@
     }
   }
 
-  async function fetchSeasonBoxes() {
-    const response = await fetch('/Data/GetSeasonBoxes');
+  async function fetchData() {
+    var response = await fetch('/Data/GetSeasonBoxes');
     seasonBoxes = await response.json();
-  }
-
-  async function fetchSeasonGames() {
-    const response = await fetch('/Data/GetSeasonGames');
+    response = await fetch('/Data/GetSeasonGames');
     seasonGames = await response.json();
-    console.log(seasonGames)
-  }
-
-  async function fetchSeasons() {
-    const response = await fetch('/Data/GetSeasons');
+    response = await fetch('/Data/GetSeasons');
     seasons = await response.json();
-  }
-
-  async function fetchPlayerBoxes() {
-    const response = await fetch('/Data/GetPlayerBoxes');
+    response = await fetch('/Data/GetPlayerBoxes');
     playerBoxes = await response.json();
-  }
-
-  async function fetchGames() {
-    const response = await fetch('/Data/GetGames');
+    response = await fetch('/Data/GetGames');
     games = await response.json();
-  }
-
-  async function fetchSeries() {
-    const response = await fetch('/Data/GetSeries');
+    response = await fetch('/Data/GetSeries');
     series = await response.json();
   }
 
   async function callData() {
-    await fetchSeasonBoxes();
-    await fetchSeasonGames();
-    await fetchSeasons();
-    await fetchPlayerBoxes();
-    await fetchGames();
-    await fetchSeries();
+    await fetchData();
 
     connectPlayerBoxes();
     connectSeasonBoxes();

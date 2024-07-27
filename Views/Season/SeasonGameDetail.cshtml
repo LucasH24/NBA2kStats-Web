@@ -12,7 +12,7 @@
     <a asp-action="AddSeasonBox" asp-controller="Add" asp-route-id="@Model.SeasonGame.SeasonGameID">Add Player Stats</a>
 }
 
-@if (User.IsInRole("viewer") == false && Model.season.IsAppropriate == false)
+@if (User.IsInRole("viewer") == false && Model.Season.IsAppropriate == false)
 {
     <p> No data available </p>
 }
@@ -55,7 +55,7 @@ else
 
                     <thead>
                         <tr style="background-color: #@teamColor" class="text-white">
-                            <th class="w-auto" scope="col"> Player Name </th>
+                            <th class="w-auto" scope="col"> Player </th>
                             <th class="w-auto" scope="col"> MIN </th>
                             <th class="w-auto" scope="col"> PTS </th>
                             <th scope="col"> REB </th>

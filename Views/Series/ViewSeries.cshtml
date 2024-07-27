@@ -1,11 +1,11 @@
 @model SeriesViewModel
 
-<div class="p-4">
+<div>
   <div class="pb-2">
     <h1>Series</h1>
   </div>
 
-  @if (Model.series.Count() == 0)
+  @if (Model.Series.Count() == 0)
   {
     <p>There are no series</p>
   }
@@ -26,7 +26,7 @@
 
           if (User.IsInRole("viewer"))
           {
-            foreach (Series series in Model.series)
+            foreach (Series series in Model.Series)
             {
               if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
               <tr>
@@ -40,7 +40,7 @@
             }
           }
           else {
-            foreach (Series series in Model.series.Where(s => s.Team1.IsAppropriate == true && s.Team2.IsAppropriate == true))
+            foreach (Series series in Model.Series.Where(s => s.Team1.IsAppropriate == true && s.Team2.IsAppropriate == true))
             {
               if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
               <tr>

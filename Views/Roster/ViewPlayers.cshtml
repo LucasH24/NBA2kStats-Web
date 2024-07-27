@@ -1,4 +1,4 @@
-<div class="p-4">
+<div>
     <div class="pb-2">
         <h1>Players</h1>
     </div>
@@ -66,7 +66,7 @@
                 $("#playersTable").append(`
                 <tr> 
                     <td>  </td>
-                    <th> <span class="overallBadge ${badgeType}"> ${filteredPlayers[i].overall} </span> </th>
+                    <th id="badgeCellFix"> <span class="overallBadge ${badgeType}"> ${filteredPlayers[i].overall} </span> </th>
                     <th> <a href="/Roster/PlayerDetail?id=${filteredPlayers[i].playerID}"> <div style="color: black"> ${filteredPlayers[i].player.playerFullName} </div> </a> </th>
                     <th> <a href="/Roster/TeamDetail?id=${filteredPlayers[i].teamID}"> <div style="color: #${filteredPlayers[i].team.teamColor1}"> ${filteredPlayers[i].team.fullName} </div> </a> </th>
                 </tr>

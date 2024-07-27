@@ -15,7 +15,7 @@ public class RosterController : Controller
 
     public IActionResult TeamDetail(int id) => View(new TeamDetailViewModel
     {
-        team = _dataContext.Teams.FirstOrDefault(t => t.TeamID == id),
+        Team = _dataContext.Teams.FirstOrDefault(t => t.TeamID == id),
         PlayerTeams = _dataContext.PlayerTeams.Where(p => p.TeamID == id)
         .Include(p => p.Player)
         .Include(t => t.Team),

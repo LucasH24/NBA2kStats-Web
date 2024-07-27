@@ -1,4 +1,4 @@
 public class SeasonViewModel
 {
-  public IEnumerable<Season> seasons { get; set; }
+  public IEnumerable<Season> Seasons { get; set; }
 }

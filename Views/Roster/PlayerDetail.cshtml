@@ -1,6 +1,6 @@
 @model PlayerDetailViewModel
 
-<div class="p-4">
+<div>
 
     <div class="pb-1">
         <h1> @Model.Player.PlayerFullName </h1>
@@ -32,7 +32,7 @@
                     else { badgeType = "bronze"; }
 
                     <tr>
-                        <th> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
+                        <th id="badgeCellFix"> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
                         <td style="font-weight: bold"> @playerTeam.Player.PlayerShortName </td>
                         <th> <a href="/Roster/TeamDetail?id=@playerTeam.TeamID"> <div style="color: #@playerTeam.Team.TeamColor1"> @playerTeam.Team.FullName </div> </a> </th>
                     </tr>

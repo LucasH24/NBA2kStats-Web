@@ -1,4 +1,4 @@
-<div class="p-4">
+<div>
     <div class="pb-2">
         <h1>Teams</h1>
     </div>
@@ -52,7 +52,7 @@
         { 
             let overall = (filteredTeams[i].overall).toFixed(1)
             var badgeType = "bronze";
-            if (filteredTeams[i].overall > 87.5) { badgeType = "unobtainium"; }
+            if (filteredTeams[i].overall > 87.5) { badgeType = "unobtainium-2"; }
             else if (filteredTeams[i].overall > 86) { badgeType = "dark-matter"; }
             else if (filteredTeams[i].overall > 85.5) { badgeType = "galaxy-opal"; }
             else if (filteredTeams[i].overall > 85) { badgeType = "pink-diamond"; }
@@ -68,7 +68,7 @@
             $("#teamsTable").append(`
             <tr> 
                 <td>  </td>
-                <th> <span class="teamBadge ${badgeType}"> ${overall} </span> </th>
+                <th id="badgeCellFix"> <span class="teamBadge ${badgeType}"> ${overall} </span> </th>
                 <th> ${filteredTeams[i].year} </th>
                 <th> <a href="/Roster/TeamDetail?id=${filteredTeams[i].teamID}"> <div style="color: #${filteredTeams[i].teamColor1}"> ${filteredTeams[i].fullName} </div> </a> </th>
             </tr>

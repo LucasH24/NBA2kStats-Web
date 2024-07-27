@@ -1,15 +1,15 @@
 @model GameViewModel
 
-<div class="pb-1 pl-4 pt-4">
-  <h2> @Model.series.Team1.FullName vs @Model.series.Team2.FullName (@Model.series.Team1W - @Model.series.Team2W)</h2>
+<div class="pb-1 pt-4">
+  <h2> @Model.Series.Team1.FullName vs @Model.Series.Team2.FullName (@Model.Series.Team1W - @Model.Series.Team2W)</h2>
 </div>
 
 @if (User.IsInRole("admin"))
 {
-  <a asp-action="AddGame" asp-controller="Add" asp-route-id="@Model.series.SeriesID">Add Game</a>
+  <a asp-action="AddGame" asp-controller="Add" asp-route-id="@Model.Series.SeriesID">Add Game</a>
 }
 
-@if (User.IsInRole("viewer") == false && Model.series.IsAppropriate == false)
+@if (User.IsInRole("viewer") == false && Model.Series.IsAppropriate == false)
 {
   <p> No data available </p>
 }
@@ -22,26 +22,26 @@ else if (Model.Games.Count() == 0)
 else
 {
 
-  if (Model.series.Team1.PrimaryColor == Model.series.Team2.PrimaryColor) {Model.series.Team2.TeamColor1 = Model.series.Team2.TeamColor2;}
+  if (Model.Series.Team1.PrimaryColor == Model.Series.Team2.PrimaryColor) {Model.Series.Team2.TeamColor1 = Model.Series.Team2.TeamColor2;}
  
- <div class="row pt-2 ml-2 mr-2" style="max-width: 100%;">
+ <div class="flex-container pt-2 ml-2 mr-2" style="max-width: 100%;">
 
     @foreach (Game game in Model.Games.OrderBy(g => g.GameNumber))
     {
 
-      <div class="col border border-dark" style="min-width: 13%; ">
+      <div class="flex-item pl-3 pr-3 border border-dark" style="min-width: 13%; ">
         <div>
-          <a asp-action="GameDetail" asp-route-id="@game.GameID" asp-route-seriesID="@Model.series.SeriesID">
+          <a asp-action="GameDetail" asp-route-id="@game.GameID" asp-route-seriesID="@Model.Series.SeriesID">
             Game @game.GameNumber
           </a>
         </div>
 
         <div>
-          @Model.series.Team1.TeamName: @game.Team1Score
+          @Model.Series.Team1.TeamName: @game.Team1Score
         </div>
 
         <div>
-          @Model.series.Team2.TeamName: @game.Team2Score
+          @Model.Series.Team2.TeamName: @game.Team2Score
         </div>
       </div>
 
@@ -59,26 +59,26 @@ else
 
     if (x == 1)
     {
-      teamName = Model.series.Team1.TeamName;
-      teamColor = Model.series.Team1.TeamColor1;
+      teamName = Model.Series.Team1.TeamName;
+      teamColor = Model.Series.Team1.TeamColor1;
     }
 
     if (x == 2)
     {
-      teamName = Model.series.Team2.TeamName;
-      teamColor = Model.series.Team2.TeamColor1;
+      teamName = Model.Series.Team2.TeamName;
+      teamColor = Model.Series.Team2.TeamColor1;
     }
 
 
 
-    <h3 class="pl-4 pt-3"> @teamName Stats</h3>
-    <div class="rounded ml-4 w-75" style="border-width: 2px; border-style:solid;">
+    <h3 class="pt-3"> @teamName Stats</h3>
+    <div class="rounded" style="border-width: 2px; border-style:solid;">
       <table class="table table-sm table-borderless table-striped m-0">
         <thead>
 
           <thead>
             <tr style="background-color: #@teamColor" class="text-white">
-              <th class="w-auto" scope="col"> Player Name </th>
+              <th class="w-auto" scope="col"> Player </th>
               <th class="w-auto" scope="col"> MIN </th>
               <th class="w-auto" scope="col"> PTS </th>
               <th scope="col"> REB </th>
@@ -105,7 +105,7 @@ else
               seriesLength = seriesLength + playerBox.MIN;
             }
             seriesLength = seriesLength / 10;
-            seriesLength = seriesLength / Model.series.PlayedGames;
+            seriesLength = seriesLength / Model.Series.PlayedGames;
 
             double gameScale = 36 / seriesLength;
             int i = 0;
@@ -160,19 +160,19 @@ else
                 TPA = playerBox.TPA + TPA;
 
               }
-              MIN = Math.Round(((MIN / Model.series.PlayedGames) * gameScale), 1);
-              PTS = Math.Round(((PTS / Model.series.PlayedGames) * gameScale), 1);
-              REB = Math.Round(((REB / Model.series.PlayedGames) * gameScale), 1);
-              AST = Math.Round(((AST / Model.series.PlayedGames) * gameScale), 1);
-              STLS = Math.Round(((STLS / Model.series.PlayedGames) * gameScale), 1);
-              BLK = Math.Round(((BLK / Model.series.PlayedGames) * gameScale), 1);
-              TOR = Math.Round(((TOR / Model.series.PlayedGames) * gameScale), 1);
-              FTM = Math.Round(((FTM / Model.series.PlayedGames) * gameScale), 1);
+              MIN = Math.Round(((MIN / Model.Series.PlayedGames) * gameScale), 1);
+              PTS = Math.Round(((PTS / Model.Series.PlayedGames) * gameScale), 1);
+              REB = Math.Round(((REB / Model.Series.PlayedGames) * gameScale), 1);
+              AST = Math.Round(((AST / Model.Series.PlayedGames) * gameScale), 1);
+              STLS = Math.Round(((STLS / Model.Series.PlayedGames) * gameScale), 1);
+              BLK = Math.Round(((BLK / Model.Series.PlayedGames) * gameScale), 1);
+              TOR = Math.Round(((TOR / Model.Series.PlayedGames) * gameScale), 1);
+              FTM = Math.Round(((FTM / Model.Series.PlayedGames) * gameScale), 1);
 
-              AFGM = Math.Round((FGM / Model.series.PlayedGames) * gameScale, 1);
-              AFGA = Math.Round((FGA / Model.series.PlayedGames) * gameScale, 1);
-              ATPM = Math.Round((TPM / Model.series.PlayedGames) * gameScale, 1);
-              ATPA = Math.Round((TPA / Model.series.PlayedGames) * gameScale, 1);
+              AFGM = Math.Round((FGM / Model.Series.PlayedGames) * gameScale, 1);
+              AFGA = Math.Round((FGA / Model.Series.PlayedGames) * gameScale, 1);
+              ATPM = Math.Round((TPM / Model.Series.PlayedGames) * gameScale, 1);
+              ATPA = Math.Round((TPA / Model.Series.PlayedGames) * gameScale, 1);
 
               FMIN = FMIN + MIN;
               FPTS = FPTS + PTS;
@@ -254,6 +254,7 @@ else
               <td> @FFGP% </td>
               <td> @FTPP% </td>
               <td> @FFTM </td>
+              <td> </td>
             </tr>
           }
         </tbody>

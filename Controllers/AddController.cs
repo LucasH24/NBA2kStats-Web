@@ -131,7 +131,7 @@ public class AddController : Controller
 
     public IActionResult AddPlayerTeam(int id) => View(new AddPlayerTeamViewModel
     {
-        team = _dataContext.Teams.FirstOrDefault(t => t.TeamID == id),
+        Team = _dataContext.Teams.FirstOrDefault(t => t.TeamID == id),
         Players = _dataContext.Players,
     });
 

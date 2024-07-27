@@ -1,4 +1,4 @@
 public class SeriesViewModel
 {
-  public IEnumerable<Series> series { get; set; }
+  public IEnumerable<Series> Series { get; set; }
 }
