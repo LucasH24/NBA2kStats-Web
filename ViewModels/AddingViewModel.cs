@@ -1,10 +1,12 @@
 public class AddingViewModel
 {
     public Series Series { get; set; }
+    public Game Game { get; set; }
     public PlayerBox PlayerBox { get; set; }
+
+    public Season Season { get; set; }
     public SeasonGame SeasonGame { get; set; }
     public SeasonBox SeasonBox { get; set; }
-    public Game Game { get; set; }
 
     public IEnumerable<Player> Players { get; set; }
     public IEnumerable<PlayerTeam> PlayerTeams { get; set; }

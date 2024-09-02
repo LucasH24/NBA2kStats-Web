@@ -33,7 +33,7 @@
 
     function updateObject(seasonBoxID) {
         $.ajax({
-            url: '@Url.Action("DataManagement", "Roster")',
+            url: appsettings.FunctionUrl,
             data: { id: seasonBoxID },
             type: "POST",
         }).done(function () {

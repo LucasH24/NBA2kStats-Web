@@ -65,6 +65,7 @@ public class AddController : Controller
     {
         if (ModelState.IsValid)
         {
+
             _dataContext.AddSeason(model);
             return RedirectToAction("ViewSeasons", "Season");
         }
@@ -72,32 +73,38 @@ public class AddController : Controller
     }
 
 
-    public IActionResult AddSeasonGame() => View();
+    public IActionResult AddSeasonGame() => View(new AddingViewModel
+    {
+        Teams = _dataContext.Teams,
+    });
+
     [HttpPost]
     [ValidateAntiForgeryToken]
-
-    public IActionResult AddSeasonGame(int id, SeasonGame model)
+    public IActionResult AddSeasonGame(int id, AddingViewModel model)
     {
-        model.SeasonID = id;
-        if (ModelState.IsValid)
-        {
-            _dataContext.AddSeasonGame(model);
-        }
-        return View();
+        model.SeasonGame.SeasonID = id;
+        model.SeasonGame.Team1ID = int.Parse(model.Team1ID);
+        model.SeasonGame.Team2ID = int.Parse(model.Team2ID);
+        _dataContext.AddSeasonGame(model.SeasonGame);
+   
+        return RedirectToAction("ViewSeasons", "Season");
     }
 
-    public IActionResult AddSeasonBox() => View();
+    public IActionResult AddSeasonBox(int id) => View(new AddingViewModel
+    {
+        SeasonGame = _dataContext.SeasonGames.Include(s => s.Season).FirstOrDefault(g => g.SeasonGameID == id),
+        PlayerTeams = _dataContext.PlayerTeams
+        .Include(p => p.Player),
+    });
+
     [HttpPost]
     [ValidateAntiForgeryToken]
-
-    public IActionResult AddSeasonBox(int id, SeasonBox model)
+    public IActionResult AddSeasonBox(AddingViewModel model)
     {
-        model.SeasonGameID = id;
-        if (ModelState.IsValid)
-        {
-            _dataContext.AddSeasonBox(model);
-        }
-        return View();
+        model.SeasonGame = _dataContext.SeasonGames.FirstOrDefault(g => g.SeasonGameID == model.SeasonBox.SeasonGameID);
+        model.SeasonBox.PlayerID = int.Parse(model.PlayerID);
+        _dataContext.AddSeasonBox(model.SeasonBox);
+        return RedirectToAction("AddSeasonBox", "Add", new { id = model.SeasonGame.SeasonGameID });
     }
 
     //Roster
