@@ -11,6 +11,13 @@
     let teamId = 0;
     let teamOverall = 0;
 
+    function sortData(teamTotal) {
+        teamTotal.sort(function (a, b) {
+            return b - a;
+        })
+        return teamTotal;
+    }
+
     function updateTeamOveralls() {
         for (var i = 0; i < teams.length; i++) { 
             let teamTotal = [];
@@ -23,6 +30,8 @@
             while (teamTotal.length < 8) {
                 teamTotal.push(75);
             }
+
+            teamTotal = sortData(teamTotal);
 
             teamOverall = teamTotal[0] + teamTotal[1] + teamTotal[2] + teamTotal[3] + teamTotal[4] + teamTotal[5]
             teamOverall = teamOverall + ((teamTotal[6] + teamTotal[7]) / 2);
