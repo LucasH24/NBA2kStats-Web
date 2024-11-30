@@ -1,0 +1,100 @@
+@model PlayerBoxViewModel
+
+@*box score col*@
+@{
+    if (Model.Series.Team1.PrimaryColor == Model.Series.Team2.PrimaryColor) {Model.Series.Team2.TeamColor1 = Model.Series.Team2.TeamColor2;}
+    int i = 1;
+
+    <div style="padding-right: 30px;">
+
+      @while (3 > i)
+      {
+
+        string teamName = "";
+        string teamColor = "";
+        if (i == 1)
+        {
+          teamName = Model.Series.Team1.TeamName;
+          teamColor = Model.Series.Team1.TeamColor1;
+        }
+
+        if (i == 2)
+        {
+          teamName = Model.Series.Team2.TeamName;
+          teamColor = Model.Series.Team2.TeamColor1;
+        }
+
+        <div class="col pb-4">
+
+          <h3> @teamName Stats </h3>
+
+          <div class="rounded" style="border-width: 2px; border-style:solid;">
+
+            <table class="table table-sm smallText table-borderless m-0 text-white" style="background-color:#1c1c22">
+
+              <thead>
+                <tr style="background-color: #@teamColor; color: black">
+                  <th class="w-auto" scope="col"> Player </th>
+                  <th class="w-auto" scope="col"> MIN </th>
+                  <th class="w-auto" scope="col"> PTS </th>
+                  <th scope="col"> REB </th>
+                  <th scope="col"> AST </th>
+                  <th scope="col"> STL </th>
+                  <th scope="col"> BLK </th>
+                  <th scope="col"> TO </th>
+                  <th scope="col"> FG </th>
+                  <th scope="col"> 3PT </th>
+                  <th scope="col"> FTM </th>
+                  <th scope="col"> BRT </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @{
+                  int FT = 0;
+                  @foreach (PlayerBox playerBox in Model.PlayerBoxes.Where(p => p.Team == i))
+                  {
+                    FT = playerBox.PTS - (playerBox.TPM * 3 + ((playerBox.FGM - playerBox.TPM) * 2));
+                    double scoreFinal =
+                    (((playerBox.PTS + (0.4 * playerBox.FGM) - (0.8 * playerBox.FGA) - (0.4 * FT) + (0.5 * playerBox.REB) +
+                    playerBox.STLS + (0.7 * playerBox.AST) + (0.7 * playerBox.BLK) - playerBox.TOR) / (playerBox.MIN)) * 20);
+                    scoreFinal = scoreFinal - 7;
+                    scoreFinal = Math.Round(scoreFinal, 1);
+
+                    var colorChange = "";
+                    if (scoreFinal >= 15) { colorChange = "#ff00d9"; }
+                    else if (scoreFinal >= 10) { colorChange = "#0f77f5"; }
+                    else if (scoreFinal >= 6) { colorChange = "#0fe5f5"; }
+                    else if (scoreFinal >= 3) { colorChange = "#00c72b"; }
+                    else if (scoreFinal >= 0) { colorChange = "#e9f500"; }
+                    else if (scoreFinal >= -5) { colorChange = "#d46600"; }
+                    else { colorChange = "#f52a2a"; }
+
+                    <tr>
+                      <td> @playerBox.Player.PlayerShortName </td>
+                      <td> @playerBox.MIN </td>
+                      <td> @playerBox.PTS </td>
+                      <td> @playerBox.REB </td>
+                      <td> @playerBox.AST </td>
+                      <td> @playerBox.STLS </td>
+                      <td> @playerBox.BLK </td>
+                      <td> @playerBox.TOR </td>
+                      <td> @playerBox.FGM - @playerBox.FGA </td>
+                      <td> @playerBox.TPM - @playerBox.TPA </td>
+                      <td> @FT </td>
+                      <th style="color: @colorChange"> @scoreFinal </th>
+                    </tr>
+                  }
+                }
+
+              </tbody>
+
+            </table>
+          </div>
+
+        </div>
+        i++;
+      }
+    </div>
+}
+    

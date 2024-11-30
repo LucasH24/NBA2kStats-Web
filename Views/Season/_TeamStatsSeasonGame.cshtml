@@ -1,0 +1,147 @@
+@model SeasonBoxViewModel
+
+@{
+    int[] PTS = { 0, 0 }; int[] REB = { 0, 0 }; int[] AST = { 0, 0 }; int[] STLS = { 0, 0 }; int[] BLK = { 0, 0 }; int[] TOR = { 0, 0 };
+    int[] FGM = { 0, 0 }; int[] FGA = { 0, 0 }; int[]
+    TPM = { 0, 0 }; int[] TPA = { 0, 0 }; int[] FTM = { 0, 0 }; int[] ORB = { 0, 0 }; int[] FTA = { 0, 0 }; int[] FGP = { 0, 0 }; int[]
+    TPP = { 0, 0 }; int[] FTP = { 0, 0 }; int[] DRB = { 0, 0 };
+
+    @* Gathering Data for Team Stats Table*@
+    int x = 0;
+    while (2 > x)
+    {
+        foreach (SeasonBox playerBox2 in Model.SeasonBoxes.Where(p => p.Team == (x + 1) && p.SeasonGameID == @Model.SeasonGame.SeasonGameID))
+        {
+            PTS[x] = (playerBox2.PTS + PTS[x]);
+            REB[x] = (playerBox2.REB + REB[x]);
+            AST[x] = (playerBox2.AST + AST[x]);
+            STLS[x] = (playerBox2.STLS + STLS[x]);
+            BLK[x] = (playerBox2.BLK + BLK[x]);
+            TOR[x] = (playerBox2.TOR + TOR[x]);
+            FGM[x] = (playerBox2.FGM + FGM[x]);
+            FGA[x] = (playerBox2.FGA + FGA[x]);
+            TPM[x] = (playerBox2.TPM + TPM[x]);
+            TPA[x] = (playerBox2.TPA + TPA[x]);
+            FTM[x] = (playerBox2.PTS - (playerBox2.TPM * 3 + ((playerBox2.FGM - playerBox2.TPM) * 2)) + FTM[x]);
+        }
+
+        try
+        {
+            ORB[x] = Convert.ToInt32(Model.SeasonGame.Team1ORB);
+            DRB[x] = REB[x] - ORB[x];
+            FTA[x] = Convert.ToInt32(Model.SeasonGame.Team1FTA);
+            FGP[x] = (FGM[x] * 100) / FGA[x];
+            TPP[x] = (TPM[x] * 100) / TPA[x];
+            FTP[x] = (FTM[x] * 100) / FTA[x];
+        }
+        catch (Exception e)
+        {
+            ORB[x] = 0;
+            DRB[x] = 0;
+            FTA[x] = 0;
+            FGP[x] = (FGM[x] * 100) / FGA[x];
+            TPP[x] = (TPM[x] * 100) / TPA[x];
+            FTP[x] = 0;
+        }
+        x++;
+    }
+
+    string ReturnColor(int input1, int input2)
+    {
+        if (input1 > input2)
+        {
+            return "green";
+        }
+        if (input1 == input2)
+        {
+            return "yellow";
+        }
+        else
+        {
+            return "red";
+        }
+    }
+
+
+
+    @*team stats col*@
+    <div class="col col-4">
+
+        <h3> Team Stats</h3>
+
+        <div class="rounded" style="border-width: 2px; border-style:solid; background-color:#1c1c22; min-width: 300px;">
+
+            <div class="row pl-2 pr-2 pb-0 pt-3">
+                <div class="col d-flex"> @Model.Season.Team1 </div>
+                @if (Model.SeasonGame.Team1ORB.Equals(null))
+                {
+                    <div class="col d-flex justify-content-end" style="color: red">
+                        ERROR: DATA MISSING</div>
+                }
+                <div class="col d-flex justify-content-end"> @Model.Season.Team2 </div>
+            </div>
+
+            <hr style="background-color: white">
+
+            <table class="table table-sm table-borderless text-white">
+                <tr>
+                    <td style="color: @ReturnColor(PTS[0], PTS[1])"> @PTS[0] </td>
+                    <td> PTS </td>
+                    <td style="text-align: end; color: @ReturnColor(PTS[1], PTS[0])"> @PTS[1] </td>
+                </tr>
+                <tr>
+                    <td><span style="color: @ReturnColor(FGM[0], FGM[1])"> @FGM[0]/@FGA[0] </span> <span style="color: @ReturnColor(FGP[0], FGP[1])"> (@FGP[0]%) </span> </td>
+                    <td> FG </td>
+                    <td style="text-align: end;"> <span style="color: @ReturnColor(FGM[1], FGM[0])"> @FGM[1]/@FGA[1] </span> <span style="color: @ReturnColor(FGP[1], FGP[0])"> (@FGP[1]%) </span> </td>
+                </tr>
+                <tr>
+                    <td><span style="color: @ReturnColor(TPM[0], TPM[1])"> @TPM[0]/@TPA[0] </span> <span style="color: @ReturnColor(TPP[0], TPP[1])"> (@TPP[0]%) </span> </td>
+                    <td> 3PT </td>
+                    <td style="text-align: end;"> <span style="color: @ReturnColor(TPM[1], TPM[0])"> @TPM[1]/@TPA[1] </span> <span style="color: @ReturnColor(TPP[1], TPP[0])"> (@TPP[1]%) </span> </td>
+                </tr>
+                <tr>
+                    <td><span style="color: @ReturnColor(FTM[0], FTM[1])"> @FTM[0]/@FTA[0]</span> <span style="color: @ReturnColor(FTP[0], FTP[1])"> (@FTP[0]%) </span> </td>
+                    <td> FT </td>
+                    <td style="text-align: end;"> <span style="color: @ReturnColor(FTM[1], FTM[0])"> @FTM[1]/@FTA[1]</span> <span style="color: @ReturnColor(FTP[1], FTP[0])"> (@FTP[1]%) </span> </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(AST[0], AST[1])"> @AST[0] </td>
+                    <td> AST </td>
+                    <td style="text-align: end; color: @ReturnColor(AST[1], AST[0])"> @AST[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(REB[0], REB[1])"> @REB[0] </td>
+                    <td> REB </td>
+                    <td style="text-align: end; color: @ReturnColor(REB[1], REB[0])"> @REB[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(ORB[0], ORB[1])"> @ORB[0] </td>
+                    <td> ORB </td>
+                    <td style="text-align: end; color: @ReturnColor(ORB[1], ORB[0])"> @ORB[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(DRB[0], DRB[1])"> @DRB[0] </td>
+                    <td> DRB </td>
+                    <td style="text-align: end; color: @ReturnColor(DRB[1], DRB[0])"> @DRB[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(STLS[0], STLS[1])"> @STLS[0] </td>
+                    <td> STLS </td>
+                    <td style="text-align: end; color: @ReturnColor(STLS[1], STLS[0])"> @STLS[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(BLK[0], BLK[1])"> @BLK[0] </td>
+                    <td> BLK </td>
+                    <td style="text-align: end; color: @ReturnColor(BLK[1], BLK[0])"> @BLK[1] </td>
+                </tr>
+                <tr>
+                    <td style="color: @ReturnColor(TOR[1], TOR[0])"> @TOR[0] </td>
+                    <td> TOR </td>
+                    <td style="text-align: end; color: @ReturnColor(TOR[0], TOR[1])"> @TOR[1] </td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+}

@@ -1,61 +1,90 @@
-@model SeriesViewModel
-
 <div>
-  <div class="pb-2">
-    <h1>Series</h1>
-  </div>
+    <div class="pb-2">
+        <h1>Series</h1>
 
-  @if (Model.Series.Count() == 0)
-  {
-    <p>There are no series</p>
-  }
-  else
-  {
-    <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
-      <table class="table table-sm m-0">
-        <tr>
-          <th scope="col"> </th>
-          <th scope="col"> Team 1 </th>
-          <th scope="col"> Team 2 </th>
-          <th scope="col"> Result </th>
-          <th scope="col"> Version </th>
-          <th scope="col"> </th>
-        </tr>
+        <div>
+            <label for="nba2kFilter" style="font-weight: bold;"> Version: &nbsp; </label>
+                <select onchange="fillTable()" name="teamFilter" id="versionFilter" class="text-light"
+                    style="background-color: #1c1c22">
+                    <option selected value="All">All</option>
+                    <option value="2k13">NBA2k13</option>
+                    <option value="2k14">NBA2k14</option>
+                    <option value="2k15">NBA2k15</option>
+                    <option value="2k16">NBA2k16</option>
+                    <option value="2k17">NBA2k17</option>
+                    <option value="2k18">NBA2k18</option>
+                    <option value="2k19">NBA2k19</option>
+                    <option value="2k20">NBA2k20</option>
+                    <option value="2k21">NBA2k21</option>
+                    <option value="2k22">NBA2k22</option>
+                    <option value="2k23">NBA2k23</option>
+                    <option value="2k24">NBA2k24</option>
+                    <option value="2k25">NBA2k25</option>
+                </select>
+        </div>
 
-        @{
 
-          if (User.IsInRole("viewer"))
-          {
-            foreach (Series series in Model.Series)
-            {
-              if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
-              <tr>
-                <th scope="col"> </th>
-                <th style="color: #@series.Team1.TeamColor1"> @series.Team1.FullName </th>
-                <th style="color: #@series.Team2.TeamColor1"> @series.Team2.FullName </th>
-                <td> @series.Team1W-@series.Team2W </td>
-                <td> @series.NBA2k </td>
-                <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
-              </tr>
-            }
-          }
-          else {
-            foreach (Series series in Model.Series.Where(s => s.Team1.IsAppropriate == true && s.Team2.IsAppropriate == true))
-            {
-              if (series.Team1.PrimaryColor == series.Team2.PrimaryColor) {series.Team2.TeamColor1 = series.Team2.TeamColor2;}
-              <tr>
-                <th scope="col"> </th>
-                <th style="color: #@series.Team1.TeamColor1"> @series.Team1.FullName </th>
-                <th style="color: #@series.Team2.TeamColor1"> @series.Team2.FullName </th>
-                <td> @series.Team1W-@series.Team2W </td>
-                <td> @series.NBA2k </td>
-                <td> <a asp-action="SeriesDetail" asp-route-id="@series.SeriesID"> Series Stats </a> </td>
-              </tr>
-            }
-          }
-
-        }
-      </table>
+    <div class="rounded w-75" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+        <table class="table table-sm m-0">
+            <thead>
+                <tr class="text-light">
+                    <th scope="col"> </th>
+                    <th scope="col"> Team 1 </th>
+                    <th scope="col"> Team 2 </th>
+                    <th scope="col"> Result </th>
+                    <th scope="col"> Version </th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody id="seriesTable"></tbody>
+        </table>
     </div>
-  }
 </div>
+
+<script>
+
+    let series = [];
+    let filteredSeries = [];
+    function fillTable() {
+        document.getElementById("seriesTable").innerHTML = "";
+        filterSeries();
+        for (var i = 0; i < filteredSeries.length; i++) 
+        { 
+            if (filteredSeries[i].team1.primaryColor == filteredSeries[i].team2.primaryColor) {filteredSeries[i].team2.teamColor1 = filteredSeries[i].team2.teamColor2;}
+            $("#seriesTable").append(`
+            <tr class="text-light"> 
+                <td>  </td>
+                <th style="color: #${filteredSeries[i].team1.teamColor1}"> ${filteredSeries[i].team1.fullName} </span> </th>
+                <th style="color: #${filteredSeries[i].team2.teamColor1}"> ${filteredSeries[i].team2.fullName} </span> </th>
+                <td> ${filteredSeries[i].team1W} - ${filteredSeries[i].team2W} </td>
+                <td> ${filteredSeries[i].nbA2k} </td>
+                <td> <a href="/Series/SeriesDetail?id=${filteredSeries[i].seriesID}"> Series Stats </a> </td>
+            </tr>
+            `);
+        }
+    }
+
+    function filterSeries() {
+        filteredSeries = [];
+        const seriesFilter = document.getElementById("versionFilter").value;
+        for (var i = 0; i < series.length; i++) {
+            if (seriesFilter == "All") {
+                filteredSeries.push(series[i]);
+            }
+
+            else {
+                if (series[i].nbA2k == seriesFilter) {
+                    filteredSeries.push(series[i]);
+                }
+            }
+        }
+    }
+  
+    async function fetchSeries() {
+        const response = await fetch('/Data/GetSeries');
+        series = await response.json();
+        fillTable();
+    }
+
+    fetchSeries();
+</script>

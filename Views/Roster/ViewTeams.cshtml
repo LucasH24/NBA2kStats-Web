@@ -13,10 +13,10 @@
     <div>
     <label for="nba2kFilter" style="font-weight: bold"> Team Type </input>
       <select onchange="fillTable()" name="teamFilter" id="teamFilter">
-        <option selected value="All">All</option>
+        <option value="All">All</option>
         <option value="2022-23">2022-23</option>
         <option value="2023-24">2023-24</option>
-        <option value="2024-25">2024-25</option>
+        <option selected value="2024-25">2024-25</option>
         <option value="Classic">Classic</option>
         <option value="Custom">Custom</option>
         <option value="NotCustom">Not Custom</option>
@@ -25,8 +25,8 @@
   </div>
 
 
-    <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
-        <table class="table table-sm m-0">
+    <div class="rounded w-75" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+        <table class="table table-sm m-0 text-white">
             <thead>
                 <tr>
                     <th scope="col"> </th>
@@ -69,7 +69,7 @@
             <tr> 
                 <td>  </td>
                 <th id="badgeCellFix"> <span class="teamBadge ${badgeType}"> ${overall} </span> </th>
-                <th> ${filteredTeams[i].year} </th>
+                <th> <div> ${filteredTeams[i].year} </div> </th>
                 <th> <a href="/Roster/TeamDetail?id=${filteredTeams[i].teamID}"> <div style="color: #${filteredTeams[i].teamColor1}"> ${filteredTeams[i].fullName} </div> </a> </th>
             </tr>
             `);

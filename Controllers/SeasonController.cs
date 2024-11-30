@@ -12,7 +12,6 @@ public class SeasonController : Controller
     public IActionResult ViewSeasons() => View(new SeasonViewModel
     {
         Seasons = _dataContext.Seasons,
-        //seasons = _dataContext.Seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"),
     });
 
     public IActionResult SeasonDetail(int id) => View(new SeasonGameViewModel

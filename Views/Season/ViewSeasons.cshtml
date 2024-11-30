@@ -12,8 +12,8 @@
 
     else
     {
-        <div class="rounded w-75" style="border-width: 2px; border-style:solid;">
-            <table class="table table-sm m-0">
+        <div class="rounded w-75" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+            <table class="table table-sm m-0 text-light">
                 <tr>
                     <th scope="col"> </th>
                     <th scope="col"> ID </th>
@@ -44,7 +44,7 @@
 
                     else
                     {
-                        @foreach (Season season in Model.Seasons.Where(s => s.Team1 != "Goobers" && s.Team1 != "Buffoons"))
+                        @foreach (Season season in Model.Seasons.Where(s => s.IsAppropriate == true))
                         {
                             <tr>
                                 <th scope="col"> </th>

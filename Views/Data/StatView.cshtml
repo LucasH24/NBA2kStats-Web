@@ -4,18 +4,18 @@
 
 <div class="pl-3 pb-3">
 
-  <button class="btn btn btn-outline-primary" id="showBoxScores" onclick="showBoxScores()"
+  <button class="btn btn btn-outline-primary text-white" id="showBoxScores" onclick="showBoxScores()"
     title="View all player box scores">
     Box Scores </button>
 
-  <button class="btn btn btn-outline-primary" id="showSeriesStats" onclick="showSeriesStats()"
+  <button class="btn btn btn-outline-primary text-white" id="showSeriesStats" onclick="showSeriesStats()"
     title="View all player series averages"> Series Stats
   </button>
 
-  <button class="btn btn btn-outline-primary" id="showGameStats" onclick="showGameStats()" title="View all game stats">
+  <button class="btn btn btn-outline-primary text-white" id="showGameStats" onclick="showGameStats()" title="View all game stats">
     Game Stats </button>
 
-  <button class="btn btn btn-outline-dark" id="showTeamStats" onclick="showTeamStats()" style="margin-right: 15px"
+  <button class="btn btn btn-outline-dark text-white" id="showTeamStats" onclick="showTeamStats()" style="margin-right: 15px"
     disabled title="View all team series averages">
     Team Stats </button>
 
@@ -77,7 +77,7 @@
 </div>
 
 <div class="fixTableHead" style="overflow-y: auto; height: 75vh;">
-  <table id="playerStatsTable" class="table table-sm table-borderless w-100 table-striped" style="display: none;">
+  <table id="playerStatsTable" class="table table-sm w-100 table-striped text-white border" style="display: none; background-color:#1c1c22">
     <thead>
       <tr>
         <th scope="col"> # </th>
@@ -111,7 +111,7 @@
   </table>
 
 
-  <table id="teamStatsTable" class="table table-sm table-striped">
+  <table id="teamStatsTable" class="table table-sm table-striped text-white border" style="background-color:#1c1c22;">
     <thead style="position: sticky;">
       <tr>
         <th scope="col"> # </th>
@@ -972,25 +972,25 @@
   function getBRTColor(brt) {
     var colorChange = ""
     if (brt >= 15) {
-      colorChange = "#ac00f0"
+      colorChange = "#ff00d9"
     }
     else if (brt >= 10) {
-      colorChange = "#1c24ff"
+      colorChange = "#0f77f5"
     }
     else if (brt >= 6) {
-      colorChange = "#1c95ff"
+      colorChange = "#0fe5f5"
     }
     else if (brt >= 3) {
-      colorChange = "#187037"
+      colorChange = "#00c72b"
     }
     else if (brt >= 0) {
-      colorChange = "#9e9224"
+      colorChange = "#e9f500"
     }
     else if (brt >= -5) {
-      colorChange = "#ed2d2d"
+      colorChange = "#d46600"
     }
     else {
-      colorChange = "#7a0b0b"
+      colorChange = "#f52a2a"
     }
 
     return colorChange;

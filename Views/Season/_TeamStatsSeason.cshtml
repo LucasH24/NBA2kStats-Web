@@ -1,0 +1,159 @@
+@model SeasonGameViewModel
+@{
+    double seasonLength = 0;
+    foreach (SeasonBox seasonBox in Model.SeasonBoxes) {
+    seasonLength = seasonLength + seasonBox.MIN; 
+    }
+    seasonLength = seasonLength / 10;
+    seasonLength = seasonLength / Model.Season.PlayedGames;
+    double gameScale = 36 / seasonLength;
+
+    @*Gathering Data for Team Stats Table*@
+    double[] TPTS = { 0, 0 }; double[] TREB = { 0, 0 }; double[] TAST = { 0, 0 }; double[] TSTLS = { 0, 0 }; double[] TBLK = { 0, 0 }; double[] TTOR = { 0, 0 }; double[] TFGM = { 0, 0 }; double[] TFGA = { 0, 0 }; double[] TTPM = { 0, 0 }; double[] TTPA = { 0, 0 }; double[] TFTM = { 0, 0 }; double[] TORB = { 0, 0 }; double[] TFTA = { 0, 0 }; double[] TFGP = { 0, 0 }; double[] TTPP = { 0, 0 }; double[] TFTP = { 0, 0 }; double[] TDRB = { 0, 0 };
+    
+    int x = 0;
+    while (2 > x)
+    {
+        foreach (SeasonBox seasonBox in Model.SeasonBoxes.Where(p => p.Team == (x + 1)))
+        {
+            TPTS[x] = (seasonBox.PTS + TPTS[x]);
+            TREB[x] = (seasonBox.REB + TREB[x]);
+            TAST[x] = (seasonBox.AST + TAST[x]);
+            TSTLS[x] = (seasonBox.STLS + TSTLS[x]);
+            TBLK[x] = (seasonBox.BLK + TBLK[x]);
+            TTOR[x] = (seasonBox.TOR + TTOR[x]);
+            TFGM[x] = (seasonBox.FGM + TFGM[x]);
+            TFGA[x] = (seasonBox.FGA + TFGA[x]);
+            TTPM[x] = (seasonBox.TPM + TTPM[x]);
+            TTPA[x] = (seasonBox.TPA + TTPA[x]);
+            TFTM[x] = (seasonBox.PTS - (seasonBox.TPM * 3 + ((seasonBox.FGM - seasonBox.TPM) * 2)) + TFTM[x]);
+        }
+
+        try
+        {
+            foreach (SeasonGame seasonGame in Model.SeasonGames)
+            {
+                if (x == 0)
+                {
+                    TORB[x] = TORB[x] + Convert.ToDouble(seasonGame.Team1ORB);
+                    TFTA[x] = TFTA[x] + Convert.ToDouble(seasonGame.Team1FTA);
+                }
+                else
+                {
+                    TORB[x] = TORB[x] + Convert.ToDouble(seasonGame.Team2ORB);
+                    TFTA[x] = TFTA[x] + Convert.ToDouble(seasonGame.Team2FTA);
+                }
+            }
+
+
+            TDRB[x] = TREB[x] - TORB[x];
+            TFGP[x] = (TFGM[x] * 100) / TFGA[x];
+            TTPP[x] = (TTPM[x] * 100) / TTPA[x];
+            TFTP[x] = (TFTM[x] * 100) / TFTA[x];
+        }
+        catch (Exception e)
+        {
+            TORB[x] = 0;
+            TDRB[x] = 0;
+            TFTA[x] = 0;
+            TFGP[x] = (TFGM[x] * 100) / TFGA[x];
+            TTPP[x] = (TTPM[x] * 100) / TTPA[x];
+            TFTP[x] = 0;
+        }
+        x++;
+    }
+
+    string ReturnColor(double input1, double input2)
+    {
+        if (input1 > input2)
+        {
+            return "green";
+        }
+        if (input1 == input2)
+        {
+            return "yellow";
+        }
+        else
+        {
+            return "red";
+        }
+    }
+
+    @*team stats col*@
+    <div class="col col-4">
+        <div class="col p-0">
+
+            <h3> Team Stats</h3>
+
+            <div class="rounded" style="border-width: 2px; border-style:solid; background-color:#1c1c22; min-width: 300px;">
+
+                <div class="row pl-2 pr-2 pb-0 pt-3">
+                    <div class="col d-flex"> @Model.Season.Team1 </div>
+                    <div class="col d-flex justify-content-end"> @Model.Season.Team2 </div>
+                </div>
+
+                <hr style="background-color: white">
+
+                <table class="table table-sm table-borderless text-white">
+                    <tr>
+                        <td style="color: @ReturnColor(TPTS[0], TPTS[1])"> @Math.Round(((TPTS[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> PTS </td>
+                        <td style="text-align: end; color: @ReturnColor(TPTS[1], TPTS[0])"> @Math.Round(((TPTS[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: @ReturnColor(TFGM[0], TFGM[1])"> @TFGM[0]/@TFGA[0] </span> <span style="color: @ReturnColor(TFGP[0], TFGP[1])"> (@Math.Round(TFGP[0])%) </span> </td>
+                        <td> FG </td>
+                        <td style="text-align: end;"> <span style="color: @ReturnColor(TFGM[1], TFGM[0])"> @TFGM[1]/@TFGA[1] </span> <span style="color: @ReturnColor(TFGP[1], TFGP[0])"> (@Math.Round(TFGP[1])%) </span> </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: @ReturnColor(TTPM[0], TTPM[1])"> @TTPM[0]/@TTPA[0] </span> <span style="color: @ReturnColor(TTPP[0], TTPP[1])"> (@Math.Round(TTPP[0])%) </span> </td>
+                        <td> 3PT </td>
+                        <td style="text-align: end;"> <span style="color: @ReturnColor(TTPM[1], TTPM[0])"> @TTPM[1]/@TTPA[1] </span> <span style="color: @ReturnColor(TTPP[1], TTPP[0])"> (@Math.Round(TTPP[1])%) </span> </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: @ReturnColor(TFTM[0], TFTM[1])"> @TFTM[0]/@TFTA[0]</span> <span style="color: @ReturnColor(TFTP[0], TFTP[1])">(@Math.Round(TFTP[0])%) </span> </td>
+                        <td> FT </td>
+                        <td style="text-align: end;"> <span style="color: @ReturnColor(TFTM[1], TFTM[0])"> @TFTM[1]/@TFTA[1]</span> <span style="color: @ReturnColor(TFTP[1], TFTP[0])"> (@Math.Round(TFTP[1])%) </span> </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TAST[0], TAST[1])"> @Math.Round(((TAST[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> AST </td>
+                        <td style="text-align: end; color: @ReturnColor(TAST[1], TAST[0])"> @Math.Round(((TAST[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TREB[0], TREB[1])"> @Math.Round(((TREB[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> REB </td>
+                        <td style="text-align: end; color: @ReturnColor(TREB[1], TREB[0])"> @Math.Round(((TREB[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TORB[0], TORB[1])"> @Math.Round(((TORB[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> ORB </td>
+                        <td style="text-align: end; color: @ReturnColor(TORB[1], TORB[0])"> @Math.Round(((TORB[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TDRB[0], TDRB[1])"> @Math.Round(((TDRB[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> DRB </td>
+                        <td style="text-align: end; color: @ReturnColor(TDRB[1], TDRB[0])"> @Math.Round(((TDRB[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TSTLS[0], TSTLS[1])"> @Math.Round(((TSTLS[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> STLS </td>
+                        <td style="text-align: end; color: @ReturnColor(TSTLS[1], TSTLS[0])"> @Math.Round(((TSTLS[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TBLK[0], TBLK[1])"> @Math.Round(((TBLK[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> BLK </td>
+                        <td style="text-align: end; color: @ReturnColor(TBLK[1], TBLK[0])"> @Math.Round(((TBLK[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                    <tr>
+                        <td style="color: @ReturnColor(TTOR[1], TTOR[0])"> @Math.Round(((TTOR[0] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                        <td> TOR </td>
+                        <td style="text-align: end; color: @ReturnColor(TTOR[0], TTOR[1])"> @Math.Round(((TTOR[1] / Model.Season.PlayedGames) * gameScale), 1) </td>
+                    </tr>
+                </table>
+        
+            </div>
+
+        </div>
+    </div>
+}

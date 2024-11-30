@@ -1,0 +1,165 @@
+@model SeasonGameViewModel
+
+@{
+    double seasonLength = 0;
+    foreach (SeasonBox seasonBox in Model.SeasonBoxes) {
+        seasonLength = seasonLength + seasonBox.MIN; 
+    }
+    seasonLength = seasonLength / 10;
+    seasonLength = seasonLength / Model.Season.PlayedGames;
+    double gameScale = 36 / seasonLength;
+
+    int t = 1;
+    while (3 > t)
+    {
+
+        string teamName = "";
+        string teamColor = "";
+
+        if (t == 1)
+        {
+            teamName = Model.Season.Team1;
+            teamColor = Model.Season.Team1Color;
+        }
+
+        if (t == 2)
+        {
+            teamName = Model.Season.Team2;
+            teamColor = Model.Season.Team2Color;
+        }
+
+
+
+        <h3 class="pt-3"> @teamName Stats</h3>
+
+        <div class="rounded" style="border-width: 2px; border-style:solid; background-color: #1c1c22">
+            <table class="table table-sm table-borderless table-striped m-0 text-white">
+                <thead>
+
+                    <thead>
+                        <tr style="background-color: #@teamColor; color: black">
+                            <th class="w-auto" scope="col"> Player </th>
+                            <th class="w-auto" scope="col"> MIN </th>
+                            <th class="w-auto" scope="col"> PTS </th>
+                            <th scope="col"> REB </th>
+                            <th scope="col"> AST </th>
+                            <th scope="col"> STL </th>
+                            <th scope="col"> BLK </th>
+                            <th scope="col"> TO </th>
+                            <th scope="col"> FG </th>
+                            <th scope="col"> 3PT </th>
+                            <th scope="col"> FG% </th>
+                            <th scope="col"> 3PT% </th>
+                            <th scope="col"> FTM </th>
+                            <th scope="col"> BRT </th>
+                        </tr>
+                    </thead>
+
+                </thead>
+
+                <tbody>
+                    @{ 
+                        int i = 0;
+                        @while (13 > i)
+                        {
+                            string Name = "";
+                            double MIN = 0;
+                            double PTS = 0;
+                            double REB = 0;
+                            double AST = 0;
+                            double STLS = 0;
+                            double BLK = 0;
+                            double TOR = 0;
+                            double FTM = 0;
+                            double FGM = 0;
+                            double FGA = 0;
+                            double TPM = 0;
+                            double TPA = 0;
+                            double BRT = 0;
+                            double AFGM = 0;
+                            double AFGA = 0;
+                            double ATPM = 0;
+                            double ATPA = 0;
+                            foreach (SeasonBox seasonBox in Model.SeasonBoxes.Where(p => p.Team == t && p.POS == i))
+                            {
+
+                                Name = seasonBox.Player.PlayerShortName;
+                                if (t == 2){Name = "Player " + i.ToString();}  
+                                MIN = seasonBox.MIN + MIN;
+                                PTS = seasonBox.PTS + PTS;
+                                REB = seasonBox.REB + REB;
+                                AST = seasonBox.AST + AST;
+                                STLS = seasonBox.STLS + STLS;
+                                BLK = seasonBox.BLK + BLK;
+                                TOR = seasonBox.TOR + TOR;
+                                FTM = seasonBox.PTS - (seasonBox.TPM * 3 + ((seasonBox.FGM - seasonBox.TPM) * 2)) + FTM;
+                                FGM = seasonBox.FGM + FGM;
+                                FGA = seasonBox.FGA + FGA;
+                                TPM = seasonBox.TPM + TPM;
+                                TPA = seasonBox.TPA + TPA;
+
+                            }
+                            MIN = Math.Round(((MIN / Model.Season.PlayedGames) * gameScale), 1);
+                            PTS = Math.Round(((PTS / Model.Season.PlayedGames) * gameScale), 1);
+                            REB = Math.Round(((REB / Model.Season.PlayedGames) * gameScale), 1);
+                            AST = Math.Round(((AST / Model.Season.PlayedGames) * gameScale), 1);
+                            STLS = Math.Round(((STLS / Model.Season.PlayedGames) * gameScale), 1);
+                            BLK = Math.Round(((BLK / Model.Season.PlayedGames) * gameScale), 1);
+                            TOR = Math.Round(((TOR / Model.Season.PlayedGames) * gameScale), 1);
+                            FTM = Math.Round(((FTM / Model.Season.PlayedGames) * gameScale), 1);
+
+                            AFGM = Math.Round((FGM / Model.Season.PlayedGames) * gameScale, 1);
+                            AFGA = Math.Round((FGA / Model.Season.PlayedGames) * gameScale, 1);
+                            ATPM = Math.Round((TPM / Model.Season.PlayedGames) * gameScale, 1);
+                            ATPA = Math.Round((TPA / Model.Season.PlayedGames) * gameScale, 1);
+
+                            double FT = PTS - (ATPM * 3 + ((AFGM - ATPM) * 2));
+                            FT = PTS - (ATPM * 3 + ((AFGM - ATPM) * 2));
+                            double scoreFinal = (((PTS + (0.4 * AFGM) - (0.8 * AFGA) - (0.4 * FT) + (0.5 * REB) + STLS + (0.7 * AST) + (0.7
+                            * BLK) - TOR) / (MIN)) * 20);
+                            scoreFinal = scoreFinal - 7;
+                            scoreFinal = Math.Round(scoreFinal, 1);
+                            BRT = Math.Round(scoreFinal, 1);
+
+                            var colorChange = "";
+                            if (scoreFinal >= 15) { colorChange = "#ff00d9"; }
+                            else if (scoreFinal >= 10) { colorChange = "#0f77f5"; }
+                            else if (scoreFinal >= 6) { colorChange = "#0fe5f5"; }
+                            else if (scoreFinal >= 3) { colorChange = "#00c72b"; }
+                            else if (scoreFinal >= 0) { colorChange = "#e9f500"; }
+                            else if (scoreFinal >= -5) { colorChange = "#d46600"; }
+                            else { colorChange = "#f52a2a"; }
+
+                            double FGP = Math.Round(100 * (FGM / FGA), 1);
+                            double TPP = Math.Round(100 * (TPM / TPA), 1);
+
+                            @if (MIN != 0)
+                            {
+                                <tr>
+                                    <td> @Name </td>
+                                    <td> @MIN </td>
+                                    <td> @PTS </td>
+                                    <td> @REB </td>
+                                    <td> @AST </td>
+                                    <td> @STLS</td>
+                                    <td> @BLK </td>
+                                    <td> @TOR </td>
+                                    <td> @FGM - @FGA </td>
+                                    <td> @TPM - @TPA </td>
+                                    <td> @FGP% </td>
+                                    <td> @TPP% </td>
+                                    <td> @FTM </td>
+                                    <th style="color: @colorChange"> @BRT </th>
+                                </tr>
+                            }
+                            i++;
+
+                        }               
+                    }
+                </tbody>
+            </table>
+        </div>
+        t++;
+    }
+
+}

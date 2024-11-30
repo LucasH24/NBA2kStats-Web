@@ -1,3 +1,4 @@
+/* CTRL F5 to fix weird styling bug */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -24,12 +25,12 @@ input::-webkit-inner-spin-button {
   top: -1px;
 }
 
-body {
-  height: 100%;
-  background-image: url("/Images/mainBackground.jpg");
-  background-size: 2000px;
-  background-repeat: repeat;
-  background-attachment: fixed;
+#body {
+  background-color: #050509
+}
+
+#content {
+  background-color: #050509
 }
 
 hr {
@@ -39,7 +40,8 @@ hr {
 }
 
 .custom-padding {
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .flex-container {
@@ -47,9 +49,19 @@ hr {
   flex-direction: row;
 }
 
+.teamRightList li {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+}
+
+.teamRightList span {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+}
 
 .overallBadge {
-  background-color: white;
   color: white;
   background-repeat: repeat;
   padding-left: 5px;
@@ -61,7 +73,6 @@ hr {
 }
 
 .teamBadge {
-  background-color: white;
   color: white;
   background-repeat: repeat;
   padding-left: 3px;
@@ -94,6 +105,7 @@ hr {
 
 .ruby {
   background-image: linear-gradient(#d22323, #6f0e0e);
+  box-shadow: #6f0e0e 0px 0px 5px 0px;
 }
 
 .amethyst {
@@ -118,19 +130,25 @@ hr {
 
 .dark-matter {
   background-image: linear-gradient(#470808, #050505);
-  box-shadow: #4a0808 0px 0px 8px 0px;
+  box-shadow: #db1009 0px 0px 5px 0px;
 }
 
 .unobtainium {
   background-image: linear-gradient(#500b5e, #050505);
-  box-shadow: #3a084a 0px 0px 8px 0px;
+  box-shadow: #ee6fe5 0px 0px 8px 0px;
   padding-left: 0px;
   padding-right: 2px;
 }
 
 .unobtainium-2 {
   background-image: linear-gradient(#500b5e, #050505);
-  box-shadow: #3a084a 0px 0px 8px 0px;
+  box-shadow: #ee6fe5 0px 0px 8px 0px;
+}
+
+@media only screen and (max-width: 1200px) {
+  #bootstrap-overrides .gridSmallWindow { 
+    display: grid;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -145,6 +163,7 @@ hr {
     margin: 0px;
     width: 100%;
     max-width: 10000px;
+    justify-content: center;
   }
   #bootstrap-overrides .table-sm td {
     padding: 2px;
@@ -154,8 +173,11 @@ hr {
     padding: 1px;
     font-size: 10px;
   }
-  .hideWhenLarge {
+  .hideWhenSmall {
     display: none;
+  }
+  #bootstrap-overrides .gridMobile { 
+    display: grid;
   }
 
   #bootstrap-overrides .teamBadge {
@@ -170,7 +192,7 @@ hr {
 }
 
 @media only screen and (min-width: 801px) {
-  .hideWhenSmall {
+  .hideWhenLarge {
     display: none;
   }
 }
