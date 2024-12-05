@@ -145,6 +145,10 @@ hr {
   box-shadow: #ee6fe5 0px 0px 8px 0px;
 }
 
+.w-75-mobile {
+  width: 75%;
+}
+
 @media only screen and (max-width: 1200px) {
   #bootstrap-overrides .gridSmallWindow { 
     display: grid;
@@ -164,6 +168,9 @@ hr {
     width: 100%;
     max-width: 10000px;
     justify-content: center;
+  }
+  #bootstrap-overrides .w-75-mobile {
+    width: 90%;
   }
   #bootstrap-overrides .table-sm td {
     padding: 2px;

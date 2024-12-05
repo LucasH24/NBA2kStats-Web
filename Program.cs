@@ -31,7 +31,7 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Series}/{action=ViewSeries}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.UseAuthentication();
 app.UseAuthorization();

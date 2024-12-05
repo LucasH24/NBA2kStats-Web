@@ -1,20 +1,70 @@
 <div>
-    <h1> About 2kStats </h1>
-
-    <h5> This is a personal website to track my NBA2k stats </h5>
-    <h5> You can view series stats, season stats, and use the stat view feature to see all the data </h5>
-    <h5> I would like to do a lot more with this data but unfortuantely the data the game provides is lackluster </h5>
-    <h5> This website is designed for PC use, but should function on mobile </h5>
+    <h1 class="d-none p-0 m-0" style="color:red"> Error: Bootstrap not loaded properly. Check VPN / Browser settings </h1>
+    <h1> Welcome to 2kStats </h1>
+    <h5> Version 2.1 </h5>
+    <h5> Last Updated 12/5/2024 </h5>
     <br>
 
-    <h3 style="padding-top: 50px"> To Do</h3>
-    <ul> 
-        <li> Update toggle myplayers of stats page to only filter by team and not opponent </li>
-        <li> BRT sorting error </li>
-        <li> ^ search for box scores from johnson</li>
-        <li> Tab Names </li>
-        <li> Add pvp / pve options to series and seasons </li>
+    <h2> About </h2>
+    <div class="pl-3 pt-2"> 
+        <div class="row">
+            <div class="rounded col-sm-10 mb-4 p-3 mr-5"
+                style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <div> This is a personal website to track my NBA2k stats. I would like to do a lot more with this data
+                    but unfortuantely the data provided by the game is
+                    lackluster. All stat abbreviations are standard basketball ones except for BRT, which is essentially
+                    an overall performance score I created using the only stats provided by the game.
+                    This website is designed for PC use, but should function on mobile. The website is developed in
+                    Dotnet 6.0 using Bootstrap 4. The data and website are hosted using Microsoft Azure services. </div>
+            </div>
+        </div>
+    </div>
 
-        <li> QOL Improvments </li>
-    </ul>
+    <h2> Pages </h2>
+    <div class="pl-3 pt-2"> 
+        <div class="row">
+            <div class="rounded col-sm-5 mb-4 p-3 mr-5" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <h3> <a asp-area="" asp-controller="Series" asp-action="ViewSeries"> Series</a> </h3>
+                <div> View playoff series results and team stats for the series as a whole or individually by game </div>
+            </div>
+
+            <div class="rounded col-sm-5 mb-4 p-3 mr-5" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <h3> <a asp-area="" asp-controller="Season" asp-action="ViewSeasons"> Seasons</a> </h3>
+                <div> View a teams season results and team stats for the season as a whole or individually by game</div>
+            </div>
+
+            <div class="rounded col-sm-5 mb-4 p-3 mr-5" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <h3> <a asp-area="" asp-controller="Roster" asp-action="ViewTeams"> Teams</a> </h3>
+                <div> View teams rosters and player ratings based on my analysis </div>
+            </div>
+
+            <div class="rounded col-sm-5 mb-4 p-3 mr-5" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <h3> <a asp-area="" asp-controller="Roster" asp-action="ViewPlayers"> Players</a> </h3>
+                <div> View players team and rating history </div>
+            </div>
+
+            <div class="rounded col-sm-5 mb-4 p-3 mr-5" style="border-width: 2px; border-style:solid; background-color:#1c1c22">
+                <h3> <a asp-area="" asp-controller="Data" asp-action="StatView"> Stats</a> </h3>
+                <div> Query and filter large amounts of team or player data </div>
+            </div>
+    
+        </div>
+    </div>
+   
+    @if (User.IsInRole("admin"))
+    {
+        <div>
+            <h3 style="padding-top: 50px"> To Do</h3>
+            <ul>
+                <li> Update toggle myplayers of stats page to only filter by team and not opponent </li>
+                <li> BRT sorting error </li>
+                <li> ^ search for box scores from johnson</li>
+                <li> Tab Names </li>
+                <li> Add pvp / pve options to series and seasons </li>
+
+                <li> QOL Improvments </li>
+            </ul>
+        </div>
+    }
+
 </div>

@@ -7,7 +7,11 @@
     }
     seriesLength = seriesLength / 10;
     seriesLength = seriesLength / Model.Series.PlayedGames;
+    
     double gameScale = 36 / seriesLength;
+    if (Model.Series.Minutes > 36) {
+        gameScale = Convert.ToDouble(Model.Series.Minutes) / seriesLength;
+    }
 
     int t = 1;
     while (3 > t)

@@ -7,7 +7,11 @@
     }
     seasonLength = seasonLength / 10;
     seasonLength = seasonLength / Model.Season.PlayedGames;
+
     double gameScale = 36 / seasonLength;
+    if (Model.Season.Minutes > 36) {
+        gameScale = Convert.ToDouble(Model.Season.Minutes) / seasonLength;
+    }
 
     int t = 1;
     while (3 > t)

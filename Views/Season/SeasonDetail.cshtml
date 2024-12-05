@@ -3,7 +3,8 @@
 <div>
         
     <div class="pb-1">
-        <h1>@Model.Season.Team1 vs @Model.Season.Team2 (@Model.Season.Team1W - @Model.Season.Team2W)</h1>
+        <h1>@Model.Season.Team1 vs @Model.Season.Team2</h1>
+        <h1>@Model.Season.Team1W - @Model.Season.Team2W</h1>
     </div>
 
 
@@ -30,30 +31,33 @@
         @* Main Table*@
         <div class="row gridSmallWindow">
             @{ 
-                <div class="col p-0 pl-3 pr-3" style="width: 80%;"> 
+                <div class="col pb-3 pl-3 pr-3"> 
                     <h3> Games</h3>
                     <div class="rounded" style="border-width: 2px; border-style:solid; background-color: #1c1c22"> 
                         <table class="table table-sm m-0 text-white">
                             <tr>
-                                <th scope="col"> Game </th>
+                                <th scope="col"> # </th>
                                 <th scope="col"> Team 1 </th>
                                 <th scope="col"> Team 2 </th>
                                 <th scope="col"> Result </th>
+                                <th scope="col"> Top Scorer 1 </th>
+                                <th scope="col"> Top Scorer 2 </th>
                                 <th scope="col"> </th>
                             </tr>
 
                             @foreach (SeasonGame game in Model.SeasonGames.OrderBy(g => g.GameNumber))
                             {
+                                SeasonBox topScorer1 = Model.SeasonBoxes.Where(p => p.Team == 1 && p.SeasonGameID == game.SeasonGameID).MaxBy(p => p.PTS);
+                                SeasonBox topScorer2 = Model.SeasonBoxes.Where(p => p.Team == 2 && p.SeasonGameID == game.SeasonGameID).MaxBy(p => p.PTS);
                                 if (game.Team1.PrimaryColor == game.Team2.PrimaryColor) {game.Team2.TeamColor1 = game.Team2.TeamColor2;}
                                 <tr>
                                     <td> @game.GameNumber </td>
-                                    <th style="color: #@game.Team1.TeamColor1"> @game.Team1.ShortName </th>
-                                    <th style="color: #@game.Team2.TeamColor1"> @game.Team2.ShortName </th>
+                                    <th style="color: #@game.Team1.TeamColor1"> @game.Team1.TeamName </th>
+                                    <th style="color: #@game.Team2.TeamColor1"> @game.Team2.TeamName </th>
                                     <td> @game.Team1Score - @game.Team2Score </td>
-                                    <td> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID"
-                                            asp-route-seasonID="@Model.Season.SeasonID">
-                                            Game Stats </a>
-                                    </td>
+                                    <td style="color: #@game.Team1.TeamColor1"> @topScorer1.PTS - @topScorer1.Player.PlayerShortName </td>
+                                    <td style="color: #@game.Team2.TeamColor1"> @topScorer2.PTS - @topScorer2.Player.PlayerShortName </td>
+                                    <td> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID" asp-route-seasonID="@Model.Season.SeasonID">Stats </a> </td>
                                 </tr>
                             }
                         </table>
