@@ -72,13 +72,13 @@
         <div class="rounded" style="border-width: 2px; border-style:solid; background-color:#1c1c22; min-width: 300px;">
 
             <div class="row pl-2 pr-2 pb-0 pt-3">
-                <div class="col d-flex"> @Model.Season.Team1 </div>
+                <div class="col d-flex"> @Model.SeasonGame.Team1.ShortName </div>
                 @if (Model.SeasonGame.Team1ORB.Equals(null))
                 {
                     <div class="col d-flex justify-content-end" style="color: red">
                         ERROR: DATA MISSING</div>
                 }
-                <div class="col d-flex justify-content-end"> @Model.Season.Team2 </div>
+                <div class="col d-flex justify-content-end"> @Model.SeasonGame.Team2.ShortName </div>
             </div>
 
             <hr style="background-color: white">

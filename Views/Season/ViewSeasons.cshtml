@@ -16,7 +16,6 @@
             <table class="table table-sm m-0 text-light">
                 <tr>
                     <th scope="col"> </th>
-                    <th scope="col"> ID </th>
                     <th scope="col"> Team 1 </th>
                     <th scope="col"> Team 2 </th>
                     <th scope="col"> Record </th>
@@ -32,7 +31,6 @@
                         {
                             <tr>
                                 <th scope="col"> </th>
-                                <td> @season.SeasonID </td>
                                 <th style="color: #@season.Team1Color"> @season.Team1 </th>
                                 <th style="color: #@season.Team2Color"> @season.Team2 </th>
                                 <td> @season.Team1W-@season.Team2W </td>
@@ -48,12 +46,11 @@
                         {
                             <tr>
                                 <th scope="col"> </th>
-                                <td> @season.SeasonID </td>
                                 <th style="color: #@season.Team1Color"> @season.Team1 </th>
                                 <th style="color: #@season.Team2Color"> @season.Team2 </th>
                                 <td> @season.Team1W-@season.Team2W </td>
                                 <td> @season.NBA2k </td>
-                                <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Season Stats </a> </td>
+                                <td> <a asp-action="SeasonDetail" asp-route-id="@season.SeasonID"> Stats </a> </td>
                             </tr>
                         }
                     }

@@ -54,10 +54,16 @@
                                     <td> @game.GameNumber </td>
                                     <th style="color: #@game.Team1.TeamColor1"> @game.Team1.TeamName </th>
                                     <th style="color: #@game.Team2.TeamColor1"> @game.Team2.TeamName </th>
-                                    <td> @game.Team1Score - @game.Team2Score </td>
-                                    <td style="color: #@game.Team1.TeamColor1"> @topScorer1.PTS - @topScorer1.Player.PlayerShortName </td>
-                                    <td style="color: #@game.Team2.TeamColor1"> @topScorer2.PTS - @topScorer2.Player.PlayerShortName </td>
-                                    <td> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID" asp-route-seasonID="@Model.Season.SeasonID">Stats </a> </td>
+                                    <th> @game.Team1Score - @game.Team2Score </th>
+                                    @if (topScorer1 != null && topScorer2 != null) {
+                                        <th style="color: #@game.Team1.TeamColor1"> @topScorer1.PTS - @topScorer1.Player.PlayerShortName </th>
+                                        <th style="color: #@game.Team2.TeamColor1"> @topScorer2.PTS - @topScorer2.Player.PlayerShortName </th>
+                                    }
+                                    else {
+                                        <th style="color: #@game.Team1.TeamColor1"> NO DATA </th>
+                                        <th style="color: #@game.Team2.TeamColor1"> NO DATA </th>
+                                    }
+                                    <th> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID" asp-route-seasonID="@Model.Season.SeasonID">Stats </a> </th>
                                 </tr>
                             }
                         </table>

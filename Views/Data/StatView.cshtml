@@ -77,7 +77,7 @@
 </div>
 
 <div class="fixTableHead" style="overflow-y: auto; height: 75vh;">
-  <table id="playerStatsTable" class="table table-sm w-100 table-striped text-white border" style="display: none; background-color:#1c1c22">
+  <table id="playerStatsTable" class="table table-sm table-bordered w-100 table-striped text-white border" style="display: none; background-color:#1c1c22">
     <thead>
       <tr>
         <th scope="col"> # </th>
@@ -111,7 +111,7 @@
   </table>
 
 
-  <table id="teamStatsTable" class="table table-sm table-striped text-white border" style="background-color:#1c1c22;">
+  <table id="teamStatsTable" class="table table-sm table-bordered text-white border" style="background-color:#1c1c22;">
     <thead style="position: sticky;">
       <tr>
         <th scope="col"> # </th>
@@ -951,10 +951,10 @@
             <td> ${toProperDecimal(filterDataList[i].stls, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].blk, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].tor, filterScale)} </td>
-            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
-            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
-            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
-            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].ftm, filterScale)} </td>
             <td> ${filterDataList[i].fgp}% </td>
             <td> ${filterDataList[i].tpp}% </td>
@@ -1027,12 +1027,12 @@
             <td> ${toProperDecimal(filterDataList[i].blk, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].tor, filterScale)} </td>
             <td> ${toProperDecimal(filterDataList[i].orb, filterScale)} </td>
-            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
-            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
-            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
-            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
-            <td style="border-right: none"> ${toProperDecimal(filterDataList[i].ftm, filterScale)} </td>
-            <td style="border-left: none"> ${toProperDecimal(filterDataList[i].fta, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].fgm, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].fga, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tpm, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].tpa, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].ftm, filterScale)} </td>
+            <td> ${toProperDecimal(filterDataList[i].fta, filterScale)} </td>
             <td> ${filterDataList[i].fgp}% </td>
             <td> ${filterDataList[i].tpp}% </td>
             <td> ${filterDataList[i].ftp}% </td>
