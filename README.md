@@ -1,1 +1,1 @@
-Source Code for https://2k-stats.azurewebsites.net/
+Source Code for https://2kstats.azurewebsites.net/
