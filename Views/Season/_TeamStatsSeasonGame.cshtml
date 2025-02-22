@@ -27,9 +27,15 @@
 
         try
         {
-            ORB[x] = Convert.ToInt32(Model.SeasonGame.Team1ORB);
+            if (x == 0) {
+                ORB[x] = Convert.ToInt32(Model.SeasonGame.Team1ORB);
+                FTA[x] = Convert.ToInt32(Model.SeasonGame.Team1FTA);
+            }
+            else {
+                ORB[x] = Convert.ToInt32(Model.SeasonGame.Team2ORB);
+                FTA[x] = Convert.ToInt32(Model.SeasonGame.Team2FTA);
+            }
             DRB[x] = REB[x] - ORB[x];
-            FTA[x] = Convert.ToInt32(Model.SeasonGame.Team1FTA);
             FGP[x] = (FGM[x] * 100) / FGA[x];
             TPP[x] = (TPM[x] * 100) / TPA[x];
             FTP[x] = (FTM[x] * 100) / FTA[x];

@@ -42,7 +42,6 @@
                                 <th scope="col"> Result </th>
                                 <th scope="col"> Top Scorer 1 </th>
                                 <th scope="col"> Top Scorer 2 </th>
-                                <th scope="col"> </th>
                             </tr>
 
                             @foreach (SeasonGame game in Model.SeasonGames.OrderBy(g => g.GameNumber))
@@ -52,9 +51,9 @@
                                 if (game.Team1.PrimaryColor == game.Team2.PrimaryColor) {game.Team2.TeamColor1 = game.Team2.TeamColor2;}
                                 <tr>
                                     <td> @game.GameNumber </td>
-                                    <th style="color: #@game.Team1.TeamColor1"> @game.Team1.TeamName </th>
-                                    <th style="color: #@game.Team2.TeamColor1"> @game.Team2.TeamName </th>
-                                    <th> @game.Team1Score - @game.Team2Score </th>
+                                    <th style="color: #@game.Team1.TeamColor1"> @game.Team1.ShortName </th>
+                                    <th style="color: #@game.Team2.TeamColor1"> @game.Team2.ShortName </th>
+                                    <th>  <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID" asp-route-seasonID="@Model.Season.SeasonID"> @game.Team1Score - @game.Team2Score </a> </th>
                                     @if (topScorer1 != null && topScorer2 != null) {
                                         <th style="color: #@game.Team1.TeamColor1"> @topScorer1.PTS - @topScorer1.Player.PlayerShortName </th>
                                         <th style="color: #@game.Team2.TeamColor1"> @topScorer2.PTS - @topScorer2.Player.PlayerShortName </th>
@@ -63,7 +62,6 @@
                                         <th style="color: #@game.Team1.TeamColor1"> NO DATA </th>
                                         <th style="color: #@game.Team2.TeamColor1"> NO DATA </th>
                                     }
-                                    <th> <a asp-action="SeasonGameDetail" asp-route-id="@game.SeasonGameID" asp-route-seasonID="@Model.Season.SeasonID">Stats </a> </th>
                                 </tr>
                             }
                         </table>

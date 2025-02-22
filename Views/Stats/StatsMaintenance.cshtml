@@ -1,0 +1,151 @@
+
+<div style="padding: 2%">
+    <input type="file" id="basicFile" name="filename1">
+    <button onclick="submitBasic()"> Upload Basic </button>
+
+    <br>
+    <br>
+
+    <input type="file" id="advancedFile" name="filename2">
+    <button onclick="submitAdvanced()"> Upload Advanced </button>
+
+    <br>
+    <br>
+    <input type="number" id="season" name="season" value='2025'>
+</div>
+
+
+<script>
+
+    let jsonData;
+    let excemptPlayers = [];
+
+    function submitBasic() {
+        console.log("working");
+        const input = document.getElementById('basicFile');
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                jsonData = JSON.parse(e.target.result);
+                excemptPlayers = [];
+                for (let i = 0; i < jsonData.length; i++) {
+                    prepData(jsonData[i]);
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function submitAdvanced() {
+        console.log("working");
+        const input = document.getElementById('advancedFile');
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                jsonData = JSON.parse(e.target.result);
+                excemptPlayers = [];
+                for (let i = 0; i < jsonData.length; i++) {
+                    prepData(jsonData[i]);
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function prepData(player) {
+        if (excemptPlayers.includes(player.name) == false) {
+            for (let i = 0; i < jsonData.length; i++) {
+                if (player.slug == jsonData[i].slug && player.team != jsonData[i].team) {
+                    if (jsonData[i].assists == null) {
+                        player = combineAdvancedStats(player, jsonData[i]);
+                    }
+                    else {
+                        player = combineBasicStats(player, jsonData[i]);
+                    }
+                    excemptPlayers.push(jsonData[i].name);
+                }
+            }
+            const season =  document.getElementById('season').value;
+            if (player.assists == null) {
+                player = toStringArrayAdvanced(player);
+                addAdvancedData(player, season) 
+            }
+            else {
+                player = toStringArrayBasic(player);
+                addBasicData(player, season) 
+            }
+        }
+    }
+
+    function addBasicData(player, season) {
+        $.ajax({
+            url: '@Url.Action("AddPlayer", "Stats")',
+            data: { player: player, season: season },
+            type: "POST",
+        }).done(function () {
+            console.log("Added " + player[13]);
+        });
+    }
+
+    function addAdvancedData(player, season) {
+        $.ajax({
+            url: '@Url.Action("UpdateAdvancedData", "Stats")',
+            data: { player: player, season: season },
+            type: "POST",
+        }).done(function () {
+            console.log("Updated " + player[11]);
+        });
+    }
+
+    function combineBasicStats(mainPlayer, extraPlayer) {
+        const attibutesToAdd = ["assists","attempted_field_goals","attempted_free_throws","attempted_three_point_field_goals","blocks","defensive_rebounds","games_played","games_started","made_field_goals","made_free_throws","made_three_point_field_goals","minutes_played","offensive_rebounds","personal_fouls","points","steals","turnovers"];
+        for (let i=0; i < attibutesToAdd.length; i++) {
+            extraPlayer[attibutesToAdd[i]] = extraPlayer[attibutesToAdd[i]] + mainPlayer[attibutesToAdd[i]];
+        }
+        return extraPlayer;
+    }
+
+    function combineAdvancedStats(mainPlayer, extraPlayer) {
+        const attibutesToAdd = ["assist_percentage","block_percentage","box_plus_minus","defensive_box_plus_minus","defensive_rebound_percentage","free_throw_attempt_rate","offensive_box_plus_minus","offensive_rebound_percentage","player_efficiency_rating","steal_percentage","three_point_attempt_rate","total_rebound_percentage","true_shooting_percentage","turnover_percentage","usage_percentage","value_over_replacement_player","win_shares_per_48_minutes"];
+        for (let i=0; i < attibutesToAdd.length; i++) {
+            extraPlayer[attibutesToAdd[i]] = (extraPlayer[attibutesToAdd[i]] * extraPlayer.minutes_played) + (mainPlayer[attibutesToAdd[i]] * mainPlayer.minutes_played);
+            let temp = extraPlayer.minutes_played + mainPlayer.minutes_played;
+            extraPlayer[attibutesToAdd[i]] = extraPlayer[attibutesToAdd[i]] / temp;
+        }
+        extraPlayer.win_shares = extraPlayer.win_shares + mainPlayer.win_shares;
+        extraPlayer.offensive_win_shares = extraPlayer.offensive_win_shares + mainPlayer.offensive_win_shares;
+        extraPlayer.defensive_win_shares = extraPlayer.defensive_win_shares + mainPlayer.defensive_win_shares;
+        return extraPlayer;
+    }
+
+    function toStringArrayBasic(player) {
+        let returnArray = [];
+        const attributes = ["age","assists","attempted_field_goals","attempted_free_throws","attempted_three_point_field_goals","blocks","defensive_rebounds","games_played","games_started","made_field_goals","made_free_throws","made_three_point_field_goals","minutes_played","name","offensive_rebounds","personal_fouls","points","positions","slug","steals","team","turnovers"];
+        for (let i=0; i < attributes.length; i++) {
+            
+            if (attributes[i] == "positions") {
+                const temp = player[attributes[i]];
+                returnArray.push(temp[0]);
+            }
+            else {
+                returnArray.push(player[attributes[i]]);
+            }
+        }
+        return returnArray;
+    }
+
+    function toStringArrayAdvanced(player) {
+        let returnArray = [];
+        const attributes = ["assist_percentage","block_percentage","box_plus_minus","defensive_box_plus_minus","defensive_rebound_percentage","defensive_win_shares","free_throw_attempt_rate","offensive_box_plus_minus","offensive_rebound_percentage","offensive_win_shares","player_efficiency_rating","slug","steal_percentage","three_point_attempt_rate","total_rebound_percentage","true_shooting_percentage","turnover_percentage","usage_percentage","value_over_replacement_player","win_shares","win_shares_per_48_minutes"];
+        for (let i=0; i < attributes.length; i++) {
+            returnArray.push(player[attributes[i]]);
+        }
+        return returnArray;
+    }
+
+
+
+
+</script>

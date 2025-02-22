@@ -42,7 +42,6 @@
                                 <th scope="col"> Result </th>
                                 <th scope="col"> Top Scorer 1 </th>
                                 <th scope="col"> Top Scorer 2 </th>
-                                <th scope="col"> </th>
                             </tr>
 
                             @foreach (Game game in Model.Games.OrderBy(g => g.GameNumber))
@@ -54,7 +53,7 @@
                                     <td> @game.GameNumber </td>
                                     <th style="color: #@Model.Series.Team1.TeamColor1"> @Model.Series.Team1.TeamName </th>
                                     <th style="color: #@Model.Series.Team2.TeamColor1"> @Model.Series.Team2.TeamName </th>
-                                    <th> @game.Team1Score - @game.Team2Score </th>
+                                    <th> <a asp-action="GameDetail" asp-route-id="@game.GameID" asp-route-seriesID="@Model.Series.SeriesID"> @game.Team1Score - @game.Team2Score</a> </th>
                                     @if (topScorer1 != null && topScorer2 != null) {
                                         <th style="color: #@Model.Series.Team1.TeamColor1"> @topScorer1.PTS - @topScorer1.Player.PlayerShortName </th>
                                         <th style="color: #@Model.Series.Team2.TeamColor1"> @topScorer2.PTS - @topScorer2.Player.PlayerShortName </th>
@@ -63,8 +62,6 @@
                                         <th style="color: #@Model.Series.Team1.TeamColor1"> NO DATA </th>
                                         <th style="color: #@Model.Series.Team2.TeamColor1"> NO DATA </th>
                                     }
-                                    <td> <a asp-action="GameDetail" asp-route-id="@game.GameID" asp-route-seriesID="@Model.Series.SeriesID">Stats</a>
-                                    </td>
                                 </tr>
                             }
                         </table>

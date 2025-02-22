@@ -16,6 +16,8 @@ public class DataContext : DbContext
   public DbSet<Team> Teams { get; set; }
   public DbSet<Player> Players { get; set; }
   public DbSet<PlayerTeam> PlayerTeams { get; set; }
+  //NBA Data
+  public DbSet<NbaPlayerStats> NbaPlayerStats { get; set; }
 
   public void AddSeries(Series series)
   {
@@ -56,6 +58,11 @@ public class DataContext : DbContext
   public void AddTeam(Team team)
   {
     this.Add(team);
+    this.SaveChanges();
+  }
+  public void AddNbaPlayerStats(NbaPlayerStats nbaPlayerStats)
+  {
+    this.Add(nbaPlayerStats);
     this.SaveChanges();
   }
 }

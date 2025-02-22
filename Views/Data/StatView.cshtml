@@ -58,19 +58,24 @@
       </select>
   </div>
 
+  <div>
+      <label for="playerFilter"> Player </input>
+        <input type="text" id="playerFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
+  </div>
+
+  <div>
+    <label for="teamFilter"> Team </input>
+      <input type="text" id="teamFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
+
+      <label for="opponentFilter"> Opponent </input>
+        <input type="text" id="opponentFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
+  </div>
+
   <input type="checkbox" id="scalePer36" onclick="displayData()" name="scalePer36">
   <label style="padding-right: 10px;" for="scalePer36"> Scale per 36</label>
 
   <input type="checkbox" id="filterMyPlayers" onclick="displayData()" name="filterMyPlayers">
   <label for="filterMyPlayers"> Hide my players </label>
-
-  <div>
-    <label for="teamFilter"> Team Name </input>
-      <input type="text" id="teamFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
-
-      <label for="playerFilter"> Player Name </input>
-        <input type="text" id="playerFilter" style="width: 150px;" onchange="displayData()" value=""> </input>
-  </div>
 
 
 
@@ -872,6 +877,7 @@
     const nba2kFilter = document.getElementById("nba2kFilter").value;
     const myPlayerFilter = document.getElementById("filterMyPlayers").checked;
     const teamFilter = document.getElementById("teamFilter").value;
+    const opponentFilter = document.getElementById("opponentFilter").value;
     const playerFilter = document.getElementById("playerFilter").value;
     let returnList = [];
     for (var i = 0; i < dataList.length; i++) {
@@ -890,12 +896,16 @@
         testPass = false;
       }
 
+      else if (opponentFilter != "" && dataList[i].opponent.toUpperCase().includes(opponentFilter.toUpperCase()) == false) {
+        testPass = false;
+      }
+
       else if (playerFilter != "" && dataList[i].name.toUpperCase().includes(playerFilter.toUpperCase()) == false) {
         testPass = false;
       }
 
       if (myPlayerFilter == true) {
-        const objectFieldsArray = ['Buffoons', 'Gilroy Pacers', 'Digby-Gilroy'];
+        const objectFieldsArray = ['Buffoons', 'Gilroy Pacers', 'Digby-Gilroy', 'Gilroy 76ers'];
         for (var x = 0; x < objectFieldsArray.length; x++) {
           var fieldValue = objectFieldsArray[x];
           if (dataList[i].team == objectFieldsArray[x]) {
