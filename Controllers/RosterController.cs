@@ -23,9 +23,14 @@ public class RosterController : Controller
 
     public IActionResult PlayerDetail(int id) => View(new PlayerDetailViewModel
     {
-        PlayerTeams = _dataContext.PlayerTeams.Where(p => p.PlayerID == id)
+        PlayerTeams = _dataContext.PlayerTeams.Where(p => p.PlayerID == id && p.Team.Year != "Custom")
         .Include(p => p.Player)
         .Include(t => t.Team),
+
+        PlayerTeamsCustom = _dataContext.PlayerTeams.Where(p => p.PlayerID == id && p.Team.Year == "Custom")
+        .Include(p => p.Player)
+        .Include(t => t.Team),
+
         Player = _dataContext.Players.FirstOrDefault(p => p.PlayerID == id),
     });
 

@@ -37,6 +37,36 @@
                         <th> <a href="/Roster/TeamDetail?id=@playerTeam.TeamID"> <div style="color: #@playerTeam.Team.TeamColor1"> @playerTeam.Team.FullName </div> </a> </th>
                     </tr>
                 }
+                @if (Model.PlayerTeamsCustom.Count() > 0) {
+                    <tr>
+                        <th> </th>
+                        <td style="font-weight: bold"> <br> </td>
+                        <th> </th>
+                    </tr>
+                }
+
+                @foreach (PlayerTeam playerTeam in Model.PlayerTeamsCustom.OrderBy(p => p.Team.Year))
+                {
+                    string badgeType = "bronze";
+                    if (playerTeam.Overall > 99) { badgeType = "unobtainium"; }
+                    else if (playerTeam.Overall > 98) { badgeType = "dark-matter"; }
+                    else if (playerTeam.Overall > 96) { badgeType = "galaxy-opal"; }
+                    else if (playerTeam.Overall > 94) { badgeType = "pink-diamond"; }
+                    else if (playerTeam.Overall > 92) { badgeType = "diamond"; }
+                    else if (playerTeam.Overall > 89) { badgeType = "amethyst "; }
+                    else if (playerTeam.Overall > 86) { badgeType = "ruby"; }
+                    else if (playerTeam.Overall > 83) { badgeType = "sapphire"; }
+                    else if (playerTeam.Overall > 80) { badgeType = "emerald"; }
+                    else if (playerTeam.Overall > 77) { badgeType = "gold"; }
+                    else if (playerTeam.Overall > 75) { badgeType = "silver"; }
+                    else { badgeType = "bronze"; }
+
+                    <tr>
+                        <th id="badgeCellFix"> <span class="overallBadge @badgeType"> @playerTeam.Overall </span> </th>
+                        <td style="font-weight: bold"> @playerTeam.Player.PlayerShortName </td>
+                        <th> <a href="/Roster/TeamDetail?id=@playerTeam.TeamID"> <div style="color: #@playerTeam.Team.TeamColor1"> @playerTeam.Team.FullName </div> </a> </th>
+                    </tr>
+                }
             </table>
         </div>
 

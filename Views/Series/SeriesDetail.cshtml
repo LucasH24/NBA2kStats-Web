@@ -10,7 +10,7 @@
 
     @if (User.IsInRole("admin"))
     {
-        <a asp-action="AddSeasonGame" asp-controller="Add" asp-route-id="@Model.Series.SeriesID">Add Game</a>
+        <a asp-action="AddGame" asp-controller="Add" asp-route-id="@Model.Series.SeriesID">Add Game</a>
     }
 
 
